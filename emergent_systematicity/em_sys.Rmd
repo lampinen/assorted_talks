@@ -1,0 +1,74 @@
+---
+title: "Emergent Systematicity data"
+author: "Andrew Lampinen"
+date: "October 16, 2019"
+output: html_document
+---
+
+```{r}
+library(tidyverse)
+```
+
+```{r}
+theme_set(theme_bw(base_size = 20) + 
+            theme(panel.grid = element_blank()))
+```
+
+
+# Classifier vs. Agent
+
+```{r}
+class_d = data.frame(type = c("classifier", "agent"), test_accuracy_mean = c(0.8, 1.), test_accuracy_sem = c(0.05, 0.))
+```
+
+```{r}
+ggplot(class_d,
+       aes(x=type, fill=type, y=test_accuracy_mean)) +
+  geom_bar(stat="identity",
+           width=0.5) +
+  geom_errorbar(aes(ymin=test_accuracy_mean - test_accuracy_sem, ymax=test_accuracy_mean + test_accuracy_sem), width=0.25) +
+  scale_fill_manual(values=c("#fec44f", "#88419d")) +
+  scale_y_continuous(breaks=c(0, 0.5, 1), labels=c(0, 50, 100)) +
+  labs(x="Implementation",
+       y="Test accuracy (%)") +
+  geom_hline(yintercept=0.5, linetype=2, size=1, alpha=0.5) +
+  guides(fill=F)
+ggsave("figures/plots/agent_vs_classifier.png", width=7, height=5)
+```
+
+
+# 2D vs. 3D
+
+```{r}
+put_d = data.frame(type = c("3D", "2D", "2D Egocentric"), test_accuracy_mean = c(0.63, 0.4, 0.63), test_accuracy_sem = c(0.06, 0.14, 0.1))
+```
+
+```{r}
+ggplot(put_d %>% filter(type != "2D Egocentric"),
+       aes(x=type, fill=type, y=test_accuracy_mean)) +
+  geom_bar(stat="identity",
+           width=0.5) +
+  geom_errorbar(aes(ymin=test_accuracy_mean - test_accuracy_sem, ymax=test_accuracy_mean + test_accuracy_sem), width=0.25) +
+  scale_fill_manual(values=c("#fec44f", "#88419d")) +
+  scale_y_continuous(breaks=c(0, 0.5, 1), labels=c(0, 50, 100), limits=c(0, 1)) +
+  labs(x="Implementation",
+       y="Test accuracy (%)") +
+  geom_hline(yintercept=0.333, linetype=2, size=1, alpha=0.5) +
+  guides(fill=F) 
+ggsave("figures/plots/2D_vs_3D.png", width=7, height=5)
+```
+
+```{r}
+ggplot(put_d,
+       aes(x=type, fill=type, y=test_accuracy_mean)) +
+  geom_bar(stat="identity",
+           width=0.5) +
+  geom_errorbar(aes(ymin=test_accuracy_mean - test_accuracy_sem, ymax=test_accuracy_mean + test_accuracy_sem), width=0.25) +
+  scale_fill_manual(values=c("#fec44f", "#88419d")) +
+  scale_y_continuous(breaks=c(0, 0.5, 1), labels=c(0, 50, 100), limits=c(0, 1)) +
+  labs(x="Implementation",
+       y="Test accuracy (%)") +
+  geom_hline(yintercept=0.333, linetype=2, size=1, alpha=0.5) +
+  guides(fill=F) 
+ggsave("figures/plots/2D_vs_scrolling_vs_3D.png", width=7, height=5)
+```
