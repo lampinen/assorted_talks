@@ -137,10 +137,47 @@ Generalization is better in a richer environment where the agent acts over time.
 \end{frame}
 
 \begin{frame}[standout]
-Generalization is better in the 3D environment.
+Generalization is better in the 3D environment. Why?
 \end{frame}
 
-\begin{frame}{Egocentric perspective}
+\begin{frame}{Frames of reference}
+\only<1>{
+The first-person perspective of the 3D agent adds a certain amount of invariance, so we compared two frames of reference in 2D.
+\vspace{2em}
+\begin{columns}
+\begin{column}{0.45\textwidth}
+\textbf{Allocentric:}
+    \begin{itemize}
+    \item World fixed.
+    \item Agent moves within it.
+    \item This is how most grid-worlds work, including last slide's.
+    \end{itemize}
+\end{column}
+\begin{column}{0.45\textwidth}
+\textbf{Egocentric:}
+    \begin{itemize}
+    \item Agent fixed at center.
+    \item World moves around it.
+    \item More like human fixation and/or first-person perspective of 3D.
+    \end{itemize}
+\end{column}
+\end{columns}
+}
+\only<2>{
+\includegraphics[width=\textwidth]{figures/allo_vs_ego/0.png}
+}
+\only<3>{
+\includegraphics[width=\textwidth]{figures/allo_vs_ego/1.png}
+}
+\only<4>{
+\includegraphics[width=\textwidth]{figures/allo_vs_ego/2.png}
+}
+\only<5>{
+\includegraphics[width=\textwidth]{figures/allo_vs_ego/3.png}
+}
+\end{frame}
+
+\begin{frame}{Egocentric perspective helps}
 \vspace{1em}
 \centering
 \includegraphics[width=\textwidth]{figures/plots/2D_vs_scrolling_vs_3D.png}
