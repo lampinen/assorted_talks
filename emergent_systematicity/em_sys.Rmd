@@ -40,7 +40,7 @@ ggsave("figures/plots/agent_vs_classifier.png", width=7, height=5)
 # 2D vs. 3D
 
 ```{r}
-put_d = data.frame(type = c("3D", "2D", "2D Egocentric"), test_accuracy_mean = c(0.63, 0.4, 0.63), test_accuracy_sem = c(0.06, 0.14, 0.1))
+put_d = data.frame(type = c("3D", "2D", "2D Egocentric"), test_accuracy_mean = c(0.63, 0.4, 0.60), test_accuracy_sem = c(0.06, 0.14, 0.1))
 ```
 
 ```{r}
@@ -49,7 +49,7 @@ ggplot(put_d %>% filter(type != "2D Egocentric"),
   geom_bar(stat="identity",
            width=0.5) +
   geom_errorbar(aes(ymin=test_accuracy_mean - test_accuracy_sem, ymax=test_accuracy_mean + test_accuracy_sem), width=0.25) +
-  scale_fill_manual(values=c("#fec44f", "#88419d")) +
+  scale_fill_manual(values=c("#88419d", "#fec44f")) +
   scale_y_continuous(breaks=c(0, 0.5, 1), labels=c(0, 50, 100), limits=c(0, 1)) +
   labs(x="Implementation",
        y="Test accuracy (%)") +
@@ -64,7 +64,7 @@ ggplot(put_d,
   geom_bar(stat="identity",
            width=0.5) +
   geom_errorbar(aes(ymin=test_accuracy_mean - test_accuracy_sem, ymax=test_accuracy_mean + test_accuracy_sem), width=0.25) +
-  scale_fill_manual(values=c("#fec44f", "#88419d")) +
+  scale_fill_manual(values=c("#88419d", "#3ebfbf", "#fec44f")) +
   scale_y_continuous(breaks=c(0, 0.5, 1), labels=c(0, 50, 100), limits=c(0, 1)) +
   labs(x="Implementation",
        y="Test accuracy (%)") +
@@ -72,3 +72,25 @@ ggplot(put_d,
   guides(fill=F) 
 ggsave("figures/plots/2D_vs_scrolling_vs_3D.png", width=7, height=5)
 ```
+
+
+
+# Negation
+
+```{r}
+neg_d = data.frame(train_size = c(6, 40, 100), test_accuracy_mean = c(0.4, .6, .78))
+```
+
+```{r}
+ggplot(neg_d,
+       aes(x=train_size, y=test_accuracy_mean)) +
+  geom_point(color="#88419d", size=4) +
+  geom_line(color="#88419d", size=2) +
+  scale_y_continuous(breaks=c(0, 0.5, 1), labels=c(0, 50, 100), limits=c(0, 1)) +
+  labs(x="Train set size",
+       y="Test accuracy (%)") +
+  geom_hline(yintercept=0.5, linetype=2, size=1, alpha=0.5) +
+  guides(fill=F)
+ggsave("figures/plots/negation.png", width=7, height=5)
+```
+

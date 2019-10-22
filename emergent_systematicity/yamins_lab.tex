@@ -1,0 +1,215 @@
+\documentclass{beamer}
+\setbeamerfont{subsection in toc}{size=\footnotesize}
+%\setbeameroption{show notes on second screen=left} %enable for notes
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{hyperref}
+\lstset{language=python,frame=single}
+\usepackage{verbatim}
+\usepackage[longnamesfirst]{natbib}
+\usepackage{subcaption}
+\usepackage{amsmath}
+\usepackage{bm}
+\usepackage{relsize}
+\usepackage{appendixnumberbeamer}
+\usepackage{xparse}
+\usepackage{multimedia}
+\usepackage{xcolor}
+\usepackage[normalem]{ulem}
+\usepackage{hyperref}
+\usepackage{tikz}
+\usetikzlibrary{matrix,backgrounds}
+\usetikzlibrary{positioning}
+\usetikzlibrary{shapes,arrows}
+\usetikzlibrary{positioning}
+
+\captionsetup[subfigure]{labelformat=empty}
+
+\tikzset{onslide/.code args={<#1>#2}{%
+  \only<#1>{\pgfkeysalso{#2}} 
+}}
+
+\tikzstyle{block} = [rectangle, draw, thick, align=center, rounded corners]
+\tikzstyle{boundingbox} = [thick, lightgray]
+\tikzstyle{dashblock} = [rectangle, draw, thick, align=center, dashed]
+\tikzstyle{conc} = [ellipse, draw, thick, dashed, align=center]
+\tikzstyle{netnode} = [circle, draw, very thick, inner sep=0pt, minimum size=0.5cm]
+\tikzstyle{relunode} = [rectangle, draw, very thick, inner sep=0pt, minimum size=0.5cm]
+\tikzstyle{line} = [draw, very thick, -latex']
+\tikzstyle{arrow} = [draw, ->, very thick]
+
+\definecolor{bpurp}{HTML}{984ea3}
+\definecolor{bblue}{HTML}{377eb8}
+
+\usetheme[numbering=none]{metropolis}
+
+\begin{document}
+
+\title{Embodiment and environmental realism lead to more systematic generalization}
+\author{Felix Hill, Andrew Lampinen, Rosalia Schneider, Stephen Clark, Matthew Botvinick, James L. McClelland, Adam Santoro}
+\date{}
+\frame{\titlepage}
+
+\begin{frame}[standout]
+Many slides lifted from my upcoming lightning talk -- so may be a little cartoony.
+\end{frame}
+
+\begin{frame}{Deep reinforcement learning systems can do cool things!}
+\vspace{0.5em}
+\centering
+\includegraphics[height=0.4\paperheight]{figures/breakout.png}\\[-2pt]
+\includegraphics[height=0.4\paperheight]{figures/move37.jpeg}%
+\includegraphics[height=0.4\paperheight]{figures/alphastar.jpeg}
+\end{frame}
+
+\begin{frame}[standout]
+But when do they generalize what they learned? 
+\end{frame}
+
+\begin{frame}{An important question for deep RL as a tool or cognitive model}
+\centering
+\includegraphics[width=\textwidth]{figures/deep_RL_as_a.png}
+\end{frame}
+
+\begin{frame}{Systematic compositional generalization in language}
+\vspace{-2em}
+\centering
+\includegraphics[width=\textwidth]{figures/fodor_compositionality_1.png}
+\end{frame}
+
+\begin{frame}{Fodor on neural nets (not verbatim)}
+\centering
+\includegraphics[width=0.75\textwidth]{figures/fodor_zoidberg.png}
+\end{frame}
+
+
+\begin{frame}{But we know neural nets can be systematic in theory}
+\vspace{5em}
+{
+\centering
+\includegraphics[width=\textwidth]{figures/universal_approximator.png}
+}
+\vspace{3em}
+
+{\small (Siegelman \& Sontag, 1992)}
+\end{frame}
+
+\begin{frame}[standout]
+So the question is, in practice, when do deep networks learn to generalize systematically? 
+\end{frame}
+
+\section{Demonstrating systematic generalization}
+
+\begin{frame}[standout]
+\url{https://www.youtube.com/watch?v=iuihBGAGI3M}
+\end{frame}
+
+\begin{frame}{Verb-noun composition experiment}
+\centering
+\includegraphics[width=0.8\textwidth]{figures/putting_design.png}
+\end{frame}
+
+\begin{frame}{Pretty systematic!}
+\centering
+\includegraphics[width=0.8\textwidth]{figures/plots/putting_generalization.png}
+\end{frame}
+
+\begin{frame}[standout]
+But what are the drivers of this systematic generalization?
+\end{frame}
+
+\section{Investigating the features underlying systematicity}
+
+\begin{frame}{Color-shape composition experiment}
+\centering
+\only<1>{
+\includegraphics[width=0.8\textwidth]{figures/color_shape_composition.png}
+}
+\only<2>{
+\includegraphics[width=0.8\textwidth]{figures/color_shape_design.png}
+}
+\end{frame}
+
+\begin{frame}{Comparing different versions of the same abstract task}
+\centering
+\includegraphics[width=\textwidth]{figures/different_versions_1.png}
+\end{frame}
+
+\begin{frame}{Behaving over time results in better generalization!}
+\vspace{1em}
+\centering
+\includegraphics[width=\textwidth]{figures/plots/agent_vs_classifier.png}
+\end{frame}
+
+\begin{frame}[standout]
+Generalization is better in a richer environment where the agent acts over time.
+\end{frame}
+
+\begin{frame}{Verb-noun composition experiment (II)}
+\centering
+\includegraphics[width=0.8\textwidth]{figures/2D_3D_design.png}
+\end{frame}
+
+\begin{frame}{Comparing different versions of the same abstract task}
+\centering
+\includegraphics[width=\textwidth]{figures/different_versions_2.png}
+\end{frame}
+
+\begin{frame}{Verb-noun composition experiment: 2D vs. 3D}
+\vspace{1em}
+\centering
+\includegraphics[width=\textwidth]{figures/plots/2D_vs_3D.png}
+\end{frame}
+
+\begin{frame}[standout]
+Generalization is better in the 3D environment.
+\end{frame}
+
+
+\end{columns}
+\end{frame}
+
+\begin{frame}{Egocentric perspective helps}
+\vspace{1em}
+\centering
+\includegraphics[width=\textwidth]{figures/plots/2D_vs_scrolling_vs_3D.png}
+\end{frame}
+
+\begin{frame}[standout]
+Generalization in the 2D environment with an egocentric perspective is closer to 3D!
+\end{frame}
+
+\begin{frame}{Negation experiment}
+\begin{itemize}
+\item Train to find 8 + N objects.
+\item Trained on negation with the N objects.
+\item Eval on the held-out 8.
+\item How does train set size N affect systematicity?
+\item Not especially surprising, but its worth highlighting how systematicity increases, because it's hard to memorize so much.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Negation}
+\vspace{1em}
+\centering
+\includegraphics[width=\textwidth]{figures/plots/negation.png}
+\end{frame}
+
+\begin{frame}{What does this mean?}
+\begin{itemize}
+\item It's not just the abstract task that matters for generalization, but the specifics of the setting in which it is instantiated. 
+\item Embodiment may improve generalization -- performance is better when the agent acts rather than classifying a frame, and when it has an egocentric perspective.
+\item It's not obvious that egocentric perspective should help with verb-noun recomposition -- the agent is solving the navigation problem perfectly on the trained ``put'' tasks either way.
+\item We don't have a complete theory for what features affect generalization.
+\item So we shouldn't dismiss deep RL as a cognitive model just because it fails in unrealistic tasks. 
+\end{itemize}
+\end{frame}
+
+\begin{frame}[standout]
+Thanks!\\
+\url{https://arxiv.org/abs/1910.00571}
+\end{frame}
+
+
+\end{document}
