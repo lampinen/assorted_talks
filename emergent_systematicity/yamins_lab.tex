@@ -101,14 +101,23 @@ So the question is, in practice, when do deep networks learn to generalize syste
 
 \section{Demonstrating systematic compositional generalization}
 
-
-\begin{frame}[standout]
-\url{https://www.youtube.com/watch?v=iuihBGAGI3M}
+\begin{frame}{Agent sketch}
+\begin{itemize}
+\item 3-layer ResNet. 
+\item LSTM core. 
+\item Policy + value output heads, each a 2(?) layer network.
+\item Trained with IMPALA.
+\item (Basically the same for the next talk too.)
+\end{itemize}
 \end{frame}
 
 \begin{frame}{Verb-noun composition experiment}
 \centering
 \includegraphics[width=0.8\textwidth]{figures/putting_design.png}
+\end{frame}
+
+\begin{frame}[standout]
+\url{https://www.youtube.com/embed/iuihBGAGI3M}
 \end{frame}
 
 \begin{frame}{Pretty systematic!}
