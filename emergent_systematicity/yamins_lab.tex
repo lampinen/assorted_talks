@@ -155,7 +155,7 @@ But what are the drivers of this systematic generalization?
 \begin{itemize}
 \item There's essentially an implicit form of data augmentation for the agent -- it gets to see each training object from more perspectives as it moves around.
 \item This also means it gets more perspectives on each \textbf{testing} object, and to integrate information across them.
-\item And it has more chances to correct an error, since it's making a sequence of decisions before the episode ends, rather than a single classification. 
+\item Relatedly, it has more chances to correct an error, since it's making a sequence of decisions before the episode ends, rather than a single classification. 
 \end{itemize}
 \end{frame}
 
@@ -236,7 +236,7 @@ We also ran some controls:
 \begin{itemize}
 \item Reducing the agent recurrent hidden size to regularize in 2D does not seem to help, so it's not as simple as 2D requires less capacity. 
 \item It does not appear to be about partial observability in the egocentric case.
-\item Making the agent visible behind the object its carrying in 2D actually makes performance \textbf{worse} in both scrolling and non-scrolling condiitions.
+\item Making the agent visible behind the object its carrying in 2D actually makes performance \textbf{worse} in both scrolling and non-scrolling conditions.
 \end{itemize}
 (Note: not all of these are reported in the paper.)
 \end{frame}
@@ -247,7 +247,7 @@ We also ran some controls:
 \item Trained on negation with the N objects.
 \item Eval on the held-out 8.
 \item How does train set size N affect systematicity?
-\item Not especially surprising, but its worth highlighting how systematicity increases, because it's hard to memorize so much.
+\item Not especially surprising, but its worth highlighting how systematicity increases, because it's hard to memorize so much, and human experience is much richer than that of these agents.
 \end{itemize}
 \end{frame}
 
@@ -267,7 +267,7 @@ Unsurprisingly, generalization is more systematic with a bigger training set siz
 \item Embodiment may improve generalization -- performance is better when the agent acts rather than classifying a frame, and when it has an egocentric perspective.
 \item It's not obvious that egocentric perspective should help with verb-noun recomposition -- the agent is solving the navigation problem perfectly on the trained ``put'' tasks either way.
 \item We don't have a complete theory for what features affect generalization.
-\item So we shouldn't dismiss deep RL's potential to generalize systematically just because it fails in unrealistic tasks. 
+\item So we shouldn't dismiss deep RL's potential to generalize as systematically as humans just because it fails in unrealistic tasks. 
 \end{itemize}
 \end{frame}
 
