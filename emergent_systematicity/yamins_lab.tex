@@ -99,7 +99,8 @@ But when do they generalize what they learned?
 So the question is, in practice, when do deep networks learn to generalize systematically? 
 \end{frame}
 
-\section{Demonstrating systematic generalization}
+\section{Demonstrating systematic compositional generalization}
+
 
 \begin{frame}[standout]
 \url{https://www.youtube.com/watch?v=iuihBGAGI3M}
@@ -137,9 +138,16 @@ But what are the drivers of this systematic generalization?
 \end{frame}
 
 \begin{frame}{Behaving over time results in better generalization!}
-\vspace{1em}
-\centering
 \includegraphics[width=\textwidth]{figures/plots/agent_vs_classifier.png}
+{\small Error-bars throughout are \(\pm\)SEM}
+\end{frame}
+
+\begin{frame}{Why?}
+\begin{itemize}
+\item There's essentially an implicit form of data augmentation for the agent -- it gets to see each training object from more perspectives as it moves around.
+\item This also means it gets more perspectives on each \textbf{testing} object, and to integrate information across them.
+\item And it has more chances to correct an error, since it's making a sequence of decisions before the episode ends, rather than a single classification. 
+\end{itemize}
 \end{frame}
 
 \begin{frame}[standout]
@@ -147,8 +155,10 @@ Generalization is better in a richer environment where the agent acts over time.
 \end{frame}
 
 \begin{frame}{Verb-noun composition experiment (II)}
-\centering
+\begin{center}
 \includegraphics[width=0.8\textwidth]{figures/2D_3D_design.png}
+\end{center}
+Note that there are fewer objects than before because of limitations of one instantiation.
 \end{frame}
 
 \begin{frame}{Comparing different versions of the same abstract task}
@@ -157,9 +167,8 @@ Generalization is better in a richer environment where the agent acts over time.
 \end{frame}
 
 \begin{frame}{Verb-noun composition experiment: 2D vs. 3D}
-\vspace{1em}
-\centering
 \includegraphics[width=\textwidth]{figures/plots/2D_vs_3D.png}
+{\small Note: 3D generalization is worse than before because fewer objects.}
 \end{frame}
 
 \begin{frame}[standout]
@@ -213,6 +222,16 @@ The first-person perspective of the 3D agent adds a certain amount of invariance
 Generalization in the 2D environment with an egocentric perspective is closer to 3D!
 \end{frame}
 
+\begin{frame}{Controls}
+We also ran some controls:
+\begin{itemize}
+\item Reducing the agent recurrent hidden size to regularize in 2D does not seem to help, so it's not as simple as 2D requires less capacity. 
+\item It does not appear to be about partial observability in the egocentric case.
+\item Making the agent visible behind the object its carrying in 2D actually makes performance \textbf{worse} in both scrolling and non-scrolling condiitions.
+\end{itemize}
+(Note: not all of these are reported in the paper.)
+\end{frame}
+
 \begin{frame}{Negation experiment (training set size)}
 \begin{itemize}
 \item Train to find 8 + N objects.
@@ -233,13 +252,13 @@ Generalization in the 2D environment with an egocentric perspective is closer to
 Unsurprisingly, generalization is more systematic with a bigger training set size.
 \end{frame}
 
-\begin{frame}{What does this mean?}
+\begin{frame}{Conclusions}
 \begin{itemize}
 \item It's not just the abstract task that matters for generalization, but the specifics of the setting in which it is instantiated. 
 \item Embodiment may improve generalization -- performance is better when the agent acts rather than classifying a frame, and when it has an egocentric perspective.
 \item It's not obvious that egocentric perspective should help with verb-noun recomposition -- the agent is solving the navigation problem perfectly on the trained ``put'' tasks either way.
 \item We don't have a complete theory for what features affect generalization.
-\item So we shouldn't dismiss deep RL as a cognitive model just because it fails in unrealistic tasks. 
+\item So we shouldn't dismiss deep RL's potential to generalize systematically just because it fails in unrealistic tasks. 
 \end{itemize}
 \end{frame}
 
