@@ -60,7 +60,7 @@
 \end{frame}
 
 \begin{frame}[standout]
-But when do they generalize what they learned? 
+But when do they generalize what they learn? 
 \end{frame}
 
 \begin{frame}{An important question for deep RL as a tool or cognitive model}
@@ -117,7 +117,18 @@ So the question is, in practice, when do deep networks learn to generalize syste
 \end{frame}
 
 \begin{frame}[standout]
-Generalization is better in a richer environment where the agent acts over time.
+Generalization is better in a richer environment where the agent acts over time, rather than seeing isolated frames.
+\end{frame}
+
+\begin{frame}<1>[label=closer_to_human]
+\only<1>{
+\frametitle{Closer to human interactive visual experience}
+}
+\only<2->{
+\frametitle{Again, closer to human visual experience with fixation}
+}
+\centering
+\includegraphics[width=\textwidth]{figures/baby_with_toy.png}
 \end{frame}
 
 \begin{frame}{Verb-noun composition experiment}
@@ -187,12 +198,15 @@ The first-person perspective of the 3D agent adds a certain amount of invariance
 Generalization in the 2D environment with an egocentric perspective is closer to 3D!
 \end{frame}
 
+\againframe<2>{closer_to_human}
+
 \begin{frame}{What does this mean?}
-\begin{itemize}
+\begin{itemize}[<+->]
 \item It's not just the abstract task that matters for generalization, but the specifics of the setting in which it is instantiated. 
 \item Embodiment may improve generalization -- performance is better when the agent acts rather than classifying a frame, and when it has an egocentric perspective.
+\item Both of these changes make the agent's experience more like that of humans (or animals).
 \item It's not obvious that egocentric perspective should help with verb-noun recomposition -- the agent is solving the navigation problem perfectly on the trained ``put'' tasks either way.
-\item We don't have a theory for what features affect generalization.
+\item We lack a theory for which features affect generalization.
 \item So we shouldn't dismiss deep RL as a cognitive model just because it fails in unrealistic tasks. 
 \end{itemize}
 \end{frame}
