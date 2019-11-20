@@ -51,7 +51,7 @@
 \date{}
 \frame{\titlepage}
 
-\begin{frame}{Deep reinforcement learning systems can do cool things!}
+\begin{frame}{Deep RL is cool!}
 \vspace{0.5em}
 \centering
 \includegraphics[height=0.4\paperheight]{figures/breakout.png}\\[-2pt]
@@ -63,15 +63,19 @@
 But when do they generalize what they learn? 
 \end{frame}
 
-\begin{frame}{An important question for deep RL as a tool or cognitive model}
+\begin{frame}{An important question}
 \centering
 \includegraphics[width=\textwidth]{figures/deep_RL_as_a.png}
 \end{frame}
 
-\begin{frame}{Systematic compositional generalization in language}
+\begin{frame}{Systematic compositional generalization}
 \vspace{-2em}
+{
 \centering
-\includegraphics[width=\textwidth]{figures/fodor_compositionality_1.png}
+\includegraphics[width=0.9\textwidth]{figures/fodor_compositionality_1.png}
+}
+\vspace{-4em}
+{\small But But is it really? (O'reilly et al., 2013)} % why the hell isn't that but showing up
 \end{frame}
 
 \begin{frame}{Fodor on neural nets (not verbatim)}
@@ -80,7 +84,7 @@ But when do they generalize what they learn?
 \end{frame}
 
 
-\begin{frame}{But we know neural nets can be systematic in theory}
+\begin{frame}{In theory they can be}
 \vspace{5em}
 {
 \centering
@@ -110,7 +114,7 @@ So the question is, in practice, when do deep networks learn to generalize syste
 \includegraphics[width=\textwidth]{figures/different_versions_1.png}
 \end{frame}
 
-\begin{frame}{Behaving over time results in better generalization!}
+\begin{frame}{Agent generalizes better!}
 \vspace{1em}
 \centering
 \includegraphics[width=\textwidth]{figures/plots/agent_vs_classifier.png}
@@ -122,10 +126,10 @@ Generalization is better in a richer environment where the agent acts over time,
 
 \begin{frame}<1>[label=closer_to_human]
 \only<1>{
-\frametitle{Closer to human interactive visual experience}
+\frametitle{Closer to human experience}
 }
 \only<2->{
-\frametitle{Again, closer to human visual experience with fixation}
+\frametitle{Again, closer to human experience}
 }
 \centering
 \includegraphics[width=\textwidth]{figures/baby_with_toy.png}
@@ -152,38 +156,38 @@ Generalization is better in the 3D environment. Why?
 \end{frame}
 
 \begin{frame}{Frames of reference}
+%\only<1>{
+The first-person perspective of the 3D agent adds a certain amount of invariance, so we compared two frames of reference in 2D:
+%\vspace{2em}
+%\begin{columns}
+%\begin{column}{0.45\textwidth}
+%\textbf{Allocentric:}
+%    \begin{itemize}
+%    \item World fixed.
+%    \item Agent moves within it.
+%    \item This is how most grid-worlds work, including last slide's.
+%    \end{itemize}
+%\end{column}
+%\begin{column}{0.45\textwidth}
+%\textbf{Egocentric:}
+%    \begin{itemize}
+%    \item Agent fixed at center.
+%    \item World moves around it.
+%    \item More like human fixation and/or first-person perspective of 3D.
+%    \end{itemize}
+%\end{column}
+%\end{columns}
+%}
 \only<1>{
-The first-person perspective of the 3D agent adds a certain amount of invariance, so we compared two frames of reference in 2D.
-\vspace{2em}
-\begin{columns}
-\begin{column}{0.45\textwidth}
-\textbf{Allocentric:}
-    \begin{itemize}
-    \item World fixed.
-    \item Agent moves within it.
-    \item This is how most grid-worlds work, including last slide's.
-    \end{itemize}
-\end{column}
-\begin{column}{0.45\textwidth}
-\textbf{Egocentric:}
-    \begin{itemize}
-    \item Agent fixed at center.
-    \item World moves around it.
-    \item More like human fixation and/or first-person perspective of 3D.
-    \end{itemize}
-\end{column}
-\end{columns}
-}
-\only<2>{
 \includegraphics[width=\textwidth]{figures/allo_vs_ego/b0.png}
 }
-\only<3>{
+\only<2>{
 \includegraphics[width=\textwidth]{figures/allo_vs_ego/b1.png}
 }
-\only<4>{
+\only<3>{
 \includegraphics[width=\textwidth]{figures/allo_vs_ego/b2.png}
 }
-\only<5>{
+\only<4>{
 \includegraphics[width=\textwidth]{figures/allo_vs_ego/b3.png}
 }
 \end{frame}
