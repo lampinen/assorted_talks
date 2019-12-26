@@ -57,7 +57,7 @@
 \end{frame}
 
 \begin{frame}{Deep learning is (usually) not}
-* Systems are very good at doing what they can.
+* Systems are very good at doing what they have lots of data on.
 * Lots of new work on meta-learning (learning to learn), but this means learning from little data, not none.
 * Some prior zero-shot learning work, which I'll come back to later.
 \end{frame}
@@ -88,7 +88,8 @@ It's useful to think of a task/behavior as a function that maps some inputs to s
 
 \begin{frame}{Meta-mappings are analogous to basic tasks}
 * Meta-mappings are higher-order functions, which take functions (=tasks/behaviors) as input and produce functions (=tasks/behaviors) as output.
-* That is, learning a meta-mapping can be framed as an end-to-end learning problem
+* (figure?) Can be learned from examples, e.g. figure out what ``losing'' means from comparisons of winning and losing different games.
+* That is, learning a meta-mapping can be framed as an end-to-end learning problem.
 * ... as long as you're given a representation for functions to learn over.
 \end{frame}
 
@@ -98,12 +99,21 @@ We model flexibility as the ability to transform one function (=task=behavior) t
 
 \section{An architecture for representing tasks as functions}
 
-\begin{frame}{Task specific computations are low-dimensional}
+\begin{frame}{Abstract stuff ahead}
+The next two sections of the talk will be somewhat technical and abstract. To understand the rest of the talk afterward, all you really need to know is that we're trying to (parsimoniously) implement:
+\begin{itemize}
+\item A way of representing tasks as functions (and representing those tasks/functions as vectors).
+\item A way of learning to transform these task-vectors to perform meta-mappings.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Task computations are low-dimensional (relative to input)}
 
 \end{frame}
 
 \begin{frame}{A function-oriented meta-learning architecture}
 
+* figure here, showing panel a from the paper schematic.
 \end{frame}
 
 \begin{frame}[standout]
@@ -112,8 +122,17 @@ We propose a meta-learning architecture which generates task/function-embeddings
 
 \section{Homoiconic meta-mapping}
 
-\begin{frame}{Meta-mapping = transforming function embeddings}
+\begin{frame}{Meta-mapping as transforming function embeddings}
+* figure here, showing panels a and c from the paper schematic, with a black box in between.
+\end{frame}
 
+\begin{frame}{Meta-mapping from examples}
+* figure here, repeat figure from meta-mappings are analogous part, replace task reps with embeddings 
+\end{frame}
+
+\begin{frame}{Homoiconic meta-mapping architecture}
+* figure here, showing full paper schematic (first mask a and c, then show). 
+* parsimonious, homoiconic, etc.
 \end{frame}
 
 \end{document}
