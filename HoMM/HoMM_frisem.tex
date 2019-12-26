@@ -1,0 +1,93 @@
+\documentclass{beamer}
+\setbeamerfont{subsection in toc}{size=\footnotesize}
+%\setbeameroption{show notes on second screen=left} %enable for notes
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{hyperref}
+\lstset{language=python,frame=single}
+\usepackage{verbatim}
+\usepackage[longnamesfirst]{natbib}
+\usepackage{subcaption}
+\usepackage{amsmath}
+\usepackage{bm}
+\usepackage{relsize}
+\usepackage{appendixnumberbeamer}
+\usepackage{xparse}
+\usepackage{multimedia}
+\usepackage{xcolor}
+\usepackage[normalem]{ulem}
+\usepackage{hyperref}
+\usepackage{tikz}
+\usetikzlibrary{matrix,backgrounds}
+\usetikzlibrary{positioning}
+\usetikzlibrary{shapes,arrows}
+\usetikzlibrary{positioning}
+
+\captionsetup[subfigure]{labelformat=empty}
+
+\tikzset{onslide/.code args={<#1>#2}{%
+  \only<#1>{\pgfkeysalso{#2}} 
+}}
+
+\tikzstyle{block} = [rectangle, draw, thick, align=center, rounded corners]
+\tikzstyle{boundingbox} = [thick, lightgray]
+\tikzstyle{dashblock} = [rectangle, draw, thick, align=center, dashed]
+\tikzstyle{conc} = [ellipse, draw, thick, dashed, align=center]
+\tikzstyle{netnode} = [circle, draw, very thick, inner sep=0pt, minimum size=0.5cm]
+\tikzstyle{relunode} = [rectangle, draw, very thick, inner sep=0pt, minimum size=0.5cm]
+\tikzstyle{line} = [draw, very thick, -latex']
+\tikzstyle{arrow} = [draw, ->, very thick]
+
+\definecolor{bpurp}{HTML}{984ea3}
+\definecolor{bblue}{HTML}{377eb8}
+
+\usetheme[numbering=none]{metropolis}
+
+\begin{document}
+
+\title{Meta-Mapping: Toward human-like adaptibility from deep learning}
+\author{Andrew Lampinen}
+\date{}
+\frame{\titlepage}
+
+\begin{frame}{Humans are good at adapting}
+*Figure of "try to lose" goes here
+*Possibly also categorization example?
+\end{frame}
+
+\begin{frame}{Deep learning is (usually) not}
+* Systems are very good at doing what they can.
+* Lots of new work on meta-learning (learning to learn), but this means learning from little data, not none.
+* Some prior zero-shot learning work, which I'll come back to later.
+\end{frame}
+
+\begin{frame}[standout]
+How can we build deep learning models that are as flexible as humans?
+\end{frame}
+
+\section{Meta-mapping}
+
+\begin{frame}{Tasks as functions}
+* We can think of tasks or behaviors as functions mapping input to output
+    * Board position -> move
+    * Object -> classification
+    * Poker hand -> bet
+* This is just the standard end-to-end deep learning framework.
+\end{frame}
+
+\begin{frame}{Functional flexibility}
+* If tasks are functions, changing a task = changing the function being computed *in a systematic way.*
+* We propose \textbf{meta-mappings}, which transform functions.
+* For example, we could have a try to lose function, which e.g. would map "try to win at poker" to "try to lose at poker."
+\end{frame}
+
+\begin{frame}{Meta-mappings are analogous to basic tasks}
+* Meta-mappings are higher-order functions, which take functions (=tasks/behaviors) as input and produce functions (=tasks/behaviors) as output.
+* That is, learning a meta-mapping can be framed as an end-to-end learning problem
+* ... as long as you're given a representation for functions to learn over.
+\end{frame}
+
+\section{Homoiconic meta-mapping}
+
+\end{document}
