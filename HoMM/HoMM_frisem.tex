@@ -46,12 +46,12 @@
 
 \begin{document}
 
-\title{Meta-Mapping: Toward human-like adaptibility from deep learning}
+\title{Meta-Mapping: Toward human-like flexibility from deep learning}
 \author{Andrew Lampinen}
 \date{}
 \frame{\titlepage}
 
-\begin{frame}{Humans are good at adapting}
+\begin{frame}{Humans are good at adapting flexibly}
 *Figure of "try to lose" goes here
 *Possibly also categorization example?
 \end{frame}
@@ -76,10 +76,14 @@ How can we build deep learning models that are as flexible as humans?
 * This is just the standard end-to-end deep learning framework.
 \end{frame}
 
+\begin{frame}[standout]
+It's useful to think of a task/behavior as a function that maps some inputs to some outputs.
+\end{frame}
+
 \begin{frame}{Functional flexibility}
-* If tasks are functions, changing a task = changing the function being computed *in a systematic way.*
-* We propose \textbf{meta-mappings}, which transform functions.
-* For example, we could have a try to lose function, which e.g. would map "try to win at poker" to "try to lose at poker."
+* If tasks are functions, altering the task = changing the function being computed *in a systematic way.*
+* We propose \textbf{meta-mappings}, which transform functions into other functions.
+* For example, we could have a try to lose meta-mapping, which would e.g. map "try to win at poker" to "try to lose at poker."
 \end{frame}
 
 \begin{frame}{Meta-mappings are analogous to basic tasks}
@@ -88,6 +92,10 @@ How can we build deep learning models that are as flexible as humans?
 * ... as long as you're given a representation for functions to learn over.
 \end{frame}
 
-\section{Homoiconic meta-mapping}
+\begin{frame}[standout]
+We model flexibility as the ability to transform one function (=task=behavior) to a systematically related one.
+\end{frame}
+
+\section{Homoiconic meta-mapping architectures}
 
 \end{document}
