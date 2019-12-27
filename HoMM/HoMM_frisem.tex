@@ -135,4 +135,38 @@ We propose a meta-learning architecture which generates task/function-embeddings
 * parsimonious, homoiconic, etc.
 \end{frame}
 
+\begin{frame}[standout]
+Both basic tasks and meta-mappings can be viewed as functions inferred from examples, so we can use the same approaches and networks for both.
+\end{frame}
+
+\begin{frame}{Interim summary}
+\begin{itemize}
+\item Basic tasks are functions from inputs to outputs (e.g. poker hands to bets), which can be inferred from examples.
+\item We represent the task specific computations as relatively simple transformations of an embedding space, parameterized from a task embedding.
+\item One type of flexibility is systematically altering these tasks (e.g. trying to bet on losing hands instead of winning ones).
+\item This can be seen as a \textbf{meta-mapping}, that is, a function which takes tasks as input and produces tasks as output (e.g. maps try-to-win-at-poker to try-to-lose-at-poker).
+\item We implement the meta-mapping function as a transformation of the task embeddings.
+\item This function can be learned and implemented using exactly the same networks as the basic tasks.
+\end{itemize}
+\end{frame}
+
+\section{Experiments}
+
+\begin{frame}{Experiment overview}
+This same approach can be used in many different settings: 
+\begin{table}
+\center
+\begin{tabular}{|c|c|c|}
+\hline
+Experiment & Type & Cognitive motivation \\
+\hline
+Polynomials & Regression & Proof of concept \\
+Card games & Regression & Adapting strategies \\
+Categories & Classification & Adapting concepts \\
+Grid worlds & RL & Adapting behaviors \\
+\hline
+\end{tabular}
+\end{table}
+\end{frame}
+
 \end{document}
