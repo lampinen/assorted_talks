@@ -52,49 +52,101 @@
 \frame{\titlepage}
 
 \begin{frame}{Humans are good at adapting flexibly}
-*Figure of "try to lose" goes here
-*Possibly also categorization example?
+\centering
+\includegraphics[width=\textwidth]{figures/poker.png}
 \end{frame}
 
 \begin{frame}{Deep learning is (usually) not}
-* Systems are very good at doing what they have lots of data on.
-* Lots of new work on meta-learning (learning to learn), but this means learning from little data, not none.
-* Some prior zero-shot learning work, which I'll come back to later.
+\begin{columns}
+\begin{column}{0.5\textwidth}
+Deep learning generally requires lots of data to achieve good performance on a task.\uncover<2->{ However, there are a few exceptions:}
+\begin{itemize}
+    \item<3-> Lots of new work on meta-learning (learning to learn), but this means learning from little data, not none.
+    \item<4-> Some language work I'll come back to later.
+\end{itemize}
+\end{column}
+
+\begin{column}{0.5\textwidth}
+\includegraphics[width=\textwidth]{figures/frostbite.jpg}
+\end{column}
+\end{columns}
 \end{frame}
 
 \begin{frame}[standout]
-How can we build deep learning models that are as flexible as humans?
+How can we build deep learning models that can perform a new task on their first try?
 \end{frame}
 
 \section{Meta-mapping}
 
 \begin{frame}{Tasks as functions}
-* We can think of tasks or behaviors as functions mapping input to output
-    * Board position -> move
-    * Object -> classification
-    * Poker hand -> bet
-* This is just the standard end-to-end deep learning framework.
+\begin{columns}
+\begin{column}{0.5\textwidth}
+It's useful to think of tasks or behaviors as functions mapping input to output:
+\begin{itemize}
+    \item Poker hand \(\rightarrow\) bet
+    \item Chess position \(\rightarrow\) move
+    \item Object \(\rightarrow\) classification
+\end{itemize}
+Standard deep learning (and meta-learning) try to infer this function from examples.
+\end{column}
+
+\begin{column}{0.5\textwidth}
+\includegraphics[width=\textwidth]{figures/poker_function.png}
+\end{column}
+\end{columns}
+\end{frame}
+
+%\begin{frame}[standout]
+%It's useful to think of a task/behavior as a function that maps some inputs to some outputs.
+%\end{frame}
+
+\begin{frame}{Functional flexibility}
+If tasks are functions, altering the task = adapting the function. 
+\begin{columns}
+\begin{column}{0.5\textwidth}
+\vspace{2em}
+\includegraphics[width=\textwidth]{figures/poker.png}
+\end{column}
+\begin{column}{0.5\textwidth}
+\vspace{2em}
+\only<1>{
+\includegraphics[width=\textwidth]{figures/poker_function.png}
+}
+\only<2>{
+\includegraphics[width=\textwidth]{figures/lose_poker_function.png}
+}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Meta-mappings}
+How do we get from a task function to an adapted one?
+\begin{itemize}
+\item We propose \textbf{meta-mappings}, higher-order functions which transform functions into other functions.
+\end{itemize}
+\includegraphics[width=\textwidth]{figures/meta_mapping_poker.png}
 \end{frame}
 
 \begin{frame}[standout]
-It's useful to think of a task/behavior as a function that maps some inputs to some outputs.
-\end{frame}
-
-\begin{frame}{Functional flexibility}
-* If tasks are functions, altering the task = changing the function being computed *in a systematic way.*
-* We propose \textbf{meta-mappings}, which transform functions into other functions.
-* For example, we could have a try to lose meta-mapping, which would e.g. map "try to win at poker" to "try to lose at poker."
+We model flexibility as the ability to transform basic task functions, via a meta-mapping. 
 \end{frame}
 
 \begin{frame}{Meta-mappings are analogous to basic tasks}
-* Meta-mappings are higher-order functions, which take functions (=tasks/behaviors) as input and produce functions (=tasks/behaviors) as output.
-* (figure?) Can be learned from examples, e.g. figure out what ``losing'' means from comparisons of winning and losing different games.
-* That is, learning a meta-mapping can be framed as an end-to-end learning problem.
-* ... as long as you're given a representation for functions to learn over.
-\end{frame}
-
-\begin{frame}[standout]
-We model flexibility as the ability to transform one function (=task=behavior) to a systematically related one.
+\begin{columns}
+\begin{column}{0.5\textwidth}
+\vspace{2em}
+\includegraphics[width=\textwidth]{figures/poker_function.png}
+\end{column}
+\begin{column}{0.5\textwidth}
+\vspace{2em}
+\includegraphics[width=\textwidth]{figures/try_to_lose_function.png}
+\end{column}
+\end{columns}
+\begin{itemize}[<+->]
+\item Both are just functions (they just have different types of inputs and outputs).
+\item This means we can apply all the tricks we know about how to learn functions to learning meta-mappings.
+\item ... Assuming we have a function representation to learn over.
+\end{itemize}
 \end{frame}
 
 \section{An architecture for representing tasks as functions}
@@ -152,7 +204,7 @@ Both basic tasks and meta-mappings can be viewed as functions inferred from exam
 
 \section{Experiments}
 
-\begin{frame}{Experiment overview}
+\begin{frame}{Experiments overview}
 This same approach can be used in many different settings: 
 \begin{table}
 \center
