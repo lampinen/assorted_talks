@@ -431,7 +431,8 @@ We use an architecture which generates task/function-embeddings from examples an
 
 \begin{frame}<1>[label=homm_arch]
 \frametitle<1>{Meta-mapping as transforming function embeddings}
-\frametitle<2->{So we can use the same approach and same networks!}
+\frametitle<2>{So we can use the same approach and same networks!}
+\frametitle<3->{Language baseline}
 \begin{columns}
 \begin{column}{\dimexpr\paperwidth-10pt}
 \centering
@@ -446,6 +447,7 @@ We use an architecture which generates task/function-embeddings from examples an
 
 \draw[boundingbox, fill=white] (-3, -4.3) rectangle (2.5, 3.2);
 \node[lightgray] at (-1.2, 2.9) {Basic meta-learning};
+\uncover<-2>{
 \node at (-1.5, -4) (examples) {Examples};
 \node at (-1.5, -3.2) (D1) {
 \(\left\{
@@ -453,6 +455,7 @@ We use an architecture which generates task/function-embeddings from examples an
 (z^{ex}_{in,0}, z^{ex}_{targ,0})\\
 $\vdots$
 \end{matrix}\right\}\)};
+}
 
 \node at (1.5, -4) (probes) {Probes};
 \node at (1.5, -3.2) (D2) {
@@ -463,8 +466,13 @@ z^{prb}_{in,0}\\
 $\vdots$
 \end{matrix}\right\}\)};
 
+\uncover<-2>{
 \node [block] at (-1.5, -1.95) (M) {\(\mathcal{M}\)};
 \path [arrow] ([yshift=-5]D1.north) to (M);
+}
+\only<3->{
+\node at (-1.5, -1.95) (lang) {Language};
+}
 
 \node at (-1, -1) (zfunc) {\(z^{func}\)};
 \path [arrow, out=90, in=-135] (M.north) to ([xshift=6,yshift=3]zfunc.south west);
@@ -506,6 +514,7 @@ $\vdots$
 
 
 %% meta mapping
+\uncover<-2>{
 \begin{scope}[shift={(6.4, 1.5)}]
 \draw[boundingbox, draw=bpurp, fill=white] (-3, -4.3) rectangle (2.6, 3.2);
 \node[bpurp] at (-1.6, 2.9) {Meta-mapping};
@@ -575,11 +584,12 @@ $\vdots$
 
 \end{scope}
 \path [arrow, ultra thick, draw=bpurp, dotted, out=-40, in=-140] ([xshift=-1, yshift=3]zfunc.south) to ([xshift=19, yshift=3]metaD1.west);
+}
 
 %% evaluating meta mapping
 \begin{scope}[shift={(11.8, 0)}]
 \draw[boundingbox, draw=bblue, fill=white] (-2.25, -4.3) rectangle (2.5, 3.2);
-\node[bblue] at (-0.1, 2.9) {Meta-mapping evaluation};
+\node[bblue] at (-0.1, 2.9) {\only<-2>{Meta-mapping evaluation}\only<3->{Evaluation\phantom{blahblahblahbl}}};
 
 \node at (1.5, -4) (metaevalprobes) {Probes};
 \node at (1.5, -3.2) (metaevalD2) {
@@ -591,6 +601,10 @@ $\vdots$
 \end{matrix}\right\}\)};
 
 \node at (-1, -1) (metaevalzfunc) {\(z^{func,pred}\)};
+\only<3->{
+\node at (-1, -1.95) (languageeval) {New language};
+\path [arrow] ([xshift=-3]languageeval.north) to ([xshift=-3,yshift=5]metaevalzfunc.south);
+}
 
 \node[block] at (0, -0.55) (metaevalH) {\(\mathcal{H}\)};
 \path [arrow, out=45, in=180] ([yshift=-3]metaevalzfunc.north) to (metaevalH.west);
@@ -626,16 +640,19 @@ $\vdots$
 
 \path [arrow, dashed, out=0, in=-90] ([xshift=-0.5]metaevalD2targs.east) to (metaevaldispatch.south);
 \end{scope}
+\uncover<-2>{
 \path [arrow, ultra thick, draw=bblue, dotted, out=-30, in=160] (metaoutputs.center) to ([xshift=5, yshift=-5]metaevalzfunc.north west);
+}
 \end{tikzpicture}
 \end{column}
 \end{columns}
+\only<3->{\vspace{1em} As long as the new language is systematically related to the old, might just work!}
 \end{frame}
 
 
 \againframe<4>{basic_metamapping_analogy}
 
-\againframe<2->{homm_arch}
+\againframe<2>{homm_arch}
 
 \begin{frame}[standout]
 Both basic tasks and meta-mappings can be viewed as functions inferred from examples, so we can use the same approaches and networks for both.
@@ -662,13 +679,49 @@ This same approach can be used in many different settings:
 \hline
 Experiment & Type & Cognitive motivation \\
 \hline
-Polynomials & Regression & Proof of concept \\
+\color{lightgray} Polynomials & \color{lightgray} Regression & \color{lightgray} Proof of concept \\
 Card games & Regression & Adapting strategies \\
 Categories & Classification & Adapting concepts \\
 Grid worlds & RL & Adapting behaviors \\
 \hline
 \end{tabular}
 \end{table}
+\end{frame}
+
+\begin{frame}{Simple card games}
+
+\end{frame}
+
+\againframe<3>{homm_arch}
+
+\begin{frame}{Human baseline}
+\begin{columns}
+\begin{column}{0.5\textwidth}
+\begin{itemize}
+\item On mTurk, taught 40 subjects this card game.
+\item Instructions + hand comparisons to illustrate rules.
+\item 32 practice trials where they saw outcome.
+\item 24 testing trials without outcome.
+\item Told to lose, 24 more testing trials without outcome.
+\end{itemize}
+\end{column}
+
+\begin{column}{0.5\textwidth}
+\vspace{1em}
+\includegraphics[width=\textwidth]{../../psych/dissertation/3-human-adaptation/figures/pre_bet_screenshot.png}
+\includegraphics[width=\textwidth]{../../psych/dissertation/3-human-adaptation/figures/post_bet_screenshot.png}
+\end{column}
+\end{columns}
+
+\end{frame}
+
+\begin{frame}{HoMM vs. baselines}
+\includegraphics[height=0.8\textheight]{../../psych/dissertation/3-human-adaptation/figures/human_adaptation_vs_HoMM.png}
+\end{frame}
+
+\begin{frame}{Aside: Why are humans not optimal?}
+\centering
+\includegraphics[height=0.8\textheight]{../../psych/dissertation/3-human-adaptation/figures/testing_basic_bet_densities.png}
 \end{frame}
 
 \end{document}
