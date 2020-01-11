@@ -52,7 +52,9 @@
 \date{}
 \frame{\titlepage}
 
-\begin{frame}{Humans are good at adapting flexibly}
+\begin{frame}<1>[label=pokermotivation]
+\frametitle<1>{Humans are good at adapting flexibly}
+\frametitle<2>{Switching to opposite rewards is challenging}
 \centering
 \includegraphics[width=\textwidth]{figures/poker.png}
 \end{frame}
@@ -431,7 +433,7 @@ We use an architecture which generates task/function-embeddings from examples an
 
 \begin{frame}<1>[label=homm_arch]
 \frametitle<1>{Meta-mapping as transforming function embeddings}
-\frametitle<2>{So we can use the same approach and same networks!}
+\frametitle<2>{So we can use the same approach and networks!}
 \frametitle<3->{Language baseline}
 \begin{columns}
 \begin{column}{\dimexpr\paperwidth-10pt}
@@ -688,8 +690,31 @@ Grid worlds & RL & Adapting behaviors \\
 \end{table}
 \end{frame}
 
-\begin{frame}{Simple card games}
+\againframe<2>{pokermotivation}
 
+\begin{frame}{Simple card games}
+\begin{columns}
+\begin{column}{0.5\textwidth}
+Five games:
+\begin{itemize}
+\item \textbf{High card:} Highest wins.
+\item \textbf{Pairs} Pairs are valuable. 
+\item \textbf{Match:} Closest to matching cards win. 
+\item \textbf{Blackjack:} Value increases to a threshold, then switches to negative. 
+\item \textbf{Straight flush:} Adjacent same suit numbers are most valuable, then adjacent different. 
+\end{itemize}
+\end{column}
+
+\begin{column}{0.5\textwidth}
+Three binary attributes:
+\begin{itemize}
+\item \textbf{Losers:} Try to lose instead of winning! Reverses the ranking of hands.
+\item \textbf{Suits rule:} Suits are more important than values. 
+\item \textbf{Switch suit:} Switches which of the suits is more valuable.
+\end{itemize}
+\vspace{4em}
+\end{column}
+\end{columns}
 \end{frame}
 
 \againframe<3>{homm_arch}
