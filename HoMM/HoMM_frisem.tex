@@ -701,7 +701,7 @@ Five games:
 \item \textbf{Pairs} Pairs are valuable. 
 \item \textbf{Match:} Closest to matching cards win. 
 \item \textbf{Blackjack:} Value increases to a threshold, then switches to negative. 
-\item \textbf{Straight flush:} Adjacent same suit numbers are most valuable, then adjacent different. 
+\item \textbf{Straight flush:} Adjacent same suit numbers are best, then adjacent different. 
 \end{itemize}
 \end{column}
 
@@ -712,9 +712,11 @@ Three binary attributes:
 \item \textbf{Suits rule:} Suits are more important than values. 
 \item \textbf{Switch suit:} Switches which of the suits is more valuable.
 \end{itemize}
-\vspace{4em}
+\vspace{3.2em}
 \end{column}
 \end{columns}
+\vspace{1em}
+\textbf{= 40 total, held out all four ``straight flush'' losing versions}
 \end{frame}
 
 \againframe<3>{homm_arch}
@@ -747,6 +749,26 @@ Three binary attributes:
 \begin{frame}{Aside: Why are humans not optimal?}
 \centering
 \includegraphics[height=0.8\textheight]{../../psych/dissertation/3-human-adaptation/figures/testing_basic_bet_densities.png}
+\end{frame}
+
+
+\section{Wrapping up}
+
+\begin{frame}{Why do zero-shot adaptation?}
+Because it accelerates learning and reduces cumulative mistakes.
+{
+\centering
+\only<1>{
+\includegraphics[height=0.8\textheight]{../../psych/dissertation/5-timescales/figures/polynomial_optimization_curves.png}
+}
+\only<2>{
+\includegraphics[height=0.8\textheight]{../../psych/dissertation/5-timescales/figures/polynomial_optimization_cumulative_regret.png}
+}
+}
+\end{frame}
+
+\begin{frame}{Conclusions}
+
 \end{frame}
 
 \end{document}
