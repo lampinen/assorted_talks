@@ -23,6 +23,7 @@
 \usetikzlibrary{positioning}
 \usetikzlibrary{shapes,arrows}
 \usetikzlibrary{positioning}
+\usetikzlibrary{decorations.pathreplacing, calligraphy}
 
 \captionsetup[subfigure]{labelformat=empty}
 
@@ -727,7 +728,7 @@ Three binary attributes:
 \end{frame}
 
 \begin{frame}[standout]
-Meta-mapping adapts well! But how ``well?''
+Meta-mapping adapts well! But how well?
 \end{frame}
 
 \againframe<3>{homm_arch}
@@ -763,13 +764,56 @@ Note that this analysis is biased against HoMM because of ceiling!
 }
 \end{frame}
 
+\begin{frame}[standout]
+On this task, HoMM is not much worse than humans, and is substantially better than the language baseline.
+\end{frame}
+
 \begin{frame}{Aside: Why are humans not optimal?}
 \centering
 \includegraphics[height=0.8\textheight]{../../psych/dissertation/3-human-adaptation/figures/testing_basic_bet_densities.png}
 \end{frame}
 
+\begin{frame}{Categorization tasks}
+\vspace{0.1em}
+\begin{columns}
+\begin{column}{\dimexpr\paperwidth-10pt}
+\begin{tikzpicture}[auto]%, scale=0.8, every node/.style={scale=0.8}]
+% blickets
+\node at (-4.8, 2.2) {\LARGE ``Blickets''};
+\draw[pen colour=fg, decoration={calligraphic brace, amplitude=0.5cm},decorate,line width=1mm] (-3, 0.3) -- (-3, 4); 
+\node at (-2, 3.1) {\includegraphics[width=1.8cm]{../../psych/dissertation/4-extending/figures/categorization_stimuli/32_red_triangle_0.png}};
+\node at (-2, 1.2) {\includegraphics[width=1.8cm]{../../psych/dissertation/4-extending/figures/categorization_stimuli/24_red_triangle_0.png}};
 
-\section{Wrapping up}
+% not blickets
+\node at (-4.3, -2.1) {\LARGE ``Not''};
+\draw[pen colour=fg, decoration={calligraphic brace, amplitude=0.5cm},decorate,line width=1mm] (-3, -4) -- (-3, -0.3); 
+\node at (-2, -3.1) {\includegraphics[width=1.8cm]{../../psych/dissertation/4-extending/figures/categorization_stimuli/32_red_circle_0.png}};
+\node at (-2, -1.2) {\includegraphics[width=1.8cm]{../../psych/dissertation/4-extending/figures/categorization_stimuli/24_yellow_triangle_0.png}};
+\only<2>{
+\node at (1.3, 0) {\LARGE ``Blickets?''};
+}
+\uncover<3->{
+\node at (3, 3.5) {\LARGE ``Zipfs = cyan blickets''};
+\node at (1.6, 0) {\LARGE ``Zipfs?''};
+}
+\uncover<2->{
+\draw[pen colour=fg, decoration={calligraphic brace, amplitude=0.5cm},decorate,line width=1mm] (3.2, -2.9) -- (3.2, 2.9); 
+\node at (4.2, 1.9) {\includegraphics[width=1.8cm]{../../psych/dissertation/4-extending/figures/categorization_stimuli/24_red_triangle_1.png}};
+\node at (4.2, 0) {\includegraphics[width=1.8cm]{../../psych/dissertation/4-extending/figures/categorization_stimuli/32_cyan_triangle_1.png}};
+\node at (4.2, -1.9) {\includegraphics[width=1.8cm]{../../psych/dissertation/4-extending/figures/categorization_stimuli/32_cyan_inverseplus_1.png}};
+}
+
+\end{tikzpicture}
+\end{column}
+\end{columns}
+\end{frame}
+
+
+\begin{frame}{RL tasks}
+
+\end{frame}
+
+\section{Interactions with other timescales}
 
 \begin{frame}{Why do zero-shot adaptation?}
 Because it accelerates learning and reduces cumulative mistakes.
@@ -784,15 +828,21 @@ Because it accelerates learning and reduces cumulative mistakes.
 }
 \end{frame}
 
+\begin{frame}[standout]
+Starting from a good ``guess'' at the appropriate behavior results in faster learning, and orders of magnitude fewer cumulative mistakes.
+\end{frame}
+
+\section{Wrapping up}
+
 \begin{frame}{Conclusions}
 
 \end{frame}
 
-\begin{frame}{Why you should implement everything twice}
-Bugs I found by reimplementing my code in a shared library, and comparing results across the two versions: 
+\begin{frame}{Reproducibility \& why you should implement everything twice}
+Bugs that slipped past my unit testing, but that I found by reimplementing my code in a shared library, and comparing results across the two versions: 
 \begin{itemize}
-\item Target network for DQN accidentally having one set of weights shared with main net all the time.
 \item Off-by-one error in array indexing leading to unintentional, weird weight tying in hyper network output. 
+\item Target network for DQN accidentally having one set of weights shared with main net all the time.
 \item Using mixed task representations for evaluation rather than cached ones in RL tasks.
 \item Error in domains of meta-mappings in categorization tasks.
 \item Implementation of suit \(\leftrightarrow\) rank in card tasks not as intended.
