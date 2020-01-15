@@ -719,6 +719,17 @@ Three binary attributes:
 \textbf{= 40 total, held out all four ``straight flush'' losing versions}
 \end{frame}
 
+\begin{frame}{HoMM results}
+\includegraphics[height=0.8\textheight]{../../psych/dissertation/3-human-adaptation/figures/adaptation_HoMM_only.png}
+\begin{tikzpicture}[overlay]
+\fill[white] (-3, 2) rectangle (-0.2, 5); 
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}[standout]
+Meta-mapping adapts well! But how ``well?''
+\end{frame}
+
 \againframe<3>{homm_arch}
 
 \begin{frame}{Human baseline}
@@ -743,7 +754,13 @@ Three binary attributes:
 \end{frame}
 
 \begin{frame}{HoMM vs. baselines}
+\only<1>{
 \includegraphics[height=0.8\textheight]{../../psych/dissertation/3-human-adaptation/figures/human_adaptation_vs_HoMM.png}
+}
+\only<2>{
+\includegraphics[height=0.8\textheight]{../../psych/dissertation/3-human-adaptation/figures/change_scores.png}
+Note that this analysis is biased against HoMM because of ceiling!
+}
 \end{frame}
 
 \begin{frame}{Aside: Why are humans not optimal?}
@@ -769,6 +786,18 @@ Because it accelerates learning and reduces cumulative mistakes.
 
 \begin{frame}{Conclusions}
 
+\end{frame}
+
+\begin{frame}{Why you should implement everything twice}
+Bugs I found by reimplementing my code in a shared library, and comparing results across the two versions: 
+\begin{itemize}
+\item Target network for DQN accidentally having one set of weights shared with main net all the time.
+\item Off-by-one error in array indexing leading to unintentional, weird weight tying in hyper network output. 
+\item Using mixed task representations for evaluation rather than cached ones in RL tasks.
+\item Error in domains of meta-mappings in categorization tasks.
+\item Implementation of suit \(\leftrightarrow\) rank in card tasks not as intended.
+\end{itemize}
+None of these made my earlier results invalid, but they did worsen performance in some cases, and/or made it so I wasn't really doing what I thought/said I was.
 \end{frame}
 
 \end{document}
