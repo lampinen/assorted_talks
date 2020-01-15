@@ -765,7 +765,7 @@ Note that this analysis is biased against HoMM because of ceiling!
 \end{frame}
 
 \begin{frame}[standout]
-On this task, HoMM is not much worse than humans, and is substantially better than the language baseline.
+On this task, HoMM is not much worse than humans with much less experience, and is much better than the language baseline.
 \end{frame}
 
 \begin{frame}{Aside: Why are humans not optimal?}
@@ -808,12 +808,50 @@ On this task, HoMM is not much worse than humans, and is substantially better th
 \end{columns}
 \end{frame}
 
+\begin{frame}[standout]
+Why categorization? Cognitive history, richer input, and classification is common.
+\end{frame}
 
-\begin{frame}{RL tasks}
+\begin{frame}{Results}
 
 \end{frame}
 
-\section{Interactions with other timescales}
+\begin{frame}[standout]
+Meta-mappping works well on classification tasks from pixel input, and can even generalize to unseen mappings.
+\end{frame}
+
+\begin{frame}{RL tasks}
+\begin{columns}
+\begin{column}{0.5\textwidth}
+Pick-up task:
+\includegraphics[width=0.75\textwidth]{../../psych/dissertation/4-extending/figures/pick_up_0.png}%
+\end{column}
+\begin{column}{0.5\textwidth}
+Pushing task:
+\includegraphics[width=0.75\textwidth]{../../psych/dissertation/4-extending/figures/pusher_0.png}
+\end{column}
+\end{columns}
+\vspace{1em}
+{\bf
+\(\mathbf{\times}\) 5 pairs of colors \(\mathbf{\times}\) binary switching of good and bad color \(\mathbf{=}\) 20 tasks.\\
+Held out switched versions of two pairs in both task types, leaving 16 train tasks.
+}
+\end{frame}
+
+\begin{frame}[standout]
+Why RL? Recent AI achievements, relates to neuroscience and cognition, and requires more sophisticated adaptation. 
+\end{frame}
+
+\begin{frame}{Results}
+
+\end{frame}
+
+\begin{frame}[standout]
+Meta-mappping works well in RL, even with a small support set of tasks. 
+\end{frame}
+
+
+\section{Interactions with other timescales of learning}
 
 \begin{frame}{Why do zero-shot adaptation?}
 Because it accelerates learning and reduces cumulative mistakes.
@@ -829,13 +867,33 @@ Because it accelerates learning and reduces cumulative mistakes.
 \end{frame}
 
 \begin{frame}[standout]
-Starting from a good ``guess'' at the appropriate behavior results in faster learning, and orders of magnitude fewer cumulative mistakes.
+Starting from a good ``guess'' at the appropriate behavior results in faster learning, and reduces cumulative mistakes by orders of magnitude.
 \end{frame}
 
 \section{Wrapping up}
 
+\begin{frame}{Connecting to my recent RL generalization work}
+How does this relate to my recent work with collaborators showing realistic environments lead to good generalization in language-conditioned RL?\par
+\begin{itemize}[<+(2)->]
+\item In most experiments there, the agent had seen most the tasks in training, with only a few held-out. If I do similarly in some of these domains, the language baseline does much better. But do humans really see 95\% of tasks before we're asked to generalize to a new one? 
+\item However, that work does motivate trying this in more complex environments in the future, results might indeed differ there. Whether this perspective is computationally useful with data as rich as human experience is an open question.
+\end{itemize}
+(``Environmental drivers of generalization in a situated agent,'' Hill, Lampinen, et al., ICLR 2020)
+\end{frame}
+
 \begin{frame}{Conclusions}
 
+\begin{itemize}
+\item Humans can perform novel tasks zero-shot. 
+\item We suggest a computational perspective on this: \textbf{meta-mappings} -- functions which map a task to a transformed version of that task. 
+\item We propose a parsimonious \textbf{HoMM} architecture that: 
+    \begin{itemize}
+    \item Performs basic tasks by parameterizing a small task network from a vector representation of the task. 
+    \item Uses an analogy between basic tasks and meta-mappings to perform meta-mappings with no additional parameters, by transforming the vector task representations.
+    \end{itemize}
+\item This approach performs comparably to humans in a card game task, and outperforms a language baseline across card games, image categorization, and RL.
+\item More info: \url{https://arxiv.org/abs/1905.09950} and \url{https://github.com/lampinen/HoMM}
+\end{itemize}
 \end{frame}
 
 \begin{frame}{Reproducibility \& why you should implement everything twice}
