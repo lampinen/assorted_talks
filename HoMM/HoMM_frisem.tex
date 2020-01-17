@@ -181,7 +181,7 @@ Meta-mappings are functions that transform task functions.
 
 \begin{frame}[standout]
 There is a functional analogy between basic tasks and meta-mappings. \\[1em]
-But how to represent the inputs and outputs?
+But how can we use it?
 \end{frame}
 
 \section{An architecture for representing tasks as functions}
@@ -442,7 +442,8 @@ We use an architecture which generates task embeddings from examples and uses th
 \begin{frame}<1>[label=homm_arch]
 \frametitle<1>{Meta-mapping as transforming function embeddings}
 \frametitle<2>{So we can use the same approach and networks!}
-\frametitle<3->{Language baseline}
+\frametitle<3>{Language baseline}
+\frametitle<4>{Language-based meta-mapping}
 \begin{columns}
 \begin{column}{\dimexpr\paperwidth-10pt}
 \centering
@@ -524,7 +525,7 @@ $\vdots$
 
 
 %% meta mapping
-\uncover<-2>{
+\uncover<-2,4->{
 \begin{scope}[shift={(6.4, 1.5)}]
 \draw[boundingbox, draw=bpurp, fill=white] (-3, -4.3) rectangle (2.6, 3.2);
 \node[bpurp] at (-1.6, 2.9) {Meta-mapping};
@@ -532,7 +533,7 @@ $\vdots$
 \node[bpurp] at (-0.25, -0.5) {\Huge *MAGIC*};
 \node at (1, -2.5) {\includegraphics[width=3cm]{figures/wizard.png}};
 }
-\uncover<2->{
+\uncover<2-3>{
 \node at (-1.5, -4) (metaexamples) {Examples};
 \node at (-1.5, -3.2) (metaD1) {
 \(\left\{
@@ -540,7 +541,9 @@ $\vdots$
 (z^{task}_{in,0}, z^{task}_{targ,0})\\
 $\vdots$
 \end{matrix}\right\}\)};
+}
 
+\uncover<2->{
 \node at (1.5, -4) (metaprobes) {Probes};
 \node at (1.5, -3.2) (metaD2) {
 %\(z^{prb}_{in}\)};
@@ -549,10 +552,17 @@ $\vdots$
 z^{task,prb}_{in,0}\\
 $\vdots$
 \end{matrix}\right\}\)};
+}
 
+\uncover<2-3>{
 \node [block] at (-1.5, -1.95) (metaM) {\(\mathcal{M}\)};
 \path [arrow] ([yshift=-5]metaD1.north) to (metaM);
+}
+\uncover<4>{
+\node at (-1.5, -1.95) (metaM) {Meta language};
+}
 
+\uncover<2->{
 \node at (-1, -1) (metazfunc) {\(z^{meta}\)};
 \path [arrow, out=90, in=-135] (metaM.north) to ([xshift=6,yshift=3]metazfunc.south west);
 
@@ -593,7 +603,12 @@ $\vdots$
 
 
 \end{scope}
+\only<-3>{
 \path [arrow, ultra thick, draw=bpurp, dotted, out=-40, in=-140] ([xshift=-1, yshift=3]zfunc.south) to ([xshift=19, yshift=3]metaD1.west);
+}
+\only<4->{
+\path [arrow, ultra thick, draw=bpurp, dotted, out=-20, in=-160] ([xshift=-1, yshift=3]zfunc.south) to ([xshift=10, yshift=3]metaD2.west);
+}
 }
 
 %% evaluating meta mapping
@@ -611,7 +626,7 @@ $\vdots$
 \end{matrix}\right\}\)};
 
 \node at (-1, -1) (metaevalzfunc) {\(z^{task,pred}\)};
-\only<3->{
+\only<3>{
 \node at (-1, -1.95) (languageeval) {New language};
 \path [arrow] ([xshift=-3]languageeval.north) to ([xshift=-3,yshift=5]metaevalzfunc.south);
 }
@@ -650,7 +665,7 @@ $\vdots$
 
 \path [arrow, dashed, out=0, in=-90] ([xshift=-0.5]metaevalD2targs.east) to (metaevaldispatch.south);
 \end{scope}
-\uncover<-2>{
+\uncover<-2,4->{
 \path [arrow, ultra thick, draw=bblue, dotted, out=-30, in=160] (metaoutputs.center) to ([xshift=5, yshift=-5]metaevalzfunc.north west);
 }
 \end{tikzpicture}
@@ -658,7 +673,7 @@ $\vdots$
 \end{columns}
 \only<2>{\vspace{1em} Parsimonious \& homoiconic!}
 
-\only<3->{\vspace{1em} As long as the new language is systematically related to the old, might just work!}
+\only<3>{\vspace{1em} As long as the new language is systematically related to the old, may work! (Prior zero-shot work has used similar approaches.)}
 \end{frame}
 
 
@@ -1006,6 +1021,14 @@ Because it accelerates learning and reduces cumulative mistakes.
 
 \begin{frame}[standout]
 Starting from a good ``guess'' at the appropriate behavior results in faster learning, and reduces cumulative mistakes by an order of magnitude 
+\end{frame}
+
+\section{Rethinking the role of language}
+
+\againframe<4>{homm_arch}
+
+\begin{frame}{MM works with language-based task representations too!}
+
 \end{frame}
 
 \section{Wrapping up}
