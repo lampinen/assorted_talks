@@ -82,7 +82,7 @@ How can we build deep learning models that can perform a new task well on their 
 
 \section{Meta-mapping}
 
-\begin{frame}{Tasks as functions}
+\begin{frame}{Tasks as functions/mappings}
 \begin{columns}
 \begin{column}{0.5\textwidth}
 It's useful to think of tasks or behaviors as functions mapping input to output:
@@ -91,7 +91,7 @@ It's useful to think of tasks or behaviors as functions mapping input to output:
     \item Chess position \(\rightarrow\) move
     \item Object \(\rightarrow\) classification
 \end{itemize}
-Standard deep learning tries to infer this function from lots of examples. 
+Standard deep learning tries to infer this mapping from lots of examples. 
 \end{column}
 
 \begin{column}{0.5\textwidth}
@@ -101,7 +101,7 @@ Standard deep learning tries to infer this function from lots of examples.
 \end{frame}
 
 \begin{frame}[standout]
-Tasks \(\bm =\) functions from inputs to outputs. 
+Tasks \(\bm =\) mappings from inputs to outputs. 
 \end{frame}
 
 \begin{frame}{Meta-learning}
@@ -112,7 +112,7 @@ Tasks \(\bm =\) functions from inputs to outputs.
     \item Lots of recent research on meta-learning -- learning to learn.
     \item If you have learned a lot of card games, you should be able to pick up a new one from a few examples.
     \item Then apply this knowledge to play the game with probe hands you weren't taught. 
-    \item But how could we play a variation of the game? 
+    \item But, again, how could we play a variation of the game without examples? 
 \end{itemize}
 \end{column}
 
@@ -122,8 +122,8 @@ Tasks \(\bm =\) functions from inputs to outputs.
 \end{columns}
 \end{frame}
 
-\begin{frame}{Functional flexibility}
-If tasks are functions, altering the task = adapting the function. 
+\begin{frame}{Mapping flexibility}
+If tasks are mappings, altering the task = adapting the mapping. 
 \begin{columns}
 \begin{column}{0.5\textwidth}
 \vspace{2em}
@@ -142,20 +142,20 @@ If tasks are functions, altering the task = adapting the function.
 \end{frame}
 
 \begin{frame}[standout]
-We want to model how we can adapt the task function.
+We want to model how we can adapt the task mapping.
 \end{frame}
 
 \begin{frame}{Meta-mappings}
 How do we get from a task function to an adapted one?
 \begin{itemize}
-\item We propose \textbf{meta-mappings}, higher-order functions which transform functions into other functions.
+\item We propose \textbf{meta-mappings}, higher-order mappings which transform mappings into other mappings.
 \end{itemize}
 \includegraphics[width=\textwidth]{figures/meta_mapping_poker.png}
 \end{frame}
 
 \begin{frame}[standout]
-Transforming the task function \(=\) adapting. \\[1em]
-Meta-mappings are functions that transform task functions.
+Transforming the task mapping \(=\) adapting. \\[1em]
+Meta-mappings are higher-order mappings that transform task mappings.
 \end{frame}
 
 \begin{frame}<-3>[label=basic_metamapping_analogy]
@@ -174,7 +174,7 @@ Meta-mappings are functions that transform task functions.
 \begin{itemize}[<+->]
 \item Both are just functions (they just have different types of inputs and outputs).
 \item This means we can apply all the usual deep learning tricks to meta-mappings.
-\item ... Assuming we have a way to represent the functions as input or output. 
+\item ... Assuming we have a way to represent the basic tasks for input to (and output from) the meta-mappings. 
 \end{itemize}
 }
 \end{frame}
@@ -184,14 +184,14 @@ There is a functional analogy between basic tasks and meta-mappings. \\[1em]
 But how can we use it?
 \end{frame}
 
-\section{An architecture for representing tasks as functions}
+\section{An architecture for representing and transforming tasks}
 
-\begin{frame}{Architecture overview}
+\begin{frame}{Architecture preview}
 Our goal is to implement:
 \begin{itemize}
-\item A way of representing tasks as functions.
-\item A way of representing those tasks/functions as vectors.
-\item A way of learning to transform these task-vectors to perform meta-mappings.
+\item A way of representing tasks as mappings.
+\item A way of representing those tasks/mappings as vectors.
+\item A way of learning to transform those task-vectors to perform meta-mappings.
 \end{itemize}
 This will allow the architecture to perform new tasks without data, by their relationship to prior tasks.
 \end{frame}
@@ -347,8 +347,8 @@ This will allow the architecture to perform new tasks without data, by their rel
 \end{tikzpicture}
 \end{frame}
 
-\begin{frame}<-3>[label=homm_basic]
-\frametitle{A function-oriented meta-learning architecture}
+\begin{frame}<-2>[label=homm_basic]
+\frametitle{A multi-task architecture}
 \begin{columns}
 \begin{column}{0.5\textwidth}
 \begin{tikzpicture}
@@ -359,7 +359,7 @@ This will allow the architecture to perform new tasks without data, by their rel
 \node at (-1.5, -3.2) (D1) {
 \(\left\{
 \begin{matrix}
-(z^{ex}_{in,0}, z^{ex}_{targ,0})\\
+(x^{ex}_{in,0}, y^{ex}_{targ,0})\\
 $\vdots$
 \end{matrix}\right\}\)};
 
@@ -368,7 +368,7 @@ $\vdots$
 %\(z^{prb}_{in}\)};
 \(\left\{
 \begin{matrix}
-z^{prb}_{in,0}\\
+x^{prb}_{in,0}\\
 $\vdots$
 \end{matrix}\right\}\)};
 
@@ -392,20 +392,19 @@ $\vdots$
 %\(z^{pred}_{out}\)};
 \(\left\{
 \begin{matrix}
-z^{pred}_{out,0},\\
+y^{pred}_{out,0},\\
 $\vdots$
 \end{matrix}\right\}\)};
 \node at (1.5, 1.8) (predictions) {Predictions};
 
 \path [arrow, dashed] (F) to ([yshift=3]outputs.south);
 
-\uncover<3->{
 \node at (-1.5, 1.8) (probetargs) {Probe targets};
 \node at (-1.5, 1) (D2targs) {
 %\(z^{prb}_{in}\)};
 \(\left\{
 \begin{matrix}
-z^{prb}_{targ,0}\\
+y^{prb}_{targ,0}\\
 $\vdots$
 \end{matrix}\right\}\)};
 
@@ -414,7 +413,6 @@ $\vdots$
 \path [arrow, dashed, out=180, in=-90] ([xshift=3]outputs.west) to (dispatch.south);
 
 \path [arrow, dashed, out=0, in=-90] ([xshift=-3.5]D2targs.east) to (dispatch.south);
-}
 
 %% overlay
 
@@ -463,7 +461,7 @@ We use an architecture which generates task embeddings from examples and uses th
 \node at (-1.5, -3.2) (D1) {
 \(\left\{
 \begin{matrix}
-(z^{ex}_{in,0}, z^{ex}_{targ,0})\\
+(x^{ex}_{in,0}, y^{ex}_{targ,0})\\
 $\vdots$
 \end{matrix}\right\}\)};
 }
@@ -473,7 +471,7 @@ $\vdots$
 %\(z^{prb}_{in}\)};
 \(\left\{
 \begin{matrix}
-z^{prb}_{in,0}\\
+x^{prb}_{in,0}\\
 $\vdots$
 \end{matrix}\right\}\)};
 
@@ -500,7 +498,7 @@ $\vdots$
 %\(z^{pred}_{out}\)};
 \(\left\{
 \begin{matrix}
-z^{pred}_{out,0},\\
+y^{pred}_{out,0},\\
 $\vdots$
 \end{matrix}\right\}\)};
 \node at (1.5, 1.85) (predictions) {Predictions};
@@ -512,7 +510,7 @@ $\vdots$
 %\(z^{prb}_{in}\)};
 \(\left\{
 \begin{matrix}
-z^{prb}_{targ,0}\\
+y^{prb}_{targ,0}\\
 $\vdots$
 \end{matrix}\right\}\)};
 
@@ -621,7 +619,7 @@ $\vdots$
 %\(z^{prb}_{in}\)};
 \(\left\{
 \begin{matrix}
-z^{prb}_{in,0}\\
+x^{prb}_{in,0}\\
 $\vdots$
 \end{matrix}\right\}\)};
 
@@ -643,7 +641,7 @@ $\vdots$
 %\(z^{pred}_{out}\)};
 \(\left\{
 \begin{matrix}
-z^{pred}_{out,0},\\
+y^{pred}_{out,0},\\
 $\vdots$
 \end{matrix}\right\}\)};
 \node at (1.5, 1.85) (metaevalpredictions) {Predictions};
@@ -655,7 +653,7 @@ $\vdots$
 %\(z^{prb}_{in}\)};
 \(\left\{
 \begin{matrix}
-z^{prb}_{targ,0}\\
+y^{prb}_{targ,0}\\
 $\vdots$
 \end{matrix}\right\}\)};
 
@@ -682,17 +680,17 @@ $\vdots$
 \againframe<2>{homm_arch}
 
 \begin{frame}[standout]
-Both basic tasks and meta-mappings can be viewed as functions inferred from examples, so we can use the same approaches and networks for both.
+Both basic tasks and meta-mappings can be viewed as mappings inferred from examples, so we can use the same approaches and networks for both.
 \end{frame}
 
 \begin{frame}{Interim summary}
 \begin{itemize}
-\item Basic tasks are functions from inputs to outputs (e.g. poker hands to bets), which can be inferred from examples.
-\item We represent the task specific computations as relatively simple transformations, parameterized from a task embedding. The rest of input and output is shared across tasks.
+\item Basic tasks are mappings from inputs to outputs (e.g. poker hands to bets), which can be inferred from examples.
+\item We represent the task-specific computations as relatively simple transformations, parameterized from a task embedding. The rest of input and output is shared across tasks.
 \item One type of flexibility is systematically altering these tasks (e.g. trying to bet on losing hands instead of winning ones).
-\item This can be seen as a \textbf{meta-mapping}, that is, a function which takes tasks as input and produces tasks as output (e.g. maps try-to-win-at-poker to try-to-lose-at-poker).
-\item We implement the meta-mapping function as a transformation of the task embeddings.
-\item This function can be learned and implemented using exactly the same networks as the basic tasks.
+\item This can be seen as a \textbf{meta-mapping}, that is, a mapping which takes tasks as input and produces tasks as output (e.g. maps try-to-win-at-poker to try-to-lose-at-poker).
+\item We implement the meta-mapping function as a transformation of task embeddings.
+\item This mapping can be parsimoniously inferred and implemented using exactly the same networks as the basic tasks.
 \end{itemize}
 \end{frame}
 
@@ -1073,6 +1071,7 @@ Bugs that slipped past my unit testing, but that I found by reimplementing my co
 None of these made my earlier results invalid, but they did worsen performance in some cases, and/or made it so I wasn't really doing what I thought/said I was. All results I showed you today are from the corrected version.
 }
 \only<2>{
+But I was lucky:\\
 \includegraphics[width=\textwidth]{figures/correction.png}
 }
 \end{frame}
