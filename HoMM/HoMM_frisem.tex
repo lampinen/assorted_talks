@@ -440,7 +440,7 @@ We use an architecture which generates task embeddings from examples and uses th
 \begin{frame}<1>[label=homm_arch]
 \frametitle<1>{Meta-mapping as transforming function embeddings}
 \frametitle<2>{So we can use the same approach and networks!}
-\frametitle<3>{Language baseline}
+\frametitle<3>{Language-based approach}
 \frametitle<4>{Language-based meta-mapping}
 \begin{columns}
 \begin{column}{\dimexpr\paperwidth-10pt}
@@ -694,9 +694,9 @@ Both basic tasks and meta-mappings can be viewed as mappings inferred from examp
 \end{itemize}
 \end{frame}
 
-\section{Experiments}
+\section{Explorations}
 
-\begin{frame}{Experiments overview}
+\begin{frame}{Explorations overview}
 This same approach can be used in many different settings: 
 \begin{table}
 \center
@@ -706,8 +706,8 @@ Experiment & Type & Cognitive motivation \\
 \hline
 \color{lightgray} Polynomials & \color{lightgray} Regression & \color{lightgray} Proof of concept \\
 Card games & Regression & Adapting strategies \\
+2D worlds & RL & Adapting behaviors \\
 Categories & Classification & Adapting concepts \\
-Grid worlds & RL & Adapting behaviors \\
 \hline
 \end{tabular}
 \end{table}
@@ -716,6 +716,7 @@ Grid worlds & RL & Adapting behaviors \\
 \againframe<2>{pokermotivation}
 
 \begin{frame}{Simple card games}
+
 \begin{columns}
 \begin{column}{0.5\textwidth}
 Five games:
@@ -743,10 +744,15 @@ Three binary attributes:
 \end{frame}
 
 \begin{frame}{Meta-mapping results}
+\only<1>{
+\includegraphics[height=0.8\textheight]{figures/cards_patterns_interpretation.png}
+}
+\only<2>{
 \includegraphics[height=0.8\textheight]{../../psych/dissertation/3-human-adaptation/figures/adaptation_HoMM_only.png}
 \begin{tikzpicture}[overlay]
 \fill[white] (-3, 2) rectangle (-0.2, 5); 
 \end{tikzpicture}
+}
 \end{frame}
 
 \begin{frame}[standout]
@@ -754,6 +760,25 @@ Meta-mapping adapts well! But how well?
 \end{frame}
 
 \againframe<3>{homm_arch}
+
+
+\begin{frame}<1>[label=cards_results]
+\frametitle{MM vs. baselines}
+\only<1>{ 
+\includegraphics[height=0.8\textheight]{../../psych/dissertation/3-human-adaptation/figures/adaptation_HoMM_langauge.png}
+\begin{tikzpicture}[overlay]
+\fill[white] (-3, 3) rectangle (-0.2, 4); 
+\end{tikzpicture}
+}
+\only<2>{
+\includegraphics[height=0.8\textheight]{../../psych/dissertation/3-human-adaptation/figures/human_adaptation_vs_HoMM.png}
+Note: Human variability is mostly internal, not due to experiment.
+}
+\only<3>{
+\includegraphics[height=0.8\textheight]{../../psych/dissertation/3-human-adaptation/figures/change_scores.png}
+Note: this analysis is biased against models because of ceiling.
+}
+\end{frame}
 
 \begin{frame}{Human baseline}
 \begin{columns}
@@ -776,24 +801,160 @@ Meta-mapping adapts well! But how well?
 
 \end{frame}
 
-\begin{frame}{MM vs. baselines}
-\only<1>{
-\includegraphics[height=0.8\textheight]{../../psych/dissertation/3-human-adaptation/figures/human_adaptation_vs_HoMM.png}
-}
-\only<2>{
-\includegraphics[height=0.8\textheight]{../../psych/dissertation/3-human-adaptation/figures/change_scores.png}
-Note that this analysis is biased against HoMM because of ceiling!
-}
+\againframe<2->{cards_results}
+
+\begin{frame}{Aside: Why are humans not optimal at basic game?}
+\centering
+\includegraphics[height=0.8\textheight]{../../psych/dissertation/3-human-adaptation/figures/testing_basic_bet_densities.png}
 \end{frame}
 
 \begin{frame}[standout]
 On this task, MM adapts comparably to humans, and is much better than the language baseline.
 \end{frame}
 
-\begin{frame}{Aside: Why are humans not optimal?}
-\centering
-\includegraphics[height=0.8\textheight]{../../psych/dissertation/3-human-adaptation/figures/testing_basic_bet_densities.png}
+\begin{frame}{RL tasks}
+\begin{columns}
+\begin{column}{0.5\textwidth}
+Pick-up task:
+\includegraphics[width=0.75\textwidth]{../../psych/dissertation/4-extending/figures/pick_up_0.png}%
+\end{column}
+\begin{column}{0.5\textwidth}
+Pushing task:
+\includegraphics[width=0.75\textwidth]{../../psych/dissertation/4-extending/figures/pusher_0.png}
+\end{column}
+\end{columns}
+\vspace{1em}
+{\bf
+\(\mathbf{\times}\) 5 pairs of colors \(\mathbf{\times}\) binary switching of good and bad color \(\mathbf{=}\) 20 tasks.\\
+Held out switched versions of two pairs in both task types, leaving 16 train tasks.
+}
 \end{frame}
+
+\begin{frame}{RL tasks}
+Why RL? 
+\begin{itemize}
+\item It has driven some substantial recent AI achievements.
+\item It relates to neuroscience and cognition.
+\item It requires more sophisticated adaptation. 
+\end{itemize}
+\end{frame}
+
+\begin{frame}<1>[label=extending_methods]
+\frametitle<1>{RL model changes}
+\frametitle<2>{Categorization model changes}
+\begin{columns}
+\begin{column}{0.5\textwidth}
+\only<2>{
+\begin{itemize}
+\item \(50 \times 50 \times 3\) RGB pixel input.
+\item Shared 4-layer CNN for input processing.  
+\item Deeper but more bottlenecked task network (3 hidden layers, 64 units each), which performs better on these tasks. 
+\end{itemize}
+}
+\only<1> {
+\begin{itemize}
+\item DQN-like approach.
+\item \(91 \times 91 \times 3\) RGB input.
+\item Shared CNN for input, and shared Q-value decoder, task-specific network between.
+\item Meta-network examples were (s, a, r) tuples.
+\item Task representations in training were partly persistent, to overcome strongly conflicting signals and accelerate learning.
+\end{itemize}
+}
+\end{column}
+\begin{column}{0.5\textwidth}
+\begin{tikzpicture}
+\draw[boundingbox, fill=white] (-3, -4.3) rectangle (2.5, 3.2);
+\node[lightgray] at (-1.2, 2.9) {Basic meta-learning};
+\node at (-1.5, -4) (examples) {Examples};
+\node at (-1.5, -3.2) (D1) {
+\(\left\{
+\begin{matrix}
+(x^{ex}_{in,0}, y^{ex}_{targ,0})\\
+$\vdots$
+\end{matrix}\right\}\)};
+
+\node at (1.5, -4) (probes) {Probes};
+\node at (1.5, -3.2) (D2) {
+%\(z^{prb}_{in}\)};
+\(\left\{
+\begin{matrix}
+x^{prb}_{in,0}\\
+$\vdots$
+\end{matrix}\right\}\)};
+
+\node [block] at (-1.5, -1.95) (M) {\(\mathcal{M}\)};
+\path [arrow] ([yshift=-5]D1.north) to (M);
+
+\node at (-1, -1) (zfunc) {\(z^{task}\)};
+\path [arrow, out=90, in=-135] (M.north) to ([xshift=6,yshift=3]zfunc.south west);
+
+\node[block] at (0, -0.55) (H) {\(\mathcal{H}\)};
+\path [arrow, out=45, in=180] ([yshift=-3]zfunc.north) to (H.west);
+\node [block, dashed] at (1.5, -0.55) (F) {\(F_{z^{task}}\)};
+\path[arrow] (H.east) to (F.west);
+\path [arrow, dashed] (D2) to (F);
+
+\node at (1.5, 1) (outputs) {
+%\(z^{pred}_{out}\)};
+\(\left\{
+\begin{matrix}
+y^{pred}_{out,0},\\
+$\vdots$
+\end{matrix}\right\}\)};
+\node at (1.5, 1.8) (predictions) {Predictions};
+
+\path [arrow, dashed] (F) to ([yshift=3]outputs.south);
+
+\node at (-1.5, 1.8) (probetargs) {Probe targets};
+\node at (-1.5, 1) (D2targs) {
+%\(z^{prb}_{in}\)};
+\(\left\{
+\begin{matrix}
+y^{prb}_{targ,0}\\
+$\vdots$
+\end{matrix}\right\}\)};
+
+\node [align=center, text width=1.25 cm] at (0, 2.25) (dispatch) {\baselineskip=12pt Loss\par};
+
+\path [arrow, dashed, out=180, in=-90] ([xshift=3]outputs.west) to (dispatch.south);
+
+\path [arrow, dashed, out=0, in=-90] ([xshift=-3.5]D2targs.east) to (dispatch.south);
+
+%% overlay
+
+\draw [fill=black, opacity=0.2] (0.75, -0.2) rectangle (2.25, 0.35);
+\draw [fill=red, opacity=0.4] (0.75, -1) rectangle (2.25, -0.2);
+\draw [fill=black, opacity=0.2] (0.75, -2.5) rectangle (2.25, -1);
+
+\uncover<4->{
+\draw [red, ultra thick] (-1, -1) circle (0.5);
+}
+\end{tikzpicture}
+\end{column}
+\end{columns}
+
+\end{frame}
+
+\begin{frame}{Results}
+\includegraphics[height=0.8\textheight]{figures/grids_adaptation.png}
+\end{frame}
+
+\begin{frame}[standout]
+Meta-mapping works in RL, even with a small support set of tasks. 
+\end{frame}
+
+\begin{frame}{Relation to model-based adaptation}
+Model-based methods are often framed in part as an approach to flexibility.
+\begin{itemize}
+\item However, for this to work, these methods generally must have a new reward function handed to them.
+\item That is, they're offloading a substantial part of the adaptation problem to another system.
+\item Meta-mapping offers a principled way to adapt a reward-predicting function, which a model-based system could then plan over.
+\item It could also adapt transition models, e.g. when it starts raining and California drivers get confused. 
+\item Thus meta-mapping complements model-based planning.
+\end{itemize}
+
+\end{frame}
+
 
 \begin{frame}{Categorization tasks}
 \vspace{0.1em}
@@ -830,6 +991,7 @@ On this task, MM adapts comparably to humans, and is much better than the langua
 \end{columns}
 \end{frame}
 
+
 \begin{frame}{Categorization tasks}
 Why categorization? 
 \begin{itemize}
@@ -849,157 +1011,24 @@ Meta-mappings:
 \end{itemize}
 \end{frame}
 
-\begin{frame}<1>[label=extending_methods]
-\frametitle<1>{Categorization model changes}
-\frametitle<2>{RL model changes}
-\begin{columns}
-\begin{column}{0.5\textwidth}
-\only<1>{
-\begin{itemize}
-\item \(50 \times 50 \times 3\) RGB pixel input.
-\item Shared 4-layer CNN for input processing.  
-\item Deeper but more bottlenecked task network (3 hidden layers, 64 units each), which performs better on these tasks. 
-\end{itemize}
-}
-\only<2> {
-\begin{itemize}
-\item DQN-like approach.
-\item \(91 \times 91 \times 3\) RGB input.
-\item Shared CNN for input, and shared Q-value decoder, task-specific network between.
-\item Meta-network examples were (s, a, r) tuples.
-\item Task representations in training were partly persistent, to overcome strongly conflicting signals and accelerate learning.
-\end{itemize}
-}
-\end{column}
-\begin{column}{0.5\textwidth}
-\begin{tikzpicture}
-\draw[boundingbox, fill=white] (-3, -4.3) rectangle (2.5, 3.2);
-\node[lightgray] at (-1.2, 2.9) {Basic meta-learning};
-\node at (-1.5, -4) (examples) {Examples};
-\node at (-1.5, -3.2) (D1) {
-\(\left\{
-\begin{matrix}
-(z^{ex}_{in,0}, z^{ex}_{targ,0})\\
-$\vdots$
-\end{matrix}\right\}\)};
-
-\node at (1.5, -4) (probes) {Probes};
-\node at (1.5, -3.2) (D2) {
-%\(z^{prb}_{in}\)};
-\(\left\{
-\begin{matrix}
-z^{prb}_{in,0}\\
-$\vdots$
-\end{matrix}\right\}\)};
-
-\node [block] at (-1.5, -1.95) (M) {\(\mathcal{M}\)};
-\path [arrow] ([yshift=-5]D1.north) to (M);
-
-\node at (-1, -1) (zfunc) {\(z^{task}\)};
-\path [arrow, out=90, in=-135] (M.north) to ([xshift=6,yshift=3]zfunc.south west);
-
-\node[block] at (0, -0.55) (H) {\(\mathcal{H}\)};
-\path [arrow, out=45, in=180] ([yshift=-3]zfunc.north) to (H.west);
-\node [block, dashed] at (1.5, -0.55) (F) {\(F_{z^{task}}\)};
-\path[arrow] (H.east) to (F.west);
-\path [arrow, dashed] (D2) to (F);
-
-\node at (1.5, 1) (outputs) {
-%\(z^{pred}_{out}\)};
-\(\left\{
-\begin{matrix}
-z^{pred}_{out,0},\\
-$\vdots$
-\end{matrix}\right\}\)};
-\node at (1.5, 1.8) (predictions) {Predictions};
-
-\path [arrow, dashed] (F) to ([yshift=3]outputs.south);
-
-\node at (-1.5, 1.8) (probetargs) {Probe targets};
-\node at (-1.5, 1) (D2targs) {
-%\(z^{prb}_{in}\)};
-\(\left\{
-\begin{matrix}
-z^{prb}_{targ,0}\\
-$\vdots$
-\end{matrix}\right\}\)};
-
-\node [align=center, text width=1.25 cm] at (0, 2.25) (dispatch) {\baselineskip=12pt Loss\par};
-
-\path [arrow, dashed, out=180, in=-90] ([xshift=3]outputs.west) to (dispatch.south);
-
-\path [arrow, dashed, out=0, in=-90] ([xshift=-3.5]D2targs.east) to (dispatch.south);
-
-%% overlay
-
-\draw [fill=black, opacity=0.2] (0.75, -0.2) rectangle (2.25, 0.35);
-\draw [fill=red, opacity=0.4] (0.75, -1) rectangle (2.25, -0.2);
-\draw [fill=black, opacity=0.2] (0.75, -2.5) rectangle (2.25, -1);
-
-\uncover<4->{
-\draw [red, ultra thick] (-1, -1) circle (0.5);
-}
-\end{tikzpicture}
-\end{column}
-\end{columns}
-
-\end{frame}
-
-\begin{frame}{Results}
-
-\end{frame}
-
-\begin{frame}[standout]
-Meta-mappping works well on classification tasks from pixel input, and can even generalize to unseen mappings.
-\end{frame}
-
-\begin{frame}{RL tasks}
-\begin{columns}
-\begin{column}{0.5\textwidth}
-Pick-up task:
-\includegraphics[width=0.75\textwidth]{../../psych/dissertation/4-extending/figures/pick_up_0.png}%
-\end{column}
-\begin{column}{0.5\textwidth}
-Pushing task:
-\includegraphics[width=0.75\textwidth]{../../psych/dissertation/4-extending/figures/pusher_0.png}
-\end{column}
-\end{columns}
-\vspace{1em}
-{\bf
-\(\mathbf{\times}\) 5 pairs of colors \(\mathbf{\times}\) binary switching of good and bad color \(\mathbf{=}\) 20 tasks.\\
-Held out switched versions of two pairs in both task types, leaving 16 train tasks.
-}
-\end{frame}
-
-\begin{frame}{RL tasks}
-Why RL? 
-\begin{itemize}
-\item It has driven some substantial recent AI achievements.
-\item It relates to neuroscience and cognition.
-\item It requires more sophisticated adaptation. 
-\end{itemize}
-\end{frame}
-
 \againframe<2>{extending_methods}
 
-\begin{frame}{Results}
-
+\begin{frame}<1>[label=cat_results]
+\frametitle{Categorization results}
+\only<1>{
+\includegraphics[height=0.8\textheight]{figures/categories_adaptation_no_lh.png}
+}
+\only<2>{
+\includegraphics[height=0.8\textheight]{figures/categories_adaptation.png}
+}
 \end{frame}
+
+\againframe<4>{homm_arch}
+\againframe<2>{cat_results}
 
 \begin{frame}[standout]
-Meta-mappping works well in RL, even with a small support set of tasks. 
-\end{frame}
-
-\begin{frame}{A comment on model-based adaptation}
-Model-based methods are often framed in part as an approach to flexibility.
-\begin{itemize}
-\item However, for this to work, these methods generally must have a new reward function handed to them.
-\item That is, they're offloading a substantial part of the problem to another system.
-\item Meta-mapping offers a principled way to adapt a reward-predicting function, which a model-based system could then plan over.
-\item It could also adapt transition models, e.g. when it starts raining and California drivers get confused. 
-\item Thus meta-mapping complements model-based planning.
-\end{itemize}
-
+Meta-mapping works well on classification tasks from pixel input, language works better.\\[1em]
+Meta-mapping with language may be even better.
 \end{frame}
 
 \section{Interactions with other timescales of learning}
@@ -1018,25 +1047,19 @@ Because it accelerates learning and reduces cumulative mistakes.
 \end{frame}
 
 \begin{frame}[standout]
-Starting from a good ``guess'' at the appropriate behavior results in faster learning, and reduces cumulative mistakes by an order of magnitude 
+Starting from a zero-shot ``guess'' at the appropriate behavior results in faster learning, and reduces cumulative mistakes by an order of magnitude 
 \end{frame}
 
-\section{Rethinking the role of language}
-
-\againframe<4>{homm_arch}
-
-\begin{frame}{MM works with language-based task representations too!}
-
-\end{frame}
 
 \section{Wrapping up}
 
 \begin{frame}{Connecting to my recent RL generalization work}
-How does this relate to my recent work with collaborators showing realistic environments lead to good generalization in language-conditioned RL?\par
+How does this relate to our recent finding that realistic tasks improve generalization in language-conditioned RL?\par
 \begin{itemize}[<+(2)->]
 \item In some cases this approach appears to be quite sample efficient, e.g. only 16 training tasks in RL.
 \item This is despite having \textbf{more challenging} evaluation than the language work, since often the adapted task \textbf{contradicts previous learning} (e.g. was negatively rewarded). 
-\item However, this work should still be explored in richer environments. Whether this perspective is computationally useful with data as rich as human experience is an open question.
+\item However, language does seem to be a better way of constructing task representations in the categorization setting, with language + meta-mapping adapting even better.
+\item Whether this perspective is computationally useful with data as rich as human experience is an open question.
 \end{itemize}
 (``Environmental drivers of generalization in a situated agent,'' Hill, Lampinen, et al., ICLR 2020)
 \end{frame}
