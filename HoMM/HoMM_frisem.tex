@@ -53,31 +53,43 @@
 \date{}
 \frame{\titlepage}
 
-\begin{frame}<1>[label=pokermotivation]
-\frametitle<1>{Humans are good at adapting flexibly}
-\frametitle<2>{Switching to opposite rewards is challenging}
+\begin{frame}<1-3>[label=pokermotivation]
+\frametitle<1-4>{Humans are good at adapting flexibly}
+\frametitle<5>{Switching to opposite rewards is challenging}
 \centering
+\only<1>{
 \includegraphics[width=\textwidth]{figures/poker.png}
+}
+\only<2>{
+\includegraphics[width=\textwidth]{figures/frostbite.jpg}
+}
+\only<3>{
+\includegraphics[height=0.4\textheight]{../../psych/dissertation/4-extending/figures/categorization_stimuli/32_yellow_inverseplus_1.png}
+}
 \end{frame}
+%% Don't forget to say starting point!!!
 
 \begin{frame}{Deep learning is (usually) not}
 \begin{columns}
 \begin{column}{0.5\textwidth}
 Deep learning generally requires lots of data to achieve good performance on a task. However, there are a few exceptions:
-\begin{itemize}
+\begin{itemize}[<+(2)->]
     \item Lots of new work on meta-learning (learning to learn), for learning from little data, but not none.
-    \item Some language work I'll come back to later.
+    \item Some language work
+    \item Model-based RL. 
+    \item I'll discuss these approaches along the way. 
 \end{itemize}
 \end{column}
 
 \begin{column}{0.5\textwidth}
+\includegraphics[width=\textwidth]{figures/poker.png}
 \includegraphics[width=\textwidth]{figures/frostbite.jpg}
 \end{column}
 \end{columns}
 \end{frame}
 
 \begin{frame}[standout]
-How can we build deep learning models that can perform a new task well on their first try?
+How can we build deep learning models that can perform a new task well on their first try, based on its relationship to prior tasks?
 \end{frame}
 
 \section{Meta-mapping}
@@ -108,7 +120,7 @@ Tasks \(\bm =\) mappings from inputs to outputs.
 \begin{columns}
 \begin{column}{0.5\textwidth}
 
-\begin{itemize}
+\begin{itemize}[<+->]
     \item Lots of recent research on meta-learning -- learning to learn.
     \item If you have learned a lot of card games, you should be able to pick up a new one from a few examples.
     \item Then apply this knowledge to play the game with probe hands you weren't taught. 
@@ -354,7 +366,7 @@ This will allow the architecture to perform new tasks without data, by their rel
 \begin{tikzpicture}
 %% basic meta learning
 \draw[boundingbox, fill=white] (-3, -4.3) rectangle (2.5, 3.2);
-\node[lightgray] at (-1.2, 2.9) {Basic meta-learning};
+\node[lightgray] at (-1.2, 2.9) {\only<1>{Deep learning}\only<2->{Meta-learning}};
 \node at (-1.5, -4) (examples) {Examples};
 \node at (-1.5, -3.2) (D1) {
 \(\left\{
@@ -669,7 +681,7 @@ $\vdots$
 \end{tikzpicture}
 \end{column}
 \end{columns}
-\only<2>{\vspace{1em} Parsimonious \& homoiconic!}
+\only<2>{\vspace{1em} Parsimonious \& allows for continued abstraction!}
 
 \only<3>{\vspace{1em} As long as the new language is systematically related to the old, may work! (Prior zero-shot work has used similar approaches.)}
 \end{frame}
@@ -684,7 +696,7 @@ Both basic tasks and meta-mappings can be viewed as mappings inferred from examp
 \end{frame}
 
 \begin{frame}{Interim summary}
-\begin{itemize}
+\begin{itemize}[<+->]
 \item Basic tasks are mappings from inputs to outputs (e.g. poker hands to bets), which can be inferred from examples.
 \item We represent the task-specific computations as relatively simple transformations, parameterized from a task embedding. The rest of input and output is shared across tasks.
 \item One type of flexibility is systematically altering these tasks (e.g. trying to bet on losing hands instead of winning ones).
@@ -713,7 +725,7 @@ Categories & Classification & Adapting concepts \\
 \end{table}
 \end{frame}
 
-\againframe<2>{pokermotivation}
+\againframe<5>{pokermotivation}
 
 \begin{frame}{Simple card games}
 
@@ -743,7 +755,11 @@ Three binary attributes:
 \textbf{= 40 total, held out all four ``straight flush'' losing versions}
 \end{frame}
 
-\begin{frame}{Meta-mapping results}
+\againframe<2>{homm_arch}
+
+\begin{frame}
+\frametitle<1>{Possible results}
+\frametitle<2->{Meta-mapping results}
 \only<1>{
 \includegraphics[height=0.8\textheight]{figures/cards_patterns_interpretation.png}
 }
@@ -809,7 +825,10 @@ Note: this analysis is biased against models because of ceiling.
 \end{frame}
 
 \begin{frame}[standout]
-On this task, MM adapts comparably to humans, and is much better than the language baseline.
+On this task, MM adapts comparably to humans, and better than language alone. \\[1em]
+\only<2->{
+(I'm not saying using language isn't useful, just that transforming task representations may be useful as well.)
+}
 \end{frame}
 
 \begin{frame}{RL tasks}
@@ -839,6 +858,7 @@ Why RL?
 \end{itemize}
 \end{frame}
 
+%% Remember to say its okay not to know RL
 \begin{frame}<1>[label=extending_methods]
 \frametitle<1>{RL model changes}
 \frametitle<2>{Categorization model changes}
@@ -848,14 +868,15 @@ Why RL?
 \begin{itemize}
 \item \(50 \times 50 \times 3\) RGB pixel input.
 \item Shared 4-layer CNN for input processing.  
-\item Deeper but more bottlenecked task network (3 hidden layers, 64 units each), which performs better on these tasks. 
+\item Cross-entropy loss.
 \end{itemize}
 }
 \only<1> {
 \begin{itemize}
 \item DQN-like approach.
 \item \(91 \times 91 \times 3\) RGB input.
-\item Shared CNN for input, and shared Q-value decoder, task-specific network between.
+\item CNN for input, and Q-value (action-value) decoder shared across tasks. 
+\item Deeper task-specific net.
 \item Meta-network examples were (s, a, r) tuples.
 \item Task representations in training were partly persistent, to overcome strongly conflicting signals and accelerate learning.
 \end{itemize}
@@ -950,8 +971,11 @@ Model-based methods are often framed in part as an approach to flexibility.
 \item That is, they're offloading a substantial part of the adaptation problem to another system.
 \item Meta-mapping offers a principled way to adapt a reward-predicting function, which a model-based system could then plan over.
 \item It could also adapt transition models, e.g. when it starts raining and California drivers get confused. 
-\item Thus meta-mapping complements model-based planning.
+\item Thus meta-mapping and model-based planning could be complementary.
 \end{itemize}
+\end{frame}
+
+\begin{frame}{Behavioral uncertainty}
 
 \end{frame}
 
@@ -992,23 +1016,36 @@ Model-based methods are often framed in part as an approach to flexibility.
 \end{frame}
 
 
-\begin{frame}{Categorization tasks}
-Why categorization? 
+\begin{frame}{Why categorization?}
 \begin{itemize}
 \item Cognitive history.
 \item Rich visual input, more complex tasks.
 \item Classification is a common problem.
 \end{itemize}
+\end{frame}
+\begin{frame}{Categorization tasks}
+\begin{columns}
+\begin{column}{0.5\textwidth}
 Types of categories:
 \begin{itemize}
 \item Basic tasks: single attribute (shape/color/size) category.
 \item Composite tasks: AND, OR, or XOR of two different attributes.  
 \end{itemize}
+\uncover<2->{
 Meta-mappings:
 \begin{itemize}
 \item Switch one color to another or switch one shape to another. 
 \item (Omitted size switching because only a few sizes.)
 \end{itemize}
+}
+\end{column}
+\begin{column}{0.5\textwidth}
+\centering
+\includegraphics[width=2.2cm]{../../psych/dissertation/4-extending/figures/categorization_stimuli/24_red_triangle_1.png}\\
+\includegraphics[width=2.2cm]{figures/categorization/32_cyan_emptysquare_0.png}\\
+\includegraphics[width=2.2cm]{../../psych/dissertation/4-extending/figures/categorization_stimuli/24_yellow_inverseplus_0.png}
+\end{column}
+\end{columns}
 \end{frame}
 
 \againframe<2>{extending_methods}
@@ -1055,7 +1092,7 @@ Starting from a zero-shot ``guess'' at the appropriate behavior results in faste
 
 \begin{frame}{Connecting to my recent RL generalization work}
 How does this relate to our recent finding that realistic tasks improve generalization in language-conditioned RL?\par
-\begin{itemize}[<+(2)->]
+\begin{itemize}[<+(1)->]
 \item In some cases this approach appears to be quite sample efficient, e.g. only 16 training tasks in RL.
 \item This is despite having \textbf{more challenging} evaluation than the language work, since often the adapted task \textbf{contradicts previous learning} (e.g. was negatively rewarded). 
 \item However, language does seem to be a better way of constructing task representations in the categorization setting, with language + meta-mapping adapting even better.
@@ -1074,7 +1111,7 @@ How does this relate to our recent finding that realistic tasks improve generali
     \item Performs basic tasks by parameterizing a small task network from a vector representation of the task. 
     \item Uses an analogy between basic tasks and meta-mappings to perform meta-mappings by transforming task embeddings. 
     \end{itemize}
-\item This approach performs comparably to humans in a card game task, and outperforms a language baseline across card games, image categorization, and RL.
+\item This approach performs comparably to humans in a card game task, and outperforms the language-based approach in some (but not all) settings.
 \item Zero-shot adaptation allows faster, better later learning. 
 \item Earlier paper: \url{https://arxiv.org/abs/1905.09950} and library + all code: \url{https://github.com/lampinen/HoMM}
 \end{itemize}
@@ -1100,7 +1137,7 @@ But I was lucky:\\
 \end{frame}
 
 \begin{frame}[standout]
-Thanks to Jay, Noah and Surya, and Erin and Katherine and other members of my lab! \\[1em]
+Thanks to Jay, Noah, Surya, Erin, Katherine, Arianna and the rest of the lab! \\[1em]
 And you for listening! \\[1em]
 Questions?
 \end{frame}
