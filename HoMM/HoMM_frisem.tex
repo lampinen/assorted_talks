@@ -23,7 +23,6 @@
 \usetikzlibrary{matrix,backgrounds}
 \usetikzlibrary{positioning}
 \usetikzlibrary{shapes,arrows}
-\usetikzlibrary{positioning}
 \usetikzlibrary{decorations.pathreplacing, calligraphy}
 
 \captionsetup[subfigure]{labelformat=empty}
@@ -682,7 +681,7 @@ $\vdots$
 \end{tikzpicture}
 \end{column}
 \end{columns}
-\only<2>{\vspace{1em} Parsimonious \& allows for continued abstraction!}
+\only<2>{\vspace{1em} Parsimonious, and relates to our repeated abstraction abilities.}
 
 \only<3>{\vspace{1em} As long as the new language is systematically related to the old, may work! (Prior zero-shot work has used similar approaches.)}
 \end{frame}
@@ -1067,8 +1066,19 @@ Meta-mappings:
 \againframe<2>{cat_results}
 
 \begin{frame}[standout]
-Meta-mapping works well on classification tasks from pixel input, language works better.\\[1em]
-Meta-mapping with language may be even better.
+Language produces better concept representations than examples.\\[1em]
+Meta-mapping these representations produces similar performance to langauge generalization.
+\end{frame}
+
+\begin{frame}{Thoughts on language \& my recent RL generalization work}
+How does this relate to our recent finding that realistic tasks improve generalization in language-conditioned RL?\par
+\begin{itemize}[<+(1)->]
+\item In some cases this approach appears to be quite sample efficient, e.g. only 16 training tasks in RL.
+\item This is despite having \textbf{more challenging} evaluation than the language work, since often the adapted task \textbf{contradicts previous learning} (e.g. was negatively rewarded). 
+\item Language does seem to be a better way of constructing task representations in the categorization setting, where there were many more training tasks, with language + meta-mapping adapting similarly to language generalization. 
+\item Whether this perspective is computationally useful with data as rich as human experience is an open question.
+\end{itemize}
+(``Environmental drivers of generalization in a situated agent,'' Hill, Lampinen, et al., ICLR 2020)
 \end{frame}
 
 \section{Interactions with other timescales of learning}
@@ -1093,17 +1103,6 @@ Starting from a zero-shot ``guess'' at the appropriate behavior results in faste
 
 \section{Wrapping up}
 
-\begin{frame}{Connecting to my recent RL generalization work}
-How does this relate to our recent finding that realistic tasks improve generalization in language-conditioned RL?\par
-\begin{itemize}[<+(1)->]
-\item In some cases this approach appears to be quite sample efficient, e.g. only 16 training tasks in RL.
-\item This is despite having \textbf{more challenging} evaluation than the language work, since often the adapted task \textbf{contradicts previous learning} (e.g. was negatively rewarded). 
-\item However, language does seem to be a better way of constructing task representations in the categorization setting, with language + meta-mapping adapting even better.
-\item Whether this perspective is computationally useful with data as rich as human experience is an open question.
-\end{itemize}
-(``Environmental drivers of generalization in a situated agent,'' Hill, Lampinen, et al., ICLR 2020)
-\end{frame}
-
 \begin{frame}{Conclusions}
 
 \begin{itemize}
@@ -1114,7 +1113,7 @@ How does this relate to our recent finding that realistic tasks improve generali
     \item Performs basic tasks by parameterizing a small task network from a vector representation of the task. 
     \item Uses an analogy between basic tasks and meta-mappings to perform meta-mappings by transforming task embeddings. 
     \end{itemize}
-\item This approach performs comparably to humans in a card game task, and outperforms the language-based approach in some (but not all) settings.
+\item This approach performs comparably to humans in a card game task, and outperforms (or equals) a language based approach across three settings.
 \item Zero-shot adaptation allows faster, better later learning. 
 \item Earlier paper: \url{https://arxiv.org/abs/1905.09950} and library + all code: \url{https://github.com/lampinen/HoMM}
 \end{itemize}
