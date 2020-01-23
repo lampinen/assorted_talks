@@ -18,6 +18,7 @@
 \usepackage{xcolor}
 \usepackage[normalem]{ulem}
 \usepackage{hyperref}
+\usepackage{pdfpc-commands}
 \usepackage{tikz}
 \usetikzlibrary{matrix,backgrounds}
 \usetikzlibrary{positioning}
@@ -779,11 +780,12 @@ Meta-mapping adapts well! But how well?
 
 
 \begin{frame}<1>[label=cards_results]
-\frametitle{MM vs. baselines}
+\frametitle<1>{MM vs. language}
+\frametitle<2->{MM vs. humans}
 \only<1>{ 
 \includegraphics[height=0.8\textheight]{../../psych/dissertation/3-human-adaptation/figures/adaptation_HoMM_langauge.png}
 \begin{tikzpicture}[overlay]
-\fill[white] (-3, 3) rectangle (-0.2, 4); 
+\fill[white] (-3, 3.5) rectangle (-0.2, 4); 
 \end{tikzpicture}
 }
 \only<2>{
@@ -976,7 +978,8 @@ Model-based methods are often framed in part as an approach to flexibility.
 \end{frame}
 
 \begin{frame}{Behavioral uncertainty}
-
+\inlineMovie{figures/recordin1.mp4}{../../psych/dissertation/4-extending/figures/pick_up_0.png}{width=0.48\textwidth}%
+\inlineMovie{figures/recordin1.mp4}{../../psych/dissertation/4-extending/figures/pusher_0.png}{width=0.48\textwidth}
 \end{frame}
 
 
