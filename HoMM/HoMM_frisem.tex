@@ -57,7 +57,7 @@
 \frametitle<1-4>{Humans are good at adapting flexibly}
 \frametitle<5>{Switching to opposite rewards is challenging}
 \centering
-\only<1>{
+\only<1,5>{
 \includegraphics[width=\textwidth]{figures/poker.png}
 }
 \only<2>{
@@ -72,24 +72,35 @@
 \begin{frame}{Deep learning is (usually) not}
 \begin{columns}
 \begin{column}{0.5\textwidth}
-Deep learning generally requires lots of data to achieve good performance on a task. However, there are a few exceptions:
-\begin{itemize}[<+(2)->]
-    \item Lots of new work on meta-learning (learning to learn), for learning from little data, but not none.
-    \item Some language work
-    \item Model-based RL. 
-    \item I'll discuss these approaches along the way. 
+By contrast, deep learning generally requires lots of data to achieve good performance on a task. 
+\begin{itemize}[<+(1)->]
+    \item DQN learning Frostbite: 940 hours of game time.
+    \item Superhuman poker-playing: millions of hands (I estimate from the reported statistics). 
+    \item Even then, these models can't adapt to task alterations without lots \textbf{more} data! 
 \end{itemize}
 \end{column}
 
 \begin{column}{0.5\textwidth}
-\includegraphics[width=\textwidth]{figures/poker.png}
 \includegraphics[width=\textwidth]{figures/frostbite.jpg}
+\includegraphics[width=\textwidth]{figures/poker.png}
 \end{column}
 \end{columns}
 \end{frame}
 
 \begin{frame}[standout]
 How can we build deep learning models that can perform a new task well on their first try, based on its relationship to prior tasks?
+\end{frame}
+
+\begin{frame}{Prior work on flexible deep-learning models}
+There has been some prior work on building more flexible deep learning models. In particular: 
+\begin{itemize}[<+(1)->]
+    \item Lots of new work on meta-learning (learning to learn).
+    \item Some work on following language instructions.
+    \item Model-based RL. 
+\end{itemize}
+\uncover<5>{
+I don't think these methods solve the adaptation problem completely, I'll discuss why as I go along.
+}
 \end{frame}
 
 \section{Meta-mapping}
@@ -158,9 +169,9 @@ We want to model how we can adapt the task mapping.
 \end{frame}
 
 \begin{frame}{Meta-mappings}
-How do we get from a task function to an adapted one?
+How do we adapt a task-mapping?
 \begin{itemize}
-\item We propose \textbf{meta-mappings}, higher-order mappings which transform mappings into other mappings.
+\item We propose \textbf{meta-mappings}, higher-order mappings which transform task mappings into other task mappings.
 \end{itemize}
 \includegraphics[width=\textwidth]{figures/meta_mapping_poker.png}
 \end{frame}
@@ -734,7 +745,7 @@ Categories & Classification & Adapting concepts \\
 Five games:
 \begin{itemize}
 \item \textbf{High card:} Highest wins.
-\item \textbf{Pairs} Pairs are valuable. 
+\item \textbf{Pairs:} Pairs are valuable. 
 \item \textbf{Match:} Closest to matching cards win. 
 \item \textbf{Blackjack:} Value increases to a threshold, then switches to negative. 
 \item \textbf{Straight flush:} Adjacent same suit numbers are best, then adjacent different. 
@@ -1067,7 +1078,7 @@ Meta-mappings:
 
 \begin{frame}[standout]
 Language produces better concept representations than examples.\\[1em]
-Meta-mapping these representations produces similar performance to langauge generalization.
+Meta-mapping these representations produces similar performance to language generalization.
 \end{frame}
 
 \begin{frame}{Thoughts on language \& my recent RL generalization work}
@@ -1075,7 +1086,7 @@ How does this relate to our recent finding that realistic tasks improve generali
 \begin{itemize}[<+(1)->]
 \item In some cases this approach appears to be quite sample efficient, e.g. only 16 training tasks in RL.
 \item This is despite having \textbf{more challenging} evaluation than the language work, since often the adapted task \textbf{contradicts previous learning} (e.g. was negatively rewarded). 
-\item Language does seem to be a better way of constructing task representations in the categorization setting, where there were many more training tasks, with language + meta-mapping adapting similarly to language generalization. 
+\item Language constructs better category representations, where there were many more training tasks, with language + meta-mapping adapting similarly to language generalization. 
 \item Whether this perspective is computationally useful with data as rich as human experience is an open question.
 \end{itemize}
 (``Environmental drivers of generalization in a situated agent,'' Hill, Lampinen, et al., ICLR 2020)
