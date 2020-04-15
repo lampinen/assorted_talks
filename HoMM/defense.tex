@@ -95,20 +95,20 @@ How can we build deep-learning models with more human-like flexibility?
 \againframe<3-4>{pokermotivation}
 
 \begin{frame}[standout]
-Goal: a deep-learning framework that can perform well on a new task, on its first try, by transforming its representation of a prior task. 
+Goal: a deep-learning framework that can model this adaptability. 
 \end{frame}
 
 
 
 \begin{frame}{Prior work on flexible deep-learning models}
-There has been some prior work on building more flexible deep learning models. In particular: 
+There has been a great deal of prior work on building more flexible deep learning models. In particular: 
 \begin{itemize}[<+(1)->]
     \item Lots of work on meta-learning (learning to learn).
     \item Some work on following language instructions.
     \item Model-based methods. 
 \end{itemize}
 \uncover<5>{
-I don't think these methods solve the adaptation problem completely, I'll discuss why as I go along.
+I'll discuss the relationship between my work and these as I go along.
 }
 \end{frame}
 
@@ -159,7 +159,13 @@ If tasks are mappings, altering the task = adapting the mapping.
 \begin{columns}
 \begin{column}{0.5\textwidth}
 \vspace{2em}
-\includegraphics[width=\textwidth]{figures/poker.png}
+\only<1>{
+\includegraphics[width=\textwidth]{figures/poker_adaptation_1.png}
+}
+\only<2>{
+\includegraphics[width=\textwidth]{figures/poker_adaptation_mappings.png}
+}
+
 \end{column}
 \begin{column}{0.5\textwidth}
 \vspace{2em}
@@ -174,7 +180,7 @@ If tasks are mappings, altering the task = adapting the mapping.
 \end{frame}
 
 \begin{frame}[standout]
-We want to model how we can adapt the task mapping.
+We want to model how we can transform the task mapping.
 \end{frame}
 
 \begin{frame}{Meta-mappings}
