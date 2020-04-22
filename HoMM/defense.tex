@@ -56,7 +56,7 @@
 \frame{\titlepage}
 
 \begin{frame}<1-2>[label=pokermotivation]
-\frametitle<1-2>{Human cognition is flexible}
+\frametitle<1-2>{Human cognition is flexible -- we can adapt on our first try}
 \frametitle<3-4>{How do humans adapt?}
 \frametitle<5>{Switching to opposite rewards is challenging}
 \centering
@@ -97,7 +97,7 @@ How can we build deep-learning models with more human-like flexibility?
 \againframe<3-4>{pokermotivation}
 
 \begin{frame}[standout]
-Goal: a domain-general deep-learning framework that adapt to task transformations. 
+Goal: a deep-learning framework that can adapt to task transformations. 
 \end{frame}
 
 
@@ -138,6 +138,7 @@ Standard deep learning tries to infer this mapping from lots of examples.
 Tasks \(\bm =\) mappings from inputs to outputs. 
 \end{frame}
 
+%% TODO: Maybe cut
 \begin{frame}{Meta-learning}
 \begin{columns}
 \begin{column}{0.5\textwidth}
@@ -391,7 +392,7 @@ This will allow the architecture to perform new tasks without data, by their rel
 \node[block] at (-4.1, 1.25) (languagenet) {\(\mathcal{L}\)};
 \path[arrow] (language.east) -- ([xshift=-3]languagenet.west);
 
-\node[bpurp, text width=2cm] at (-2, 1.25) (languagetaskrep) {\(z_{task}\)};
+\node[bpurp, text width=2cm] at (-2, 1.25) (languagetaskrep) {\(z_{poker}\)};
 \path[arrow] ([xshift=3]languagenet.east) -- (languagetaskrep.west);
 
 
@@ -409,14 +410,14 @@ $\vdots$
 \node[block] at (-4.1, -1.25) (examplenet) {\(\mathcal{E}\)};
 \path[arrow] (examples.east) -- ([xshift=-3]examplenet.west);
 
-\node[bpurp, text width=2cm] at (-2, -1.25) (examplestaskrep) {\(z_{task}\)};
+\node[bpurp, text width=2cm] at (-2, -1.25) (examplestaskrep) {\(z_{poker}\)};
 \path[arrow] ([xshift=3]examplenet.east) -- (examplestaskrep.west);
 \end{scope}
 
 %% b) performing
 \uncover<2->{
 \draw[boundingbox, draw=gray, fill=white] (-1.5, -2.5) rectangle (8, 2.5);
-\node[bpurp] at (-0.75, 1.25) (taskrep) {\(z_{task}\)};
+\node[bpurp] at (-0.75, 1.25) (taskrep) {\(z_{poker}\)};
 
 \node[gray, text width=2cm, align=center] at (0.75, 2.1) {Hyper network};
 \node[block] at (0.75, 1.25) (hypernet) {\(\mathcal{H}\)};
@@ -488,7 +489,9 @@ We use an architecture that generates task representations, which it uses to par
 \begin{frame}<1>[label=homm_arch]
 \frametitle<1>{Meta-mapping as transforming function representations}
 \frametitle<2-3>{So we can use the same approach and networks!}
-\frametitle<4>{Language-based approach}
+\frametitle<4>{Architecture reminder}
+\frametitle<5>{Language-based approach}
+\frametitle<6>{Language-based meta-mapping}
 %\frametitle<4>{Language-based meta-mapping}
 \begin{columns}
 \begin{column}{\dimexpr\paperwidth-10pt}
@@ -501,6 +504,7 @@ We use an architecture that generates task representations, which it uses to par
 \draw[boundingbox, draw=gray, fill=white] (-8.5, -2.5) rectangle (-2, 2.5);
 
 %% from language
+\only<-3, 5-6>{
 \node[gray] at (-7, 2.1) {Instructions};
 \node at (-7, 1.25) (language) {``Play poker.''};
 
@@ -508,11 +512,17 @@ We use an architecture that generates task representations, which it uses to par
 \node[block] at (-4.1, 1.25) (languagenet) {\(\mathcal{L}\)}; 
 \path[arrow] (language.east) -- ([xshift=-3]languagenet.west);
 
-\node[bpurp, text width=2cm] at (-2, 1.25) (languagetaskrep) {\(z_{task}\)}; 
+\node[bpurp, text width=2cm] at (-2, 1.25) (languagetaskrep) {\(z_{poker}\)}; 
 \path[arrow] ([xshift=3]languagenet.east) -- (languagetaskrep.west);
+}
 
 
 %% from examples
+\uncover<-4>{
+
+%\only<4>{
+%\begin{scope}[shift={(0, 2.5)}]
+%}
 
 \node[gray, text width=2.5cm, align=center] at (-7, -0.2) {Task examples (encoded)};
 \node at (-7, -1.25) (examples) {
@@ -522,17 +532,23 @@ We use an architecture that generates task representations, which it uses to par
 $\vdots$
 \end{matrix}\right\}\)};
 
+%\only<-3, 5-6>{
 \node[gray, text width=2cm, align=center] at (-4.1, -0.4) {Example network};
+%}
 \node[block] at (-4.1, -1.25) (examplenet) {\(\mathcal{E}\)}; 
 \path[arrow] (examples.east) -- ([xshift=-3]examplenet.west);
 
-\node[bpurp, text width=2cm] at (-2, -1.25) (examplestaskrep) {\(z_{task}\)}; 
+\node[bpurp, text width=2cm] at (-2, -1.25) (examplestaskrep) {\(z_{poker}\)}; 
 \path[arrow] ([xshift=3]examplenet.east) -- (examplestaskrep.west);
+%\only<4>{
+%\end{scope}
+%}
+}
 
 \end{scope}
 %% b) performing 
 \draw[boundingbox, draw=gray, fill=white] (-1.5, -2.5) rectangle (8.5, 2.5);
-\node[bpurp] at (-0.75, 1.25) (taskrep) {\(z_{task}\)};
+\node[bpurp] at (-0.75, 1.25) (taskrep) {\(z_{poker}\)};
 
 \node[gray, text width=2cm, align=center] at (0.75, 2.1) {Hyper network};
 \node[block] at (0.75, 1.25) (hypernet) {\(\mathcal{H}\)}; 
@@ -566,12 +582,13 @@ $\vdots$
 \resizebox{\textwidth}{!}{%
 \begin{tikzpicture}[auto, every node/.style={execute at begin node=\setlength{\baselineskip}{1.1em}}]
 \setlength{\baselineskip}{1.2em}
-\only<2->{
+\only<2-4,6>{
 \begin{scope}[shift={(0.4, 0)}]
 %% a) constructing
 \draw[boundingbox, draw=gray, fill=white] (-8.5, -2.5) rectangle (-2, 2.5);
 
 %% from language
+\only<-3, 5->{
 \node[gray] at (-6.7, 2.1) {Instructions};
 \node at (-6.7, 1.25) (language) {``Try to lose.''};
 
@@ -581,10 +598,12 @@ $\vdots$
 
 \node[borange, text width=2cm] at (-2, 1.25) (languagetaskrep) {\(z_{meta}\)}; 
 \path[arrow] ([xshift=3]languagenet.east) -- (languagetaskrep.west);
+}
 
 
 %% from examples
 
+\only<-5>{
 \node[gray, text width=3.5cm, align=center] at (-6.7, -0.2) {Mapping examples (input/output tasks)};
 \node at (-6.7, -1.25) (examples) {
 \(\left\{
@@ -599,9 +618,9 @@ $\vdots$
 
 \node[borange, text width=2cm] at (-2, -1.25) (examplestaskrep) {\(z_{meta}\)}; 
 \path[arrow] ([xshift=3]examplenet.east) -- (examplestaskrep.west);
+}
 
 \end{scope}
-}
 %% d) performing 
 \draw[boundingbox, draw=gray, fill=white] (-1.5, -2.5) rectangle (8.5, 2.5);
 \only<2->{
@@ -617,7 +636,10 @@ $\vdots$
 \only<1>{
 \node[bblue, block, dashed] at (3.5, -1.25) {??}; 
 }
-\uncover<2>{
+\uncover<1>{
+\node at (4, -1.9) {\includegraphics[height=1cm]{figures/wizard.png}};
+}
+\uncover<2->{
 \node[bblue, block, dashed] at (3.5, -1.25) (tasknet) {\(\mathcal{T}\)}; 
 }
 \path[arrow] (handrep.east) -- ([xshift=-3]tasknet.west);
@@ -672,6 +694,7 @@ $\vdots$
 \path[draw, gray, very thick, out=90, in=0, dash pattern=on 2pt off 2pt] (c1) to (c2);
 \path[draw, gray, very thick, out=180, in=-90, dash pattern=on 2pt off 2pt] (c2) to (c3);
 \path[arrow, gray, very thick, out=90, in=180, dash pattern=on 2pt off 2pt] (c3) to ([xshift=-3]hypernet2.west);
+}
 \end{tikzpicture}}
 \end{column}
 \end{columns}
@@ -680,7 +703,7 @@ $\vdots$
 
 \againframe<4>{basic_metamapping_analogy}
 
-\againframe<2-3>{homm_arch}
+\againframe<3>{homm_arch}
 
 \begin{frame}[standout]
 We can use the same approaches and networks for both basic tasks and meta-mappings.
@@ -721,33 +744,39 @@ Categories & Classification & Adapting concepts \\
 
 \begin{frame}{Simple card games}
 
-\begin{columns}
-\begin{column}{0.5\textwidth}
-Five games:
 \begin{itemize}
-\item \textbf{High card:} Highest wins.
-\item \textbf{Pairs:} Pairs are valuable. 
-\item \textbf{Match:} Closest to matching cards win. 
-\item \textbf{Blackjack:} Value increases to a threshold, then switches to negative. 
-\item \textbf{Straight flush:} Adjacent same suit numbers are best, then adjacent different. 
+\item Constructed 5 two-card games (analogous to poker, blackjack, etc.)
+\item With 8 variations of each, including ``try-to-lose'' variations
+\item Taught the model non-losing variations of poker, and winning and losing variations of other games 
+\item Can it infer losing at poker?
 \end{itemize}
-\end{column}
-
-\begin{column}{0.5\textwidth}
-Three binary attributes:
-\begin{itemize}
-\item \textbf{Losers:} Try to lose instead of winning! Reverses the ranking of hands.
-\item \textbf{Suits rule:} Suits are more important than values. 
-\item \textbf{Switch suit:} Switches which of the suits is more valuable.
-\end{itemize}
-\vspace{3.2em}
-\end{column}
-\end{columns}
-\vspace{1em}
-\textbf{= 40 total, held out all four ``straight flush'' losing versions}
+%\begin{columns}
+%\begin{column}{0.5\textwidth}
+%Five games:
+%\begin{itemize}
+%\item \textbf{High card:} Highest wins.
+%\item \textbf{Pairs:} Pairs are valuable. 
+%\item \textbf{Match:} Closest to matching cards win. 
+%\item \textbf{Blackjack:} Value increases to a threshold, then switches to negative. 
+%\item \textbf{Straight flush:} Adjacent same suit numbers are best, then adjacent different. 
+%\end{itemize}
+%\end{column}
+%
+%\begin{column}{0.5\textwidth}
+%Three binary attributes:
+%\begin{itemize}
+%\item \textbf{Losers:} Try to lose instead of winning! Reverses the ranking of hands.
+%\item \textbf{Suits rule:} Suits are more important than values. 
+%\item \textbf{Switch suit:} Switches which of the suits is more valuable.
+%\end{itemize}
+%\vspace{3.2em}
+%\end{column}
+%\end{columns}
+%\vspace{1em}
+%\textbf{= 40 total, held out all four ``straight flush'' losing versions}
 \end{frame}
 
-\againframe<3>{homm_arch}
+\againframe<4>{homm_arch}
 
 \begin{frame}
 \frametitle<1>{Possible results}
@@ -767,7 +796,7 @@ Three binary attributes:
 Meta-mapping adapts well! But how well?
 \end{frame}
 
-\againframe<4>{homm_arch}
+\againframe<5>{homm_arch}
 %TODO: new language intro
 
 \begin{frame}<1>[label=cards_results]
@@ -789,7 +818,7 @@ Note: this analysis is biased against models because of ceiling.
 }
 \end{frame}
 
-\begin{frame}{Human baseline}
+\begin{frame}{Human comparison}
 \begin{columns}
 \begin{column}{0.5\textwidth}
 \begin{itemize}
@@ -810,17 +839,17 @@ Note: this analysis is biased against models because of ceiling.
 
 \end{frame}
 
-\againframe<2->{cards_results}
+\againframe<2>{cards_results}
 
-\begin{frame}{Aside: Why are humans not optimal at winning?}
-\centering
-\includegraphics[height=0.8\textheight]{../../psych/dissertation/3-human-adaptation/figures/testing_basic_bet_densities.png}
-\end{frame}
+%\begin{frame}{Aside: Why are humans not optimal at winning?}
+%\centering
+%\includegraphics[height=0.8\textheight]{../../psych/dissertation/3-human-adaptation/figures/testing_basic_bet_densities.png}
+%\end{frame}
 
 \begin{frame}[standout]
 On this task, MM adapts comparably to humans, and better than language alone. \\[1em]
 \only<2->{
-(I'm not saying using language isn't useful, just that transforming task representations may be useful as well.)
+(I'm not saying that language isn't useful, just that transforming task representations may be useful as well.)
 }
 \end{frame}
 
@@ -843,6 +872,11 @@ Held out switched versions of two pairs in both task types, leaving 16 train tas
 \end{frame}
 
 \begin{frame}{RL tasks}
+\inlineMovie{figures/recording_pickup.mp4}{../../psych/dissertation/4-extending/figures/pick_up_0.png}{width=0.48\textwidth, height=0.36\textwidth}%
+\inlineMovie{figures/recording_pusher.mp4}{../../psych/dissertation/4-extending/figures/pusher_0.png}{width=0.48\textwidth, height=0.36\textwidth}
+\end{frame}
+
+\begin{frame}{RL tasks}
 Why RL? 
 \begin{itemize}
 \item It has driven some substantial recent AI achievements.
@@ -852,109 +886,111 @@ Why RL?
 \end{frame}
 
 %% Remember to say its okay not to know RL
-\begin{frame}<1>[label=extending_methods]
-\frametitle<1>{RL model changes}
-\frametitle<2>{Categorization model changes}
-\begin{columns}
-\begin{column}{0.5\textwidth}
-\only<2>{
-\begin{itemize}
-\item \(50 \times 50 \times 3\) RGB pixel input.
-\item Shared 4-layer CNN for input processing.  
-\item Cross-entropy loss.
-\end{itemize}
-}
-\only<1> {
-\begin{itemize}
-\item DQN-like approach.
-\item \(91 \times 91 \times 3\) RGB input.
-\item CNN for input, and Q-value (action-value) decoder shared across tasks. 
-\item Deeper task-specific net.
-\item Meta-network examples were (s, a, r) tuples.
-\item Task representations in training were partly persistent, to overcome strongly conflicting signals and accelerate learning.
-\end{itemize}
-}
-\end{column}
-\begin{column}{0.5\textwidth}
-\begin{tikzpicture}
-\draw[boundingbox, fill=white] (-3, -4.3) rectangle (2.5, 3.2);
-\node[lightgray] at (-1.2, 2.9) {Basic meta-learning};
-\node at (-1.5, -4) (examples) {Examples};
-\node at (-1.5, -3.2) (D1) {
-\(\left\{
-\begin{matrix}
-(x^{ex}_{in,0}, y^{ex}_{targ,0})\\
-$\vdots$
-\end{matrix}\right\}\)};
+%\begin{frame}<1>[label=extending_methods]
+%\frametitle<1>{RL model changes}
+%\frametitle<2>{Categorization model changes}
+%\begin{columns}
+%\begin{column}{0.5\textwidth}
+%\only<2>{
+%\begin{itemize}
+%\item \(50 \times 50 \times 3\) RGB pixel input.
+%\item Shared 4-layer CNN for input processing.  
+%\item Cross-entropy loss.
+%\end{itemize}
+%}
+%\only<1> {
+%\begin{itemize}
+%\item DQN-like approach.
+%\item \(91 \times 91 \times 3\) RGB input.
+%\item CNN for input, and Q-value (action-value) decoder shared across tasks. 
+%\item Deeper task-specific net.
+%\item Meta-network examples were (s, a, r) tuples.
+%\item Task representations in training were partly persistent, to overcome strongly conflicting signals and accelerate learning.
+%\end{itemize}
+%}
+%\end{column}
+%\begin{column}{0.5\textwidth}
+%\begin{tikzpicture}
+%\draw[boundingbox, fill=white] (-3, -4.3) rectangle (2.5, 3.2);
+%\node[lightgray] at (-1.2, 2.9) {Basic meta-learning};
+%\node at (-1.5, -4) (examples) {Examples};
+%\node at (-1.5, -3.2) (D1) {
+%\(\left\{
+%\begin{matrix}
+%(x^{ex}_{in,0}, y^{ex}_{targ,0})\\
+%$\vdots$
+%\end{matrix}\right\}\)};
+%
+%\node at (1.5, -4) (probes) {Probes};
+%\node at (1.5, -3.2) (D2) {
+%%\(z^{prb}_{in}\)};
+%\(\left\{
+%\begin{matrix}
+%x^{prb}_{in,0}\\
+%$\vdots$
+%\end{matrix}\right\}\)};
+%
+%\node [block] at (-1.5, -1.95) (M) {\(\mathcal{M}\)};
+%\path [arrow] ([yshift=-5]D1.north) to (M);
+%
+%\node at (-1, -1) (zfunc) {\(z^{task}\)};
+%\path [arrow, out=90, in=-135] (M.north) to ([xshift=6,yshift=3]zfunc.south west);
+%
+%\node[block] at (0, -0.55) (H) {\(\mathcal{H}\)};
+%\path [arrow, out=45, in=180] ([yshift=-3]zfunc.north) to (H.west);
+%\node [block, dashed] at (1.5, -0.55) (F) {\(F_{z^{task}}\)};
+%\path[arrow] (H.east) to (F.west);
+%\path [arrow, dashed] (D2) to (F);
+%
+%\node at (1.5, 1) (outputs) {
+%%\(z^{pred}_{out}\)};
+%\(\left\{
+%\begin{matrix}
+%y^{pred}_{out,0},\\
+%$\vdots$
+%\end{matrix}\right\}\)};
+%\node at (1.5, 1.8) (predictions) {Predictions};
+%
+%\path [arrow, dashed] (F) to ([yshift=3]outputs.south);
+%
+%\node at (-1.5, 1.8) (probetargs) {Probe targets};
+%\node at (-1.5, 1) (D2targs) {
+%%\(z^{prb}_{in}\)};
+%\(\left\{
+%\begin{matrix}
+%y^{prb}_{targ,0}\\
+%$\vdots$
+%\end{matrix}\right\}\)};
+%
+%\node [align=center, text width=1.25 cm] at (0, 2.25) (dispatch) {\baselineskip=12pt Loss\par};
+%
+%\path [arrow, dashed, out=180, in=-90] ([xshift=3]outputs.west) to (dispatch.south);
+%
+%\path [arrow, dashed, out=0, in=-90] ([xshift=-3.5]D2targs.east) to (dispatch.south);
+%
+%%% overlay
+%
+%\draw [fill=black, opacity=0.2] (0.75, -0.2) rectangle (2.25, 0.35);
+%\draw [fill=red, opacity=0.4] (0.75, -1) rectangle (2.25, -0.2);
+%\draw [fill=black, opacity=0.2] (0.75, -2.5) rectangle (2.25, -1);
+%
+%\uncover<4->{
+%\draw [red, ultra thick] (-1, -1) circle (0.5);
+%}
+%\end{tikzpicture}
+%\end{column}
+%\end{columns}
+%
+%\end{frame}
 
-\node at (1.5, -4) (probes) {Probes};
-\node at (1.5, -3.2) (D2) {
-%\(z^{prb}_{in}\)};
-\(\left\{
-\begin{matrix}
-x^{prb}_{in,0}\\
-$\vdots$
-\end{matrix}\right\}\)};
-
-\node [block] at (-1.5, -1.95) (M) {\(\mathcal{M}\)};
-\path [arrow] ([yshift=-5]D1.north) to (M);
-
-\node at (-1, -1) (zfunc) {\(z^{task}\)};
-\path [arrow, out=90, in=-135] (M.north) to ([xshift=6,yshift=3]zfunc.south west);
-
-\node[block] at (0, -0.55) (H) {\(\mathcal{H}\)};
-\path [arrow, out=45, in=180] ([yshift=-3]zfunc.north) to (H.west);
-\node [block, dashed] at (1.5, -0.55) (F) {\(F_{z^{task}}\)};
-\path[arrow] (H.east) to (F.west);
-\path [arrow, dashed] (D2) to (F);
-
-\node at (1.5, 1) (outputs) {
-%\(z^{pred}_{out}\)};
-\(\left\{
-\begin{matrix}
-y^{pred}_{out,0},\\
-$\vdots$
-\end{matrix}\right\}\)};
-\node at (1.5, 1.8) (predictions) {Predictions};
-
-\path [arrow, dashed] (F) to ([yshift=3]outputs.south);
-
-\node at (-1.5, 1.8) (probetargs) {Probe targets};
-\node at (-1.5, 1) (D2targs) {
-%\(z^{prb}_{in}\)};
-\(\left\{
-\begin{matrix}
-y^{prb}_{targ,0}\\
-$\vdots$
-\end{matrix}\right\}\)};
-
-\node [align=center, text width=1.25 cm] at (0, 2.25) (dispatch) {\baselineskip=12pt Loss\par};
-
-\path [arrow, dashed, out=180, in=-90] ([xshift=3]outputs.west) to (dispatch.south);
-
-\path [arrow, dashed, out=0, in=-90] ([xshift=-3.5]D2targs.east) to (dispatch.south);
-
-%% overlay
-
-\draw [fill=black, opacity=0.2] (0.75, -0.2) rectangle (2.25, 0.35);
-\draw [fill=red, opacity=0.4] (0.75, -1) rectangle (2.25, -0.2);
-\draw [fill=black, opacity=0.2] (0.75, -2.5) rectangle (2.25, -1);
-
-\uncover<4->{
-\draw [red, ultra thick] (-1, -1) circle (0.5);
-}
-\end{tikzpicture}
-\end{column}
-\end{columns}
-
-\end{frame}
+\againframe<4>{homm_arch}
 
 \begin{frame}{Results}
-\includegraphics[height=0.8\textheight]{figures/grids_adaptation.png}
+\includegraphics[height=0.8\textheight]{../../psych/dissertation/4-extending/figures/grids_adaptation_results.png}
 \end{frame}
 
 \begin{frame}[standout]
-Meta-mapping works in RL, even with a small support set of tasks. 
+Meta-mapping can work in RL, even with a small support set of tasks. 
 \end{frame}
 
 \begin{frame}{Relation to model-based adaptation}
@@ -962,17 +998,16 @@ Model-based methods are often framed in part as an approach to flexibility.
 \begin{itemize}
 \item However, for this to work, these methods generally must have a new reward function handed to them.
 \item That is, they're offloading a substantial part of the adaptation problem to another system.
-\item Meta-mapping offers a principled way to adapt a reward-predicting function, which a model-based system could then plan over.
-\item It could also adapt transition models, e.g. when it starts raining and California drivers get confused. 
+\item Meta-mapping could offer a principled way to adapt a reward-predicting function, transition models, etc.
 \item Thus meta-mapping and model-based planning could be complementary.
 \end{itemize}
 \end{frame}
 
-\begin{frame}{Behavioral uncertainty}
-\inlineMovie{figures/recording_pickup.mp4}{../../psych/dissertation/4-extending/figures/pick_up_0.png}{width=0.48\textwidth, height=0.36\textwidth}%
-\inlineMovie{figures/recording_pusher.mp4}{../../psych/dissertation/4-extending/figures/pusher_0.png}{width=0.48\textwidth, height=0.36\textwidth}
-\end{frame}
-
+%\begin{frame}{Behavioral uncertainty}
+%\inlineMovie{figures/recording_pickup.mp4}{../../psych/dissertation/4-extending/figures/pick_up_0.png}{width=0.48\textwidth, height=0.36\textwidth}%
+%\inlineMovie{figures/recording_pusher.mp4}{../../psych/dissertation/4-extending/figures/pusher_0.png}{width=0.48\textwidth, height=0.36\textwidth}
+%\end{frame}
+%
 
 \begin{frame}{Categorization tasks}
 \vspace{0.1em}
@@ -1042,7 +1077,8 @@ Meta-mappings:
 \end{columns}
 \end{frame}
 
-\againframe<2>{extending_methods}
+\againframe<6>{homm_arch}
+%\againframe<2>{extending_methods}
 
 \begin{frame}<1>[label=cat_results]
 \frametitle{Categorization results}
@@ -1058,20 +1094,20 @@ Meta-mappings:
 \againframe<2>{cat_results}
 
 \begin{frame}[standout]
-Language produces better concept representations than examples.\\[1em]
-Meta-mapping these representations produces similar performance to language generalization.
+%Language produces better concept representations than examples.\\[1em]
+%Meta-mapping these representations produces similar performance to language generalization.
 \end{frame}
 
-\begin{frame}{Thoughts on language \& my recent RL generalization work}
-How does this relate to our recent finding that realistic tasks improve generalization in language-conditioned RL?\par
-\begin{itemize}[<+(1)->]
-\item In some cases meta-mapping appears to be quite sample efficient, e.g. only 16 training tasks in RL.
-\item This is despite having \textbf{more challenging} evaluation than the prior language work, since often the adapted task \textbf{contradicts previous learning} (e.g. was negatively rewarded). 
-\item But language constructs better task representations in the categorization domain, with language + meta-mapping adapting similarly to language generalization. 
-\item Whether meta-mapping is computationally useful with data as rich as human experience is an open question.
-\end{itemize}
-(``Environmental drivers of generalization in a situated agent,'' Hill, Lampinen, et al., ICLR 2020)
-\end{frame}
+%\begin{frame}{Thoughts on language \& my recent RL generalization work}
+%How does this relate to our recent finding that realistic tasks improve generalization in language-conditioned RL?\par
+%\begin{itemize}[<+(1)->]
+%\item In some cases meta-mapping appears to be quite sample efficient, e.g. only 16 training tasks in RL.
+%\item This is despite having \textbf{more challenging} evaluation than the prior language work, since often the adapted task \textbf{contradicts previous learning} (e.g. was negatively rewarded). 
+%\item But language constructs better task representations in the categorization domain, with language + meta-mapping adapting similarly to language generalization. 
+%\item Whether meta-mapping is computationally useful with data as rich as human experience is an open question.
+%\end{itemize}
+%(``Environmental drivers of generalization in a situated agent,'' Hill, Lampinen, et al., ICLR 2020)
+%\end{frame}
 
 \section{Why zero-shot adaptation?}
 
