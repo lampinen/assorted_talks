@@ -613,14 +613,14 @@ $\vdots$
 \node at (-6.7, -1.25) (examples) {
 \(\left\{
 \begin{matrix}
-\only<-4>{({\color{bpurp}z_{chess}}, {\color{bpurp}z_{lose chess}})\\}
+\only<-4>{({\color{bpurp}z_{hearts}}, {\color{bpurp}z_{lose hearts}})\\}
 \only<5->{({\color{bpurp}z_{task}}, {\color{bpurp}z_{swtask}})\\}
 $\vdots$
 \end{matrix}\right\}\)};
 
 \node[gray, text width=2cm, align=center] at (-4.1, -0.4) {Example network};
 \node[block] at (-4.1, -1.25) (examplenet) {\(\mathcal{E}\)}; 
-\path[arrow] (examples.east) -- ([xshift=-3]examplenet.west);
+\path[arrow] ([xshift=-3]examples.east) -- ([xshift=-3]examplenet.west);
 
 \node[borange, text width=2cm] at (-2, -1.25) (examplestaskrep) {\only<-5>{\(z_{lose}\)}\only<7>{\!\(z_{switch}\)}\only<6>{\(z_{r\mapsto b}\)}}; 
 \path[arrow] ([xshift=3]examplenet.east) -- (examplestaskrep.west);
@@ -1090,20 +1090,16 @@ Meta-mappings:
 \againframe<6>{homm_arch}
 %\againframe<2>{extending_methods}
 
-\begin{frame}<1>[label=cat_results]
+\begin{frame}[label=cat_results]
 \frametitle{Categorization results}
-\only<1>{
-\includegraphics[height=0.8\textheight]{figures/categories_adaptation_no_lh.png}
-}
-\only<2>{
-\includegraphics[height=0.8\textheight]{figures/categories_adaptation.png}
-}
+\includegraphics[height=0.8\textheight]{../../psych/dissertation/4-extending/figures/concepts_adaptation_sweeping.png}
 \end{frame}
 
 %\againframe<4>{homm_arch}
-\againframe<2>{cat_results}
+%\againframe<2>{cat_results}
 
 \begin{frame}[standout]
+Both language generalization and meta-mapping perform very well in this domain.
 %Language produces better concept representations than examples.\\[1em]
 %Meta-mapping these representations produces similar performance to language generalization.
 \end{frame}
