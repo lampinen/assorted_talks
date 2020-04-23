@@ -489,7 +489,7 @@ We use an architecture that generates task representations, which it uses to par
 \begin{frame}<1>[label=homm_arch]
 \frametitle<1>{Meta-mapping as transforming function representations}
 \frametitle<2-3>{So we can use the same approach and networks!}
-\frametitle<4>{Architecture reminder}
+\frametitle<4,7>{Architecture reminder}
 \frametitle<5>{Language-based approach}
 \frametitle<6>{Language-based meta-mapping}
 %\frametitle<4>{Language-based meta-mapping}
@@ -506,19 +506,19 @@ We use an architecture that generates task representations, which it uses to par
 %% from language
 \only<-3, 5-6>{
 \node[gray] at (-7, 2.1) {Instructions};
-\node at (-7, 1.25) (language) {``Play poker.''};
+\node at (-7, 1.25) (language) {\only<-5>{``Play poker.''}\only<6>{``Red \& square.''}};
 
 \node[gray, text width=2cm, align=center] at (-4.1, 2.1) {Language network};
 \node[block] at (-4.1, 1.25) (languagenet) {\(\mathcal{L}\)}; 
 \path[arrow] (language.east) -- ([xshift=-3]languagenet.west);
 
-\node[bpurp, text width=2cm] at (-2, 1.25) (languagetaskrep) {\(z_{poker}\)}; 
+\node[bpurp, text width=2cm] at (-2, 1.25) (languagetaskrep) {\only<-5>{\(z_{poker}\)}\only<7>{\(z_{task}\)}\only<6>{\(z_{r,sq}\)}}; 
 \path[arrow] ([xshift=3]languagenet.east) -- (languagetaskrep.west);
 }
 
 
 %% from examples
-\uncover<-4>{
+\uncover<-4,7->{
 
 %\only<4>{
 %\begin{scope}[shift={(0, 2.5)}]
@@ -528,7 +528,8 @@ We use an architecture that generates task representations, which it uses to par
 \node at (-7, -1.25) (examples) {
 \(\left\{
 \begin{matrix}
-({\color{bgreen}z_{hand_{1}}}, {\color{bgreen}z_{bet_{1}}})\\
+\only<1-5>{({\color{bgreen}z_{hand_{1}}}, {\color{bgreen}z_{bet_{1}}})\\}
+\only<6->{({\color{bgreen}z_{state}}, {\color{bgreen}z_{(a,r)}})\\}
 $\vdots$
 \end{matrix}\right\}\)};
 
@@ -538,7 +539,7 @@ $\vdots$
 \node[block] at (-4.1, -1.25) (examplenet) {\(\mathcal{E}\)}; 
 \path[arrow] (examples.east) -- ([xshift=-3]examplenet.west);
 
-\node[bpurp, text width=2cm] at (-2, -1.25) (examplestaskrep) {\(z_{poker}\)}; 
+\node[bpurp, text width=2cm] at (-2, -1.25) (examplestaskrep) {\only<-5>{\(z_{poker}\)}\only<7>{\(z_{task}\)}\only<6>{\(z_{r,sq}\)}}; 
 \path[arrow] ([xshift=3]examplenet.east) -- (examplestaskrep.west);
 %\only<4>{
 %\end{scope}
@@ -548,19 +549,23 @@ $\vdots$
 \end{scope}
 %% b) performing 
 \draw[boundingbox, draw=gray, fill=white] (-1.5, -2.5) rectangle (8.5, 2.5);
-\node[bpurp] at (-0.75, 1.25) (taskrep) {\(z_{poker}\)};
+\node[bpurp] at (-0.75, 1.25) (taskrep) {\only<-5>{\(z_{poker}\)}\only<7>{\(z_{task}\)}\only<6>{\(z_{r,sq}\)}};
 
 \node[gray, text width=2cm, align=center] at (0.75, 2.1) {Hyper network};
 \node[block] at (0.75, 1.25) (hypernet) {\(\mathcal{H}\)}; 
 \path[arrow] (taskrep.east) -- ([xshift=-3]hypernet.west);
 
-\node[text width=0.5cm] at (-0.85, -1.25) (inputs) {\includegraphics[width=0.5cm]{figures/2_of_spades.png}\\\includegraphics[width=0.5cm]{figures/4_of_hearts.png}};
+\node[text width=0.5cm] at (-0.85, -1.25) (inputs) {
+    \only<-5>{\includegraphics[width=0.5cm]{figures/2_of_spades.png}\\\includegraphics[width=0.5cm]{figures/4_of_hearts.png}}
+    \only<7>{\includegraphics[width=0.5cm]{../../psych/dissertation/4-extending/figures/pick_up_0.png}}
+    \only<6>{\includegraphics[width=0.5cm]{figures/categorization/32_cyan_emptysquare_0.png}}
+};
 
 \node[gray, text width=2cm, align=center] at (0.6, -2) {Perception network};
 \node[block] at (0.6, -1.25) (perceptionnet) {\(\mathcal{P}\)}; 
 \path[arrow] (inputs.east) -- ([xshift=-3]perceptionnet.west);
 
-\node[bgreen] at (2.05, -1.25) (handrep) {\(z_{hand}\)};
+\node[bgreen] at (2.05, -1.25) (handrep) {\only<-5>{\(z_{hand}\)}\only<7>{\(z_{state}\)}\only<6>{\(z_{im}\)}};
 \path[arrow] ([xshift=3]perceptionnet.east) -- (handrep.west);
 
 \node[bblue, block, dashed] at (3.5, -1.25) (tasknet) {\(\mathcal{T}\)}; 
@@ -569,46 +574,47 @@ $\vdots$
 \path[arrow, out=0, in=90] ([xshift=3]hypernet.east) to ([yshift=3]tasknet.north);
 
 
-\node[bgreen] at (4.85, -1.25) (betrep) {\(z_{bet}\)};
+\node[bgreen] at (4.85, -1.25) (betrep) {\only<-5>{\(z_{bet}\)}\only<7>{\(z_{act}\)}\only<6>{\(z_{cls}\)}};
 \path[arrow] ([xshift=3]tasknet.east) -- (betrep.west);
 
 \node[gray, text width=2cm, align=center] at (6.2, -2) {Action network};
 \node[block] at (6.2, -1.25) (actionnet) {\(\mathcal{A}\)}; 
 \path[arrow] (betrep.east) -- ([xshift=-3]actionnet.west);
 
-\node at (7.4, -1.25) (output) {\bf \$};
+\node at (7.4, -1.25) (output) {\bf \only<-5>{\$}\only<6>{0}\only<7>{``\(\uparrow\)''}};
 \path[arrow] ([xshift=3]actionnet.east) -- (output.west);
 \end{tikzpicture}}}\\%
 \resizebox{\textwidth}{!}{%
 \begin{tikzpicture}[auto, every node/.style={execute at begin node=\setlength{\baselineskip}{1.1em}}]
 \setlength{\baselineskip}{1.2em}
-\only<2-4,6>{
+\only<2-4,6->{
 \begin{scope}[shift={(0.4, 0)}]
 %% a) constructing
 \draw[boundingbox, draw=gray, fill=white] (-8.5, -2.5) rectangle (-2, 2.5);
 
 %% from language
-\only<-3, 5->{
+\only<-3, 5-6>{
 \node[gray] at (-6.7, 2.1) {Instructions};
-\node at (-6.7, 1.25) (language) {``Try to lose.''};
+\node at (-6.7, 1.25) (language) {\only<-5>{``Try to lose.''}\only<7>{``Switch.''}\only<6>{``Red\(\mapsto\)blue.''}};
 
 \node[gray, text width=2cm, align=center] at (-4.1, 2.1) {Language network};
 \node[block] at (-4.1, 1.25) (languagenet) {\(\mathcal{L}\)}; 
 \path[arrow] (language.east) -- ([xshift=-3]languagenet.west);
 
-\node[borange, text width=2cm] at (-2, 1.25) (languagetaskrep) {\(z_{meta}\)}; 
+\node[borange, text width=2cm] at (-2, 1.25) (languagetaskrep) {\only<-5>{\(z_{lose}\)}\only<7>{\(z_{switch}\)}\only<6>{\(z_{r\mapsto b}\)}}; 
 \path[arrow] ([xshift=3]languagenet.east) -- (languagetaskrep.west);
 }
 
 
 %% from examples
 
-\only<-5>{
+\only<-4,7>{
 \node[gray, text width=3.5cm, align=center] at (-6.7, -0.2) {Mapping examples (input/output tasks)};
 \node at (-6.7, -1.25) (examples) {
 \(\left\{
 \begin{matrix}
-({\color{bpurp}z_{chess}}, {\color{bpurp}z_{lose chess}})\\
+\only<-4>{({\color{bpurp}z_{chess}}, {\color{bpurp}z_{lose chess}})\\}
+\only<5->{({\color{bpurp}z_{task}}, {\color{bpurp}z_{swtask}})\\}
 $\vdots$
 \end{matrix}\right\}\)};
 
@@ -616,7 +622,7 @@ $\vdots$
 \node[block] at (-4.1, -1.25) (examplenet) {\(\mathcal{E}\)}; 
 \path[arrow] (examples.east) -- ([xshift=-3]examplenet.west);
 
-\node[borange, text width=2cm] at (-2, -1.25) (examplestaskrep) {\(z_{meta}\)}; 
+\node[borange, text width=2cm] at (-2, -1.25) (examplestaskrep) {\only<-5>{\(z_{lose}\)}\only<7>{\!\(z_{switch}\)}\only<6>{\(z_{r\mapsto b}\)}}; 
 \path[arrow] ([xshift=3]examplenet.east) -- (examplestaskrep.west);
 }
 
@@ -624,14 +630,14 @@ $\vdots$
 %% d) performing 
 \draw[boundingbox, draw=gray, fill=white] (-1.5, -2.5) rectangle (8.5, 2.5);
 \only<2->{
-\node[borange] at (-0.75, 1.25) (taskrep) {\(z_{meta}\)};
+\node[borange] at (-0.75, 1.25) (taskrep) {\only<-5>{\(z_{lose}\)}\only<7>{\(z_{switch}\)}\only<6>{\(z_{r\mapsto b}\)}};
 
 \node[gray, text width=2cm, align=center] at (0.75, 2.1) {Hyper network};
 \node[block] at (0.75, 1.25) (hypernet) {\(\mathcal{H}\)}; 
 \path[arrow] (taskrep.east) -- ([xshift=-3]hypernet.west);
 }
 
-\node[bpurp] at (1.66, -1.25) (handrep) {\(z_{poker}\)};
+\node[bpurp] at (1.66, -1.25) (handrep) {\only<-5>{\(z_{poker}\)}\only<7>{\(z_{task}\)}\only<6>{\(z_{r,sq}\)}};
 
 \only<1>{
 \node[bblue, block, dashed] at (3.5, -1.25) {??}; 
@@ -648,7 +654,7 @@ $\vdots$
 \path[arrow, out=0, in=90] ([xshift=3]hypernet.east) to ([yshift=3]tasknet.north);
 }
 
-\node[bpurp] at (5.5, -1.25) (output) {\(z_{lose poker}\)};
+\node[bpurp] at (5.5, -1.25) (output) {\only<-5>{\(z_{losepoker}\)}\only<7>{\(z_{switchedtask}\)}\only<6>{\(z_{b,sq}\)}};
 \path[arrow] ([xshift=3]tasknet.east) -- (output.west);
 
 %% d subpanel) performing basic from meta-mapped
@@ -660,13 +666,17 @@ $\vdots$
 \node[gray, text width=2cm, align=center] at (2, 1.1) {Hyper network};
 \node[block, semithick, rounded corners=2] at (2, 0.25) (hypernet2) {\(\mathcal{H}\)}; 
 
-\node[text width=0.5cm] at (0.7, -1.25) (inputs2) {\includegraphics[width=0.5cm]{figures/2_of_spades.png}\\\includegraphics[width=0.5cm]{figures/4_of_hearts.png}};
+\node[text width=0.5cm] at (0.7, -1.25) (inputs2) {
+    \only<-5>{\includegraphics[width=0.5cm]{figures/2_of_spades.png}\\\includegraphics[width=0.5cm]{figures/4_of_hearts.png}}
+    \only<7>{\includegraphics[width=0.5cm]{../../psych/dissertation/4-extending/figures/pick_up_0.png}}
+    \only<6>{\includegraphics[width=0.5cm]{figures/categorization/32_cyan_emptysquare_0.png}}
+};
 
 \node[gray, text width=2cm, align=center] at (1.9, -2) {Perception network};
 \node[block, semithick, rounded corners=2] at (1.9, -1.25) (perceptionnet2) {\(\mathcal{P}\)}; 
 \path[arrow, semithick] (inputs2.east) -- ([xshift=-3]perceptionnet2.west);
 
-\node[bgreen] at (3.2, -1.25) (handrep2) {\(z_{hand}\)};
+\node[bgreen] at (3.2, -1.25) (handrep2) {\only<-5>{\(z_{hand}\)}\only<7>{\(z_{state}\)}\only<6>{\(z_{im}\)}};
 \path[arrow, semithick] ([xshift=3]perceptionnet2.east) -- (handrep2.west);
 
 \node[bblue, block, semithick, rounded corners=2, dash pattern=on 2pt off 2pt] at (4.5, -1.25) (tasknet2) {\(\mathcal{T}\)}; 
@@ -674,14 +684,14 @@ $\vdots$
 \path[arrow, semithick] (handrep2.east) -- ([xshift=-3]tasknet2.west);
 \path[arrow, semithick, out=0, in=90] ([xshift=3]hypernet2.east) to ([yshift=3]tasknet2.north);
 
-\node[bgreen] at (5.65, -1.25) (betrep2) {\(z_{bet}\)};
+\node[bgreen] at (5.65, -1.25) (betrep2) {\only<-5>{\(z_{bet}\)}\only<7>{\(z_{act}\)}\only<6>{\(z_{cls}\)}};
 \path[arrow, semithick] ([xshift=3]tasknet2.east) -- (betrep2.west);
 
 \node[gray, text width=2cm, align=center] at (6.8, -2) {Action network};
 \node[block, semithick, rounded corners=2] at (6.8, -1.25) (actionnet2) {\(\mathcal{A}\)}; 
 \path[arrow, semithick] (betrep2.east) -- ([xshift=-3]actionnet2.west);
 
-\node at (7.8, -1.25) (output2) {\bf \$};
+\node at (7.8, -1.25) (output2) {\bf \only<-5>{\$}\only<6>{0}\only<7>{``\(\uparrow\)''}};
 \path[arrow] ([xshift=3]actionnet2.east) -- (output2.west);
 \end{scope}
 
@@ -983,7 +993,7 @@ Why RL?
 %
 %\end{frame}
 
-\againframe<4>{homm_arch}
+\againframe<7>{homm_arch}
 
 \begin{frame}{Results}
 \includegraphics[height=0.8\textheight]{../../psych/dissertation/4-extending/figures/grids_adaptation_results.png}
@@ -1135,15 +1145,14 @@ Starting from a zero-shot ``guess'' at the appropriate behavior results in faste
 
 \begin{itemize}
 \item Humans can perform novel tasks zero-shot. 
-\item We suggest a computational perspective on this: \textbf{meta-mappings}, which map a task to a transformed version of that task. 
-\item We propose a parsimonious \textbf{HoMM} architecture that: 
+\item I suggest that task transformation offers a useful perspective on this ability. 
+\item I propose a computational description of task transformation: \textbf{meta-mapping}.
     \begin{itemize}
-    \item Performs basic tasks by parameterizing a small task network from a vector representation of the task. 
-    \item Uses an analogy between basic tasks and meta-mappings to perform meta-mappings by transforming task embeddings. 
+        \item And a parsimonious implementation: \textbf{HoMM} architectures. 
     \end{itemize}
-\item This approach performs comparably to humans in a card game task, and outperforms (or equals) a language based approach across three settings.
+\item HoMM performs comparably to humans in a card game task, and outperforms (or equals) a language based approach across three varied settings, including image classification and RL.
 \item Zero-shot adaptation allows faster, better later learning. 
-\item Earlier paper: \url{https://arxiv.org/abs/1905.09950} and library + all code: \url{https://github.com/lampinen/HoMM}
+%\item Earlier paper: \url{https://arxiv.org/abs/1905.09950} and library + all code: \url{https://github.com/lampinen/HoMM}
 \end{itemize}
 \end{frame}
 
