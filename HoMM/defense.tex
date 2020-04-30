@@ -55,6 +55,14 @@
 \date{May 12th, 2020}
 \frame{\titlepage}
 
+%{
+%\setbeamercolor{background canvas}{bg=white}
+%\begin{frame}
+%\centering
+%\inlineMovie{figures/zooming_in.avi}{figures/zooming_in.png}{width=\textheight, height=\textheight}
+%\end{frame}
+%}
+
 \begin{frame}<1-2>[label=pokermotivation]
 \frametitle<1-2>{Human cognition is flexible -- we can adapt on our first try}
 \frametitle<3-4>{How do humans adapt?}
@@ -87,31 +95,40 @@
 
 \begin{frame}{... it is often criticized for its inflexibility}
 \includegraphics[width=\textwidth]{figures/deep_learning_flexibility_critiques.png}
-{\scriptsize (Lake, Ullman, Tenenbaum, Gershman, 2016; Marcus, 2018; Hao, 2020)}
+{\scriptsize (Lake, Ullman, Tenenbaum \& Gershman, 2016; Marcus, 2018; Hao, 2020)}
 \end{frame}
 
+\begin{frame}{In particular, can deep learning be a good cognitive model?}
+\phantom{}
+{
+\centering
+\includegraphics[width=0.8\textwidth]{figures/brenden.png}\\
+}
+{\scriptsize (Lake, Ullman, Tenenbaum \& Gershman, 2016; not an exact quote.)}
+\end{frame}
+
+
+
 \begin{frame}[standout]
-How can we build deep-learning models with more human-like flexibility?
+Could deep learning models capture our cognitive flexibility?
 \end{frame}
 
 \againframe<3-4>{pokermotivation}
 
 \begin{frame}[standout]
-Goal: a deep-learning framework that can adapt to task transformations. 
+Goal: a deep-learning framework that can transform task representations to adapt.
 \end{frame}
 
 
 
 \begin{frame}{Prior work on flexible deep learning models}
-Lots of prior work. In particular: 
-\begin{itemize}[<+(1)->]
+I'll discuss the relationship between my work and some of these as I go along.
+\begin{itemize}
     \item Lots of work on meta-learning (learning to learn).
     \item Work on zero-shot task performance from language.
     \item Model-based methods. 
 \end{itemize}
-\uncover<5>{
-I'll discuss the relationship between my work and these as I go along.
-}
+(Happy to address other related work in the Q + A!)
 \end{frame}
 
 \section{Meta-mapping}
@@ -125,7 +142,7 @@ It's useful to think of tasks or behaviors as functions mapping input to output:
     \item Chess position \(\rightarrow\) move
     \item Object \(\rightarrow\) classification
 \end{itemize}
-Standard deep learning tries to infer this mapping from lots of examples. 
+Standard deep learning tries to infer this mapping from lots of examples, meta-learning from fewer. 
 \end{column}
 
 \begin{column}{0.5\textwidth}
@@ -139,23 +156,23 @@ Tasks \(\bm =\) mappings from inputs to outputs.
 \end{frame}
 
 %% TODO: Maybe cut
-\begin{frame}{Meta-learning}
-\begin{columns}
-\begin{column}{0.5\textwidth}
-
-\begin{itemize}[<+->]
-    \item Lots of recent research on meta-learning -- learning to learn.
-    \item If you have learned a lot of card games, you should be able to pick up a new one from a few examples.
-    \item Then apply this knowledge to play the game with probe hands you weren't taught. 
-    \item But, again, how could we play a variation of the game without examples? 
-\end{itemize}
-\end{column}
-
-\begin{column}{0.5\textwidth}
-\includegraphics[width=\textwidth]{figures/poker_function_2.png}
-\end{column}
-\end{columns}
-\end{frame}
+%\begin{frame}{Meta-learning}
+%\begin{columns}
+%\begin{column}{0.5\textwidth}
+%
+%\begin{itemize}[<+->]
+%    \item Lots of recent research on meta-learning -- learning to learn.
+%    \item If you have learned a lot of card games, you should be able to pick up a new one from a few examples.
+%    \item Then apply this knowledge to play the game with probe hands you weren't taught. 
+%    \item But, again, how could we play a variation of the game without examples? 
+%\end{itemize}
+%\end{column}
+%
+%\begin{column}{0.5\textwidth}
+%\includegraphics[width=\textwidth]{figures/poker_function_2.png}
+%\end{column}
+%\end{columns}
+%\end{frame}
 
 \begin{frame}{Altering the task = adapting the mapping}
 \only<1>{
@@ -166,9 +183,9 @@ Tasks \(\bm =\) mappings from inputs to outputs.
 }
 \end{frame}
 
-\begin{frame}[standout]
-We want to model how we can transform the task mapping.
-\end{frame}
+%\begin{frame}[standout]
+%We want to model how we can transform the task mapping.
+%\end{frame}
 
 \begin{frame}{Meta-mappings}
 How do we adapt a task-mapping?
@@ -372,15 +389,17 @@ This will allow the architecture to perform new tasks without data, by their rel
 \end{tikzpicture}
 \end{frame}
 
-\begin{frame}<-2>[label=homm_basic]
-\frametitle{A multi-task architecture}
-\centering
+\begin{frame}<-4>[label=homm_basic]
+\frametitle<1>{Basic task processing}
+\frametitle<2-3>{Adapting to a task}
+\frametitle<4>{Constructing a task representation}
+\frametitle<5->{Now we can transform the task representation!}
 \begin{columns}
 \begin{column}{\dimexpr\paperwidth-1em}
-\centering
 \resizebox{\textwidth}{!}{%
 \begin{tikzpicture}[auto, every node/.style={execute at begin node=\setlength{\baselineskip}{1.1em}}]
 %% a) constructing
+\only<4->{
 \begin{scope}[shift={(0.4, 0)}]
 \draw[boundingbox, draw=gray, fill=white] (-8.5, -2.5) rectangle (-2, 2.5);
 
@@ -413,15 +432,16 @@ $\vdots$
 \node[bpurp, text width=2cm] at (-2, -1.25) (examplestaskrep) {\(z_{poker}\)};
 \path[arrow] ([xshift=3]examplenet.east) -- (examplestaskrep.west);
 \end{scope}
-
+}
 %% b) performing
-\uncover<2->{
 \draw[boundingbox, draw=gray, fill=white] (-1.5, -2.5) rectangle (8, 2.5);
+\only<2->{
 \node[bpurp] at (-0.75, 1.25) (taskrep) {\(z_{poker}\)};
 
 \node[gray, text width=2cm, align=center] at (0.75, 2.1) {Hyper network};
 \node[block] at (0.75, 1.25) (hypernet) {\(\mathcal{H}\)};
 \path[arrow] (taskrep.east) -- ([xshift=-3]hypernet.west);
+}
 
 \node[text width=0.5cm] at (-0.85, -1.25) (inputs) {\includegraphics[width=0.5cm]{figures/2_of_spades.png}\\\includegraphics[width=0.5cm]{figures/4_of_hearts.png}};
 
@@ -435,8 +455,9 @@ $\vdots$
 \node[bblue, block, dashed] at (3.5, -1.25) (tasknet) {\(\mathcal{T}\)};
 \node[bblue, text width=1.5cm, align=center] at (3.5, -2) {Task network};
 \path[arrow] (handrep.east) -- ([xshift=-3]tasknet.west);
+\only<2->{
 \path[arrow, out=0, in=90] ([xshift=3]hypernet.east) to ([yshift=3]tasknet.north);
-
+}
 
 \node[bgreen] at (4.85, -1.25) (betrep) {\(z_{bet}\)};
 \path[arrow] ([xshift=3]tasknet.east) -- (betrep.west);
@@ -447,32 +468,33 @@ $\vdots$
 
 \node at (7.4, -1.25) (output) {\bf \$};
 \path[arrow] ([xshift=3]actionnet.east) -- (output.west);
-}
 
 %%% d subpanel) task network
-%
-%\draw[boundingbox, draw=gray, fill=white] (4.25, 0) rectangle (8.5, 2.5);
-%\node[gray] at (6.35, 2.25) {\(\mathcal{H}\) adapts all weights in \(\mathcal{T}\)};
-%
-%\node at (4.45, 1.45) (pseudohyper) {};
-%
-%\node[bblue] at (5.25, 1.65) (Wprime) {\scriptsize \(W'\), \(b'\) (from \(\mathcal{H}\))};
-%\node[bblue] at (6.05, 0.25) (W0) {\scriptsize Default \(W^{0}\), \(b^{0}\)};
-%\node[netnode, bblue, thick] at (4.75, 0.5) (tnode1) {I};
-%
-%\node[netnode, bblue, thick] at (7.35, 0.5) (tnode2) {O};
-%\node[bblue] at (7.35, 1.4) {\scriptsize\(O\!=\!(W^{0}\!+\!W') I\)};
-%\node[bblue] at (7.4, 1.1) {\scriptsize\(+(b^{0}\!+\!b')\)};
-%
-%\path[arrow, bblue, out=0, in=90] (pseudohyper) to ([yshift=10]W0);
-%\path[arrow, bblue, dashed] (tnode1) to (tnode2);
-%
-%%% connecting to subpanel
-%
-%\path[draw, gray, thick] (3.75, -0.95) to (4.25, 2.5);
-%\path[draw, gray, thick] (3.75, -0.95) to (8.5, 0);
+\only<3>{
+\draw[boundingbox, draw=gray, fill=white] (4.25, 0) rectangle (8, 2.5);
+\node[gray] at (6.15, 2.25) {\small \(\mathcal{H}\) adapts weights in \(\mathcal{T}\)};
+\begin{scope}[scale=0.9, shift={(0.5, 0.25)}, every node/.append style={transform shape}]
+\node at (4.45, 1.45) (pseudohyper) {};
 
-\uncover<4->{
+\node[bblue, text width=1.25 cm] at (5, 1.65) (Wprime) {\scriptsize \(W^{\mathcal{H}}, b^{\mathcal{H}}\)};
+\node[bblue] at (6, 0.25) (W0) {\scriptsize Default \(W^{0}, b^{0}\)};
+\node[netnode, bblue, thick] at (4.75, 0.5) (tnode1) {I};
+
+\node[netnode, bblue, thick] at (7.35, 0.5) (tnode2) {O};
+\node[bblue] at (7.2, 1.3) {\scriptsize\(O\!=\!(W^{0}\!+\!W^{\mathcal{H}})I\)};
+\node[bblue] at (7.2, 1.0) {\scriptsize\(+(b^{0}\!+\!b^{\mathcal{H}})\)};
+
+\path[arrow, bblue, out=0, in=90] (pseudohyper) to ([yshift=10]W0);
+\path[arrow, bblue, dashed] (tnode1) to (tnode2);
+\end{scope}
+
+%% connecting to subpanel
+
+\path[draw, gray, thick] (3.75, -0.95) to (4.25, 2.5);
+\path[draw, gray, thick] (3.75, -0.95) to (8, 0);
+}
+
+\uncover<5->{
 \draw [red, line width=0.25em] (-0.75, 1.25) circle (0.5);
 }
 \end{tikzpicture}}
@@ -481,10 +503,10 @@ $\vdots$
 \end{frame}
 
 \begin{frame}[standout]
-We use an architecture that generates task representations, which it uses to parameterize (part of) a network which performs the task. % shorten this
+We use an architecture that generates task representations, which it uses to modulate a network which performs the task. % shorten this
 \end{frame}
 
-\againframe<4>{homm_basic}
+\againframe<5>{homm_basic}
 
 \begin{frame}<1>[label=homm_arch]
 \frametitle<1>{Meta-mapping as transforming function representations}
@@ -518,7 +540,7 @@ We use an architecture that generates task representations, which it uses to par
 
 
 %% from examples
-\uncover<-4,7->{
+\only<-4,7->{
 
 %\only<4>{
 %\begin{scope}[shift={(0, 2.5)}]
@@ -587,7 +609,8 @@ $\vdots$
 \resizebox{\textwidth}{!}{%
 \begin{tikzpicture}[auto, every node/.style={execute at begin node=\setlength{\baselineskip}{1.1em}}]
 \setlength{\baselineskip}{1.2em}
-\only<2-4,6->{
+\only<-4,6->{
+\only<2->{
 \begin{scope}[shift={(0.4, 0)}]
 %% a) constructing
 \draw[boundingbox, draw=gray, fill=white] (-8.5, -2.5) rectangle (-2, 2.5);
@@ -627,6 +650,7 @@ $\vdots$
 }
 
 \end{scope}
+}
 %% d) performing 
 \draw[boundingbox, draw=gray, fill=white] (-1.5, -2.5) rectangle (8.5, 2.5);
 \only<2->{
@@ -757,7 +781,7 @@ Categories & Classification & Adapting concepts \\
 \begin{itemize}
 \item Constructed 5 two-card games (analogous to poker, blackjack, etc.)
 \item With 8 variations of each, including ``try-to-lose'' variations
-\item Taught the model non-losing variations of poker, and winning and losing variations of other games 
+\item Taught the model winning variations of poker, and winning and losing variations of other games 
 \item Can it infer losing at poker?
 \end{itemize}
 %\begin{columns}
@@ -863,246 +887,246 @@ On this task, MM adapts comparably to humans, and better than language alone. \\
 }
 \end{frame}
 
-\begin{frame}{RL tasks}
-\begin{columns}
-\begin{column}{0.5\textwidth}
-Pick-up task:
-\includegraphics[width=0.75\textwidth]{../../psych/dissertation/4-extending/figures/pick_up_0.png}%
-\end{column}
-\begin{column}{0.5\textwidth}
-Pushing task:
-\includegraphics[width=0.75\textwidth]{../../psych/dissertation/4-extending/figures/pusher_0.png}
-\end{column}
-\end{columns}
-\vspace{1em}
-{\bf
-\(\mathbf{\times}\) 5 pairs of colors \(\mathbf{\times}\) binary switching of good and bad color \(\mathbf{=}\) 20 tasks.\\
-Held out switched versions of two pairs in both task types, leaving 16 train tasks.
-}
-\end{frame}
-
-\begin{frame}{RL tasks}
-\inlineMovie{figures/recording_pickup.mp4}{../../psych/dissertation/4-extending/figures/pick_up_0.png}{width=0.48\textwidth, height=0.36\textwidth}%
-\inlineMovie{figures/recording_pusher.mp4}{../../psych/dissertation/4-extending/figures/pusher_0.png}{width=0.48\textwidth, height=0.36\textwidth}
-\end{frame}
-
-\begin{frame}{RL tasks}
-Why RL? 
-\begin{itemize}
-\item It has driven some substantial recent AI achievements.
-\item It relates to neuroscience and cognition.
-\item It requires more sophisticated adaptation. 
-\end{itemize}
-\end{frame}
-
-%% Remember to say its okay not to know RL
-%\begin{frame}<1>[label=extending_methods]
-%\frametitle<1>{RL model changes}
-%\frametitle<2>{Categorization model changes}
-%\begin{columns}
-%\begin{column}{0.5\textwidth}
-%\only<2>{
-%\begin{itemize}
-%\item \(50 \times 50 \times 3\) RGB pixel input.
-%\item Shared 4-layer CNN for input processing.  
-%\item Cross-entropy loss.
-%\end{itemize}
-%}
-%\only<1> {
-%\begin{itemize}
-%\item DQN-like approach.
-%\item \(91 \times 91 \times 3\) RGB input.
-%\item CNN for input, and Q-value (action-value) decoder shared across tasks. 
-%\item Deeper task-specific net.
-%\item Meta-network examples were (s, a, r) tuples.
-%\item Task representations in training were partly persistent, to overcome strongly conflicting signals and accelerate learning.
-%\end{itemize}
-%}
-%\end{column}
-%\begin{column}{0.5\textwidth}
-%\begin{tikzpicture}
-%\draw[boundingbox, fill=white] (-3, -4.3) rectangle (2.5, 3.2);
-%\node[lightgray] at (-1.2, 2.9) {Basic meta-learning};
-%\node at (-1.5, -4) (examples) {Examples};
-%\node at (-1.5, -3.2) (D1) {
-%\(\left\{
-%\begin{matrix}
-%(x^{ex}_{in,0}, y^{ex}_{targ,0})\\
-%$\vdots$
-%\end{matrix}\right\}\)};
-%
-%\node at (1.5, -4) (probes) {Probes};
-%\node at (1.5, -3.2) (D2) {
-%%\(z^{prb}_{in}\)};
-%\(\left\{
-%\begin{matrix}
-%x^{prb}_{in,0}\\
-%$\vdots$
-%\end{matrix}\right\}\)};
-%
-%\node [block] at (-1.5, -1.95) (M) {\(\mathcal{M}\)};
-%\path [arrow] ([yshift=-5]D1.north) to (M);
-%
-%\node at (-1, -1) (zfunc) {\(z^{task}\)};
-%\path [arrow, out=90, in=-135] (M.north) to ([xshift=6,yshift=3]zfunc.south west);
-%
-%\node[block] at (0, -0.55) (H) {\(\mathcal{H}\)};
-%\path [arrow, out=45, in=180] ([yshift=-3]zfunc.north) to (H.west);
-%\node [block, dashed] at (1.5, -0.55) (F) {\(F_{z^{task}}\)};
-%\path[arrow] (H.east) to (F.west);
-%\path [arrow, dashed] (D2) to (F);
-%
-%\node at (1.5, 1) (outputs) {
-%%\(z^{pred}_{out}\)};
-%\(\left\{
-%\begin{matrix}
-%y^{pred}_{out,0},\\
-%$\vdots$
-%\end{matrix}\right\}\)};
-%\node at (1.5, 1.8) (predictions) {Predictions};
-%
-%\path [arrow, dashed] (F) to ([yshift=3]outputs.south);
-%
-%\node at (-1.5, 1.8) (probetargs) {Probe targets};
-%\node at (-1.5, 1) (D2targs) {
-%%\(z^{prb}_{in}\)};
-%\(\left\{
-%\begin{matrix}
-%y^{prb}_{targ,0}\\
-%$\vdots$
-%\end{matrix}\right\}\)};
-%
-%\node [align=center, text width=1.25 cm] at (0, 2.25) (dispatch) {\baselineskip=12pt Loss\par};
-%
-%\path [arrow, dashed, out=180, in=-90] ([xshift=3]outputs.west) to (dispatch.south);
-%
-%\path [arrow, dashed, out=0, in=-90] ([xshift=-3.5]D2targs.east) to (dispatch.south);
-%
-%%% overlay
-%
-%\draw [fill=black, opacity=0.2] (0.75, -0.2) rectangle (2.25, 0.35);
-%\draw [fill=red, opacity=0.4] (0.75, -1) rectangle (2.25, -0.2);
-%\draw [fill=black, opacity=0.2] (0.75, -2.5) rectangle (2.25, -1);
-%
-%\uncover<4->{
-%\draw [red, ultra thick] (-1, -1) circle (0.5);
-%}
-%\end{tikzpicture}
-%\end{column}
-%\end{columns}
-%
-%\end{frame}
-
-\againframe<7>{homm_arch}
-
-\begin{frame}{Results}
-\includegraphics[height=0.8\textheight]{../../psych/dissertation/4-extending/figures/grids_adaptation_results.png}
-\end{frame}
-
-\begin{frame}[standout]
-Meta-mapping can work in RL, even with a small support set of tasks. 
-\end{frame}
-
-\begin{frame}{Relation to model-based adaptation}
-Model-based methods are often framed in part as an approach to flexibility.
-\begin{itemize}
-\item However, for this to work, these methods generally must have a new reward function handed to them.
-\item That is, they're offloading a substantial part of the adaptation problem to another system.
-\item Meta-mapping could offer a principled way to adapt a reward-predicting function, transition models, etc.
-\item Thus meta-mapping and model-based planning could be complementary.
-\end{itemize}
-\end{frame}
-
-%\begin{frame}{Behavioral uncertainty}
-%\inlineMovie{figures/recording_pickup.mp4}{../../psych/dissertation/4-extending/figures/pick_up_0.png}{width=0.48\textwidth, height=0.36\textwidth}%
-%\inlineMovie{figures/recording_pusher.mp4}{../../psych/dissertation/4-extending/figures/pusher_0.png}{width=0.48\textwidth, height=0.36\textwidth}
-%\end{frame}
-%
-
-\begin{frame}{Categorization tasks}
-\vspace{0.1em}
-\begin{columns}
-\begin{column}{\dimexpr\paperwidth-10pt}
-\begin{tikzpicture}[auto]%, scale=0.8, every node/.style={scale=0.8}]
-% blickets
-\node at (-4.8, 2.2) {\LARGE ``Blickets''};
-\draw[pen colour=fg, decoration={calligraphic brace, amplitude=0.5cm},decorate,line width=1mm] (-3, 0.3) -- (-3, 4); 
-\node at (-2, 3.1) {\includegraphics[width=1.8cm]{../../psych/dissertation/4-extending/figures/categorization_stimuli/32_red_triangle_0.png}};
-\node at (-2, 1.2) {\includegraphics[width=1.8cm]{../../psych/dissertation/4-extending/figures/categorization_stimuli/24_red_triangle_0.png}};
-
-% not blickets
-\node at (-4.3, -2.1) {\LARGE ``Not''};
-\draw[pen colour=fg, decoration={calligraphic brace, amplitude=0.5cm},decorate,line width=1mm] (-3, -4) -- (-3, -0.3); 
-\node at (-2, -3.1) {\includegraphics[width=1.8cm]{../../psych/dissertation/4-extending/figures/categorization_stimuli/32_red_circle_0.png}};
-\node at (-2, -1.2) {\includegraphics[width=1.8cm]{../../psych/dissertation/4-extending/figures/categorization_stimuli/24_yellow_triangle_0.png}};
-\only<2>{
-\node at (1.3, 0) {\LARGE ``Blickets?''};
-}
-\uncover<3->{
-\node at (3, 3.5) {\LARGE ``Zipfs = cyan blickets''};
-\node at (1.6, 0) {\LARGE ``Zipfs?''};
-}
-\uncover<2->{
-\draw[pen colour=fg, decoration={calligraphic brace, amplitude=0.5cm},decorate,line width=1mm] (3.2, -2.9) -- (3.2, 2.9); 
-\node at (4.2, 1.9) {\includegraphics[width=1.8cm]{../../psych/dissertation/4-extending/figures/categorization_stimuli/24_red_triangle_1.png}};
-\node at (4.2, 0) {\includegraphics[width=1.8cm]{../../psych/dissertation/4-extending/figures/categorization_stimuli/32_cyan_triangle_1.png}};
-\node at (4.2, -1.9) {\includegraphics[width=1.8cm]{../../psych/dissertation/4-extending/figures/categorization_stimuli/32_cyan_inverseplus_1.png}};
-}
-
-\end{tikzpicture}
-\end{column}
-\end{columns}
-\end{frame}
-
-
-\begin{frame}{Why categorization?}
-\begin{itemize}
-\item Cognitive history.
-\item Rich visual input, more complex tasks.
-\item Classification is a common problem.
-\end{itemize}
-\end{frame}
-\begin{frame}{Categorization tasks}
-\begin{columns}
-\begin{column}{0.5\textwidth}
-Types of categories:
-\begin{itemize}
-\item Basic tasks: single attribute (shape/color/size) category.
-\item Composite tasks: AND, OR, or XOR of two different attributes.  
-\end{itemize}
-\uncover<2->{
-Meta-mappings:
-\begin{itemize}
-\item Switch one color to another or switch one shape to another. 
-\item (Omitted size switching because only a few sizes.)
-\end{itemize}
-}
-\end{column}
-\begin{column}{0.5\textwidth}
-\centering
-\includegraphics[width=2.2cm]{../../psych/dissertation/4-extending/figures/categorization_stimuli/24_red_triangle_1.png}\\
-\includegraphics[width=2.2cm]{figures/categorization/32_cyan_emptysquare_0.png}\\
-\includegraphics[width=2.2cm]{../../psych/dissertation/4-extending/figures/categorization_stimuli/24_yellow_inverseplus_0.png}
-\end{column}
-\end{columns}
-\end{frame}
-
-\againframe<6>{homm_arch}
-%\againframe<2>{extending_methods}
-
-\begin{frame}[label=cat_results]
-\frametitle{Categorization results}
-\includegraphics[height=0.8\textheight]{../../psych/dissertation/4-extending/figures/concepts_adaptation_sweeping.png}
-\end{frame}
-
-%\againframe<4>{homm_arch}
-%\againframe<2>{cat_results}
-
-\begin{frame}[standout]
-Both language generalization and meta-mapping perform very well in this domain.
-%Language produces better concept representations than examples.\\[1em]
-%Meta-mapping these representations produces similar performance to language generalization.
-\end{frame}
+%?\begin{frame}{RL tasks}
+%?\begin{columns}
+%?\begin{column}{0.5\textwidth}
+%?Pick-up task:
+%?\includegraphics[width=0.75\textwidth]{../../psych/dissertation/4-extending/figures/pick_up_0.png}%
+%?\end{column}
+%?\begin{column}{0.5\textwidth}
+%?Pushing task:
+%?\includegraphics[width=0.75\textwidth]{../../psych/dissertation/4-extending/figures/pusher_0.png}
+%?\end{column}
+%?\end{columns}
+%?\vspace{1em}
+%?{\bf
+%?\(\mathbf{\times}\) 5 pairs of colors \(\mathbf{\times}\) binary switching of good and bad color \(\mathbf{=}\) 20 tasks.\\
+%?Held out switched versions of two pairs in both task types, leaving 16 train tasks.
+%?}
+%?\end{frame}
+%?
+%?\begin{frame}{RL tasks}
+%?\inlineMovie{figures/recording_pickup.mp4}{../../psych/dissertation/4-extending/figures/pick_up_0.png}{width=0.48\textwidth, height=0.36\textwidth}%
+%?\inlineMovie{figures/recording_pusher.mp4}{../../psych/dissertation/4-extending/figures/pusher_0.png}{width=0.48\textwidth, height=0.36\textwidth}
+%?\end{frame}
+%?
+%?\begin{frame}{RL tasks}
+%?Why RL? 
+%?\begin{itemize}
+%?\item It has driven some substantial recent AI achievements.
+%?\item It relates to neuroscience and cognition.
+%?\item It requires more sophisticated adaptation. 
+%?\end{itemize}
+%?\end{frame}
+%?
+%?%% Remember to say its okay not to know RL
+%?%\begin{frame}<1>[label=extending_methods]
+%?%\frametitle<1>{RL model changes}
+%?%\frametitle<2>{Categorization model changes}
+%?%\begin{columns}
+%?%\begin{column}{0.5\textwidth}
+%?%\only<2>{
+%?%\begin{itemize}
+%?%\item \(50 \times 50 \times 3\) RGB pixel input.
+%?%\item Shared 4-layer CNN for input processing.  
+%?%\item Cross-entropy loss.
+%?%\end{itemize}
+%?%}
+%?%\only<1> {
+%?%\begin{itemize}
+%?%\item DQN-like approach.
+%?%\item \(91 \times 91 \times 3\) RGB input.
+%?%\item CNN for input, and Q-value (action-value) decoder shared across tasks. 
+%?%\item Deeper task-specific net.
+%?%\item Meta-network examples were (s, a, r) tuples.
+%?%\item Task representations in training were partly persistent, to overcome strongly conflicting signals and accelerate learning.
+%?%\end{itemize}
+%?%}
+%?%\end{column}
+%?%\begin{column}{0.5\textwidth}
+%?%\begin{tikzpicture}
+%?%\draw[boundingbox, fill=white] (-3, -4.3) rectangle (2.5, 3.2);
+%?%\node[lightgray] at (-1.2, 2.9) {Basic meta-learning};
+%?%\node at (-1.5, -4) (examples) {Examples};
+%?%\node at (-1.5, -3.2) (D1) {
+%?%\(\left\{
+%?%\begin{matrix}
+%?%(x^{ex}_{in,0}, y^{ex}_{targ,0})\\
+%?%$\vdots$
+%?%\end{matrix}\right\}\)};
+%?%
+%?%\node at (1.5, -4) (probes) {Probes};
+%?%\node at (1.5, -3.2) (D2) {
+%?%%\(z^{prb}_{in}\)};
+%?%\(\left\{
+%?%\begin{matrix}
+%?%x^{prb}_{in,0}\\
+%?%$\vdots$
+%?%\end{matrix}\right\}\)};
+%?%
+%?%\node [block] at (-1.5, -1.95) (M) {\(\mathcal{M}\)};
+%?%\path [arrow] ([yshift=-5]D1.north) to (M);
+%?%
+%?%\node at (-1, -1) (zfunc) {\(z^{task}\)};
+%?%\path [arrow, out=90, in=-135] (M.north) to ([xshift=6,yshift=3]zfunc.south west);
+%?%
+%?%\node[block] at (0, -0.55) (H) {\(\mathcal{H}\)};
+%?%\path [arrow, out=45, in=180] ([yshift=-3]zfunc.north) to (H.west);
+%?%\node [block, dashed] at (1.5, -0.55) (F) {\(F_{z^{task}}\)};
+%?%\path[arrow] (H.east) to (F.west);
+%?%\path [arrow, dashed] (D2) to (F);
+%?%
+%?%\node at (1.5, 1) (outputs) {
+%?%%\(z^{pred}_{out}\)};
+%?%\(\left\{
+%?%\begin{matrix}
+%?%y^{pred}_{out,0},\\
+%?%$\vdots$
+%?%\end{matrix}\right\}\)};
+%?%\node at (1.5, 1.8) (predictions) {Predictions};
+%?%
+%?%\path [arrow, dashed] (F) to ([yshift=3]outputs.south);
+%?%
+%?%\node at (-1.5, 1.8) (probetargs) {Probe targets};
+%?%\node at (-1.5, 1) (D2targs) {
+%?%%\(z^{prb}_{in}\)};
+%?%\(\left\{
+%?%\begin{matrix}
+%?%y^{prb}_{targ,0}\\
+%?%$\vdots$
+%?%\end{matrix}\right\}\)};
+%?%
+%?%\node [align=center, text width=1.25 cm] at (0, 2.25) (dispatch) {\baselineskip=12pt Loss\par};
+%?%
+%?%\path [arrow, dashed, out=180, in=-90] ([xshift=3]outputs.west) to (dispatch.south);
+%?%
+%?%\path [arrow, dashed, out=0, in=-90] ([xshift=-3.5]D2targs.east) to (dispatch.south);
+%?%
+%?%%% overlay
+%?%
+%?%\draw [fill=black, opacity=0.2] (0.75, -0.2) rectangle (2.25, 0.35);
+%?%\draw [fill=red, opacity=0.4] (0.75, -1) rectangle (2.25, -0.2);
+%?%\draw [fill=black, opacity=0.2] (0.75, -2.5) rectangle (2.25, -1);
+%?%
+%?%\uncover<4->{
+%?%\draw [red, ultra thick] (-1, -1) circle (0.5);
+%?%}
+%?%\end{tikzpicture}
+%?%\end{column}
+%?%\end{columns}
+%?%
+%?%\end{frame}
+%?
+%?\againframe<7>{homm_arch}
+%?
+%?\begin{frame}{Results}
+%?\includegraphics[height=0.8\textheight]{../../psych/dissertation/4-extending/figures/grids_adaptation_results.png}
+%?\end{frame}
+%?
+%?\begin{frame}[standout]
+%?Meta-mapping can work in RL, even with a small support set of tasks. 
+%?\end{frame}
+%?
+%?\begin{frame}{Relation to model-based adaptation}
+%?Model-based methods are often framed in part as an approach to flexibility.
+%?\begin{itemize}
+%?\item However, for this to work, these methods generally must have a new reward function handed to them.
+%?\item That is, they're offloading a substantial part of the adaptation problem to another system.
+%?\item Meta-mapping could offer a principled way to adapt a reward-predicting function, transition models, etc.
+%?\item Thus meta-mapping and model-based planning could be complementary.
+%?\end{itemize}
+%?\end{frame}
+%?
+%?%\begin{frame}{Behavioral uncertainty}
+%?%\inlineMovie{figures/recording_pickup.mp4}{../../psych/dissertation/4-extending/figures/pick_up_0.png}{width=0.48\textwidth, height=0.36\textwidth}%
+%?%\inlineMovie{figures/recording_pusher.mp4}{../../psych/dissertation/4-extending/figures/pusher_0.png}{width=0.48\textwidth, height=0.36\textwidth}
+%?%\end{frame}
+%?%
+%?
+%?\begin{frame}{Categorization tasks}
+%?\vspace{0.1em}
+%?\begin{columns}
+%?\begin{column}{\dimexpr\paperwidth-10pt}
+%?\begin{tikzpicture}[auto]%, scale=0.8, every node/.style={scale=0.8}]
+%?% blickets
+%?\node at (-4.8, 2.2) {\LARGE ``Blickets''};
+%?\draw[pen colour=fg, decoration={calligraphic brace, amplitude=0.5cm},decorate,line width=1mm] (-3, 0.3) -- (-3, 4); 
+%?\node at (-2, 3.1) {\includegraphics[width=1.8cm]{../../psych/dissertation/4-extending/figures/categorization_stimuli/32_red_triangle_0.png}};
+%?\node at (-2, 1.2) {\includegraphics[width=1.8cm]{../../psych/dissertation/4-extending/figures/categorization_stimuli/24_red_triangle_0.png}};
+%?
+%?% not blickets
+%?\node at (-4.3, -2.1) {\LARGE ``Not''};
+%?\draw[pen colour=fg, decoration={calligraphic brace, amplitude=0.5cm},decorate,line width=1mm] (-3, -4) -- (-3, -0.3); 
+%?\node at (-2, -3.1) {\includegraphics[width=1.8cm]{../../psych/dissertation/4-extending/figures/categorization_stimuli/32_red_circle_0.png}};
+%?\node at (-2, -1.2) {\includegraphics[width=1.8cm]{../../psych/dissertation/4-extending/figures/categorization_stimuli/24_yellow_triangle_0.png}};
+%?\only<2>{
+%?\node at (1.3, 0) {\LARGE ``Blickets?''};
+%?}
+%?\uncover<3->{
+%?\node at (3, 3.5) {\LARGE ``Zipfs = cyan blickets''};
+%?\node at (1.6, 0) {\LARGE ``Zipfs?''};
+%?}
+%?\uncover<2->{
+%?\draw[pen colour=fg, decoration={calligraphic brace, amplitude=0.5cm},decorate,line width=1mm] (3.2, -2.9) -- (3.2, 2.9); 
+%?\node at (4.2, 1.9) {\includegraphics[width=1.8cm]{../../psych/dissertation/4-extending/figures/categorization_stimuli/24_red_triangle_1.png}};
+%?\node at (4.2, 0) {\includegraphics[width=1.8cm]{../../psych/dissertation/4-extending/figures/categorization_stimuli/32_cyan_triangle_1.png}};
+%?\node at (4.2, -1.9) {\includegraphics[width=1.8cm]{../../psych/dissertation/4-extending/figures/categorization_stimuli/32_cyan_inverseplus_1.png}};
+%?}
+%?
+%?\end{tikzpicture}
+%?\end{column}
+%?\end{columns}
+%?\end{frame}
+%?
+%?
+%?\begin{frame}{Why categorization?}
+%?\begin{itemize}
+%?\item Cognitive history.
+%?\item Rich visual input, more complex tasks.
+%?\item Classification is a common problem.
+%?\end{itemize}
+%?\end{frame}
+%?\begin{frame}{Categorization tasks}
+%?\begin{columns}
+%?\begin{column}{0.5\textwidth}
+%?Types of categories:
+%?\begin{itemize}
+%?\item Basic tasks: single attribute (shape/color/size) category.
+%?\item Composite tasks: AND, OR, or XOR of two different attributes.  
+%?\end{itemize}
+%?\uncover<2->{
+%?Meta-mappings:
+%?\begin{itemize}
+%?\item Switch one color to another or switch one shape to another. 
+%?\item (Omitted size switching because only a few sizes.)
+%?\end{itemize}
+%?}
+%?\end{column}
+%?\begin{column}{0.5\textwidth}
+%?\centering
+%?\includegraphics[width=2.2cm]{../../psych/dissertation/4-extending/figures/categorization_stimuli/24_red_triangle_1.png}\\
+%?\includegraphics[width=2.2cm]{figures/categorization/32_cyan_emptysquare_0.png}\\
+%?\includegraphics[width=2.2cm]{../../psych/dissertation/4-extending/figures/categorization_stimuli/24_yellow_inverseplus_0.png}
+%?\end{column}
+%?\end{columns}
+%?\end{frame}
+%?
+%?\againframe<6>{homm_arch}
+%?%\againframe<2>{extending_methods}
+%?
+%?\begin{frame}[label=cat_results]
+%?\frametitle{Categorization results}
+%?\includegraphics[height=0.8\textheight]{../../psych/dissertation/4-extending/figures/concepts_adaptation_sweeping.png}
+%?\end{frame}
+%?
+%?%\againframe<4>{homm_arch}
+%?%\againframe<2>{cat_results}
+%?
+%?\begin{frame}[standout]
+%?Both language generalization and meta-mapping perform very well in this domain.
+%?%Language produces better concept representations than examples.\\[1em]
+%?%Meta-mapping these representations produces similar performance to language generalization.
+%?\end{frame}
 
 %\begin{frame}{Thoughts on language \& my recent RL generalization work}
 %How does this relate to our recent finding that realistic tasks improve generalization in language-conditioned RL?\par
@@ -1115,24 +1139,24 @@ Both language generalization and meta-mapping perform very well in this domain.
 %(``Environmental drivers of generalization in a situated agent,'' Hill, Lampinen, et al., ICLR 2020)
 %\end{frame}
 
-\section{Why zero-shot adaptation?}
-
-\begin{frame}{Zero-shot adaptation is a useful starting point}
-Because it accelerates learning and reduces cumulative mistakes.
-{
-\centering
-\only<1>{
-\includegraphics[height=0.8\textheight]{../../psych/dissertation/5-timescales/figures/polynomial_optimization_curves.png}
-}
-\only<2>{
-\includegraphics[height=0.8\textheight]{../../psych/dissertation/5-timescales/figures/polynomial_optimization_cumulative_regret.png}
-}
-}
-\end{frame}
-
-\begin{frame}[standout]
-Starting from a zero-shot ``guess'' at the appropriate behavior results in faster learning, and reduces cumulative mistakes by an order of magnitude 
-\end{frame}
+%\section{Why zero-shot adaptation?}
+%
+%\begin{frame}{Zero-shot adaptation is a useful starting point}
+%Because it accelerates learning and reduces cumulative mistakes.
+%{
+%\centering
+%\only<1>{
+%\includegraphics[height=0.8\textheight]{../../psych/dissertation/5-timescales/figures/polynomial_optimization_curves.png}
+%}
+%\only<2>{
+%\includegraphics[height=0.8\textheight]{../../psych/dissertation/5-timescales/figures/polynomial_optimization_cumulative_regret.png}
+%}
+%}
+%\end{frame}
+%
+%\begin{frame}[standout]
+%Starting from a zero-shot ``guess'' at the appropriate behavior results in faster learning, and reduces cumulative mistakes by an order of magnitude. 
+%\end{frame}
 
 
 %\section{Wrapping up}
@@ -1147,7 +1171,7 @@ Starting from a zero-shot ``guess'' at the appropriate behavior results in faste
         \item And a parsimonious implementation: \textbf{HoMM} architectures. 
     \end{itemize}
 \item HoMM performs comparably to humans in a card game task, and outperforms (or equals) a language based approach across three varied settings, including image classification and RL.
-\item Zero-shot adaptation allows faster, better later learning. 
+\item Meta-mapping allows faster, better later learning. 
 %\item Earlier paper: \url{https://arxiv.org/abs/1905.09950} and library + all code: \url{https://github.com/lampinen/HoMM}
 \end{itemize}
 \end{frame}
