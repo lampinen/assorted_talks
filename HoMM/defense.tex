@@ -40,6 +40,9 @@
 \tikzstyle{line} = [draw, very thick, -latex', -]
 \tikzstyle{arrow} = [draw, ->, very thick]
 
+\def\checkmark{\tikz\fill[scale=0.4](0,.35) -- (.25,0) -- (1,.7) -- (.25,.15) -- cycle;}
+\def\bigcheckmark{\tikz\fill[scale=0.66](0,.35) -- (.25,0) -- (1,.7) -- (.25,.15) -- cycle;}
+
 \definecolor{bpurp}{HTML}{984ea3}
 \definecolor{bblue}{HTML}{377eb8}
 \definecolor{bgreen}{HTML}{4daf4a}
@@ -50,7 +53,7 @@
 
 \begin{document}
 
-\title{Toward understanding human adaptibility with deep learning models}
+\title{A computational framework for learning and transforming task representations}
 \author{Andrew Lampinen}
 \date{May 12th, 2020}
 \frame{\titlepage}
@@ -124,8 +127,8 @@ Goal: a deep-learning framework that can transform task representations to adapt
 \begin{frame}{Prior work on flexible deep learning models}
 I'll discuss the relationship between my work and some of these as I go along.
 \begin{itemize}
-    \item Lots of work on meta-learning (learning to learn).
-    \item Work on zero-shot task performance from language.
+    \item Meta-learning (learning to learn).
+    \item Zero-shot task performance from language.
     \item Model-based methods. 
 \end{itemize}
 (Happy to address other related work in the Q + A!)
@@ -1160,6 +1163,112 @@ On this task, MM adapts comparably to humans, and better than language alone. \\
 
 
 %\section{Wrapping up}
+\begin{frame}{Meta-mapping can apply to much more than just card games}
+\vspace{0.5em}
+\begin{columns}
+\begin{column}{0.5\textwidth}
+\textbf{Polynomial regression:}
+{\centering
+\resizebox{0.7\textwidth}{!}{
+\begin{tikzpicture}[auto, every node/.style={scale=0.93}]
+%% Basic
+\node[gray] at (0, 3) {Basic tasks};
+\draw[boundingbox, draw=gray, fill=white] (-4, 2.7) rectangle (-0.25, -0.2);
+\draw[boundingbox, draw=gray, fill=white] (-4, 2.7) rectangle (-0.25, 1.7);
+\node[gray] at (-3.5, 2.45) {Task:};
+\node[align=center] at (-2.2, 2) {\(f(w,x,y,z) = x^2 + 1\)};
+\node[gray] at (-2.4, 1.45) {Input-output pairs:};
+\node[align=center] at (-2.2, 0.5) {%
+    \(\begin{aligned}
+    (0, 0, 0, 0) & \mapsto 1\\[-0.2em] 
+    (1.5, -1, 3.1, 0) & \mapsto 3.25\\[-0.75em] 
+    & \vdots
+    \end{aligned}\)};
+
+\begin{scope}[shift={(4, 0)}]
+\draw[boundingbox, draw=gray, fill=white] (-4, 2.7) rectangle (-0.25, -0.2);
+\draw[boundingbox, draw=gray, fill=white] (-4, 2.7) rectangle (-0.25, 1.7);
+\node[gray] at (-3.5, 2.45) {Task:};
+\node[align=center] at (-2.2, 2) {\(f(w,x,y,z) = 3w + yz\)};
+\node[gray] at (-2.4, 1.45) {Input-output pairs:};
+\node[align=center] at (-2.2, 0.5) {%
+    \(\begin{aligned}
+    (0.5, 0, 1, 2) & \mapsto 3.5\\[-0.2em] 
+    (1, 0.2, -1, 0.5) & \mapsto 2.5\\[-0.75em] 
+    & \vdots
+    \end{aligned}\)};
+\end{scope}
+
+%% meta-mapping
+\node[gray] at (0, -0.5) {Meta-mappings};
+
+\begin{scope}[shift={(0, -3.5)}]
+\draw[boundingbox, draw=gray, fill=white] (-4, 2.7) rectangle (-0.25, -0.2);
+\draw[boundingbox, draw=gray, fill=white] (-4, 2.7) rectangle (-0.25, 1.7);
+\node[gray] at (-2.75, 2.45) {Meta-mapping:};
+\node[align=center] at (-2.8, 2) {Multiply by 3.};
+\node[gray] at (-2.4, 1.45) {Input-output pairs:};
+\node[align=center] at (-2.2, 0.5) {%
+    \(\begin{aligned}
+    x^2 + 1 & \mapsto 3x^2 + 3\\[-0.2em] 
+    3w + yz & \mapsto 9w + 3yz\\[-0.75em] 
+    & \vdots
+    \end{aligned}\)};
+\end{scope}
+
+\begin{scope}[shift={(4, -3.5)}]
+\draw[boundingbox, draw=gray, fill=white] (-4, 2.7) rectangle (-0.25, -0.2);
+\draw[boundingbox, draw=gray, fill=white] (-4, 2.7) rectangle (-0.25, 1.7);
+\node[gray] at (-2.75, 2.45) {Meta-mapping:};
+\node[align=center] at (-2.4, 2) {Permute \((w, z, x, y)\)};
+\node[gray] at (-2.4, 1.45) {Input-output pairs:};
+\node[align=center] at (-2.2, 0.5) {%
+    \(\begin{aligned}
+    x^2 + 1 & \mapsto z^2 + 1\\[-0.2em] 
+    3w + yz & \mapsto 3w + xy\\[-0.75em] 
+    & \vdots
+    \end{aligned}\)};
+\end{scope}
+\end{tikzpicture}
+}}\\
+\textbf{Visual concepts (image classification):}
+\resizebox{0.9\textwidth}{!}{
+\begin{tikzpicture}[auto, scale=0.8, every node/.style={scale=0.8}]
+\draw[boundingbox, draw=gray, fill=white] (-9.4, 2.7) rectangle (-0.1, 0);
+\node[gray, align=center] at (-4.7, 2.45) {\large Visual concept (basic task)};
+\node at (-9, 1.23) {\Huge \color{bgreen} \bigcheckmark};
+\draw[decoration={calligraphic brace, amplitude=0.4cm},decorate,line width=1mm] (-8.1, 0.2) -- (-8.1, 2.2);
+\node at (-6.6, 1.21) {\includegraphics[width=1.5cm]{figures/categorization/32_yellow_triangle_1.png} \includegraphics[width=1.5cm]{figures/categorization/24_yellow_triangle_1.png}};
+
+\node at (-4.3, 1.21) {\Huge \color{red}\(\bm \times\)};
+\draw[decoration={calligraphic brace, amplitude=0.4cm},decorate,line width=1mm] (-3.4, 0.2) -- (-3.4, 2.2);
+\node at (-1.9, 1.21) {\includegraphics[width=1.5cm]{figures/categorization/32_yellow_circle_1.png} \includegraphics[width=1.5cm]{figures/categorization/24_blue_triangle_1.png}};
+
+\begin{scope}[shift={(0, -3)}]
+\draw[boundingbox, draw=gray, fill=white] (-9.4, 2.7) rectangle (-0.1, 0);
+\node[gray, align=center] at (-4.7, 2.45) {\large Transformed concept};
+\node at (-9, 1.23) {\Huge \color{bgreen} \bigcheckmark};
+\draw[decoration={calligraphic brace, amplitude=0.4cm},decorate,line width=1mm] (-8.1, 0.2) -- (-8.1, 2.2);
+\node at (-6.6, 1.21) {\includegraphics[width=1.5cm]{figures/categorization/24_cyan_triangle_0.png} \includegraphics[width=1.5cm]{figures/categorization/32_cyan_triangle_1.png}};
+
+\node at (-4.3, 1.21) {\Huge \color{red}\(\bm \times\)};
+\draw[decoration={calligraphic brace, amplitude=0.4cm},decorate,line width=1mm] (-3.4, 0.2) -- (-3.4, 2.2);
+\node at (-1.9, 1.21) {\includegraphics[width=1.5cm]{figures/categorization/24_cyan_emptysquare_0.png} \includegraphics[width=1.5cm]{figures/categorization/32_yellow_triangle_1.png}};
+\end{scope}
+
+\end{tikzpicture}
+}
+\end{column}%
+\begin{column}{0.5\textwidth}
+\textbf{Reinforcement learning:}
+\inlineMovie{figures/recording_pusher.mp4}{../../psych/dissertation/4-extending/figures/pusher_0.png}{width=0.9\textwidth, height=0.65\textwidth}
+\textbf{Initializing later learning:}
+\includegraphics[width=0.9\textwidth]{../../psych/dissertation/5-timescales/figures/polynomial_optimization_curves.png}
+\end{column}
+
+\end{columns}
+
+\end{frame}
 
 \begin{frame}{Conclusions}
 
@@ -1170,30 +1279,11 @@ On this task, MM adapts comparably to humans, and better than language alone. \\
     \begin{itemize}
         \item And a parsimonious implementation: \textbf{HoMM} architectures. 
     \end{itemize}
-\item HoMM performs comparably to humans in a card game task, and outperforms (or equals) a language based approach across three varied settings, including image classification and RL.
-\item Meta-mapping allows faster, better later learning. 
+\item HoMM performs comparably to humans in a card game task, and outperforms a language based approach.
+\item Meta-mapping also performs well across settings ranging from image classification to reinforcement learning, and allows faster, better later learning. 
 %\item Earlier paper: \url{https://arxiv.org/abs/1905.09950} and library + all code: \url{https://github.com/lampinen/HoMM}
 \end{itemize}
 \end{frame}
-
-%\section{A brief methods comment}
-%\begin{frame}{Why you should implement everything twice}
-%\only<1>{
-%Bugs that slipped past my unit testing, but that I found by reimplementing my code in a shared library, and comparing results:%
-%\begin{itemize}
-%\item Off-by-one error in array indexing leading to unintentional, weird weight tying in hyper network output. 
-%\item Target network for DQN accidentally having one set of weights shared with main net all the time.
-%\item Using mixed task representations for evaluation rather than cached ones in RL tasks.
-%\item Error in domains of meta-mappings in categorization tasks.
-%\item Implementation of suit \(\leftrightarrow\) rank in card tasks not as intended.
-%\end{itemize}
-%None of these made my earlier results invalid, but they did worsen performance in some cases, and/or made it so I wasn't really doing what I thought/said I was. All results I showed you today are from corrected code.
-%}
-%\only<2>{
-%But I was lucky:\\
-%\includegraphics[width=\textwidth]{figures/correction.png}
-%}
-%\end{frame}
 
 \begin{frame}[standout]
 %Thanks to Jay, Noah, Surya, Erin, Katherine, Arianna and the rest of the lab! \\[1em]
