@@ -68,7 +68,7 @@
 
 \begin{frame}<1-2>[label=pokermotivation]
 \frametitle<1-2>{Human cognition is flexible -- we can adapt on our first try}
-\frametitle<3-4>{How do humans adapt?}
+\frametitle<3-4>{Adaptation as task transformation}
 \frametitle<5>{Switching to opposite rewards is challenging}
 \centering
 \only<1,5>{
@@ -101,19 +101,17 @@
 {\scriptsize (Lake, Ullman, Tenenbaum \& Gershman, 2016; Marcus, 2018; Hao, 2020)}
 \end{frame}
 
-\begin{frame}{In particular, can deep learning be a good cognitive model?}
+\begin{frame}{In particular, is deep learning a good cognitive model?}
 \phantom{}
 {
 \centering
 \includegraphics[width=0.8\textwidth]{figures/brenden.png}\\
 }
-{\scriptsize (Lake, Ullman, Tenenbaum \& Gershman, 2016; not an exact quote.)}
+{\scriptsize (Lake, Ullman, Tenenbaum \& Gershman, 2016; not exact quotes.)}
 \end{frame}
 
-
-
 \begin{frame}[standout]
-Could deep learning models capture our cognitive flexibility?
+Could deep learning models reuse their knowledge more flexibly, without retraining?
 \end{frame}
 
 \againframe<3-4>{pokermotivation}
@@ -121,8 +119,6 @@ Could deep learning models capture our cognitive flexibility?
 \begin{frame}[standout]
 Goal: a deep-learning framework that can transform task representations to adapt.
 \end{frame}
-
-
 
 \begin{frame}{Prior work on flexible deep learning models}
 I'll discuss the relationship between my work and some of these as I go along.
@@ -154,8 +150,16 @@ Standard deep learning tries to infer this mapping from lots of examples, meta-l
 \end{columns}
 \end{frame}
 
+\begin{frame}{Generalizing tasks from examples}
+\centering
+\includegraphics[height=0.8\textheight]{figures/poker_from_examples.png}
+\end{frame}
+
 \begin{frame}[standout]
-Tasks \(\bm =\) mappings from inputs to outputs. 
+Tasks \(\bm =\) mappings from inputs to outputs.\\[1em] 
+\uncover<2>{
+Task mappings can be inferred from examples.
+}
 \end{frame}
 
 %% TODO: Maybe cut
@@ -201,6 +205,11 @@ How do we adapt a task-mapping?
 \begin{frame}[standout]
 Transforming the task mapping \(=\) adapting. \\[1em]
 Meta-mappings are higher-order mappings that transform task mappings.
+\end{frame}
+
+\begin{frame}{Could we generalize meta-mappings from examples?}
+\centering
+\includegraphics[height=0.8\textheight]{figures/losing_from_examples.png}
 \end{frame}
 
 \begin{frame}<-3>[label=basic_metamapping_analogy]
