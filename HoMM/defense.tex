@@ -66,6 +66,30 @@
 %\end{frame}
 %}
 
+\begin{frame}%{Broader context}
+\begin{columns}
+\begin{column}{\dimexpr\paperwidth-1em}
+\centering
+\begin{tikzpicture}[auto]
+\node at (-4.5, 2) {\includegraphics[width=3cm]{figures/papers/paper0.png}};
+\node at (-1.5, 2) {\includegraphics[width=3cm]{figures/papers/paper1.png}};
+\node at (1.5, 2) {\includegraphics[width=3cm]{figures/papers/paper2.png}};
+\node at (4.5, 2) {\includegraphics[width=3cm]{figures/papers/paper3.png}};
+
+\node at (-4.5, -2) {\includegraphics[width=3cm]{figures/papers/paper4.png}};
+\node at (-1.5, -2) {\includegraphics[width=3cm]{figures/papers/paper5.png}};
+\node at (1.5, -2) {\includegraphics[width=3cm]{figures/papers/paper6.png}};
+\node at (4.5, -2) {\includegraphics[width=3cm]{figures/papers/paper7.png}};
+
+\uncover<2->{
+\draw[bred, line width=1em] (-6, -3.5) to (6, 3.5);
+\draw[bred, line width=1em] (-6, 3.5) to (6, -3.5);
+}
+\end{tikzpicture}
+\end{column}
+\end{columns}
+\end{frame}
+
 \begin{frame}<1-2>[label=pokermotivation]
 \frametitle<1-2>{Human cognition is flexible -- we can adapt on our first try}
 \frametitle<3-4>{Adaptation as task transformation}
@@ -130,7 +154,7 @@ I'll discuss the relationship between my work and some of these as I go along.
 (Happy to address other related work in the Q + A!)
 \end{frame}
 
-\section{Meta-mapping}
+\section{Task mappings \& meta-mapping}
 
 \begin{frame}{Tasks as functions/mappings}
 \begin{columns}
@@ -250,7 +274,7 @@ Our goal is to implement:
 This will allow the architecture to perform new tasks without data, by their relationship to prior tasks.
 \end{frame}
 
-\begin{frame}{Task-specific computations are low-dimensional and abstract}
+\begin{frame}<2>{Task-specific computations are low-dimensional and abstract}
 \begin{tikzpicture}[auto]
 \node at (-4, 0) (image) {\includegraphics[width=2cm]{figures/straight_flush_hand.jpg}};
 
@@ -523,7 +547,7 @@ We use an architecture that generates task representations, which it uses to mod
 \begin{frame}<1>[label=homm_arch]
 \frametitle<1>{Meta-mapping as transforming function representations}
 \frametitle<2-3>{So we can use the same approach and networks!}
-\frametitle<4,7>{Architecture reminder}
+\frametitle<4,7>{A reminder of the approach}
 \frametitle<5>{Language-based approach}
 \frametitle<6>{Language-based meta-mapping}
 %\frametitle<4>{Language-based meta-mapping}
@@ -749,43 +773,43 @@ $\vdots$
 
 \againframe<4>{basic_metamapping_analogy}
 
-\againframe<3>{homm_arch}
+\againframe<2-3>{homm_arch}
 
 \begin{frame}[standout]
 We can use the same approaches and networks for both basic tasks and meta-mappings.
 \end{frame}
 
 %% TODO: reinsert?
-%\begin{frame}{Interim summary}
-%\begin{itemize}[<+->]
-%\item Basic tasks are mappings from inputs to outputs (e.g. poker hands to bets), which can be inferred from examples.
-%\item We represent the task-specific computations as relatively simple transformations, parameterized from a task embedding. The rest of input and output is shared across tasks.
-%\item One type of flexibility is systematically altering these tasks (e.g. trying to bet on losing hands instead of winning ones).
-%\item This can be seen as a \textbf{meta-mapping}, that is, a mapping which takes tasks as input and produces tasks as output (e.g. maps try-to-win-at-poker to try-to-lose-at-poker).
-%\item We implement the meta-mapping function as a transformation of task embeddings.
-%\item This mapping can be parsimoniously inferred and implemented using exactly the same networks as the basic tasks.
-%\end{itemize}
-%\end{frame}
+\begin{frame}{Meta-mapping summary}
+\begin{itemize}
+\item Basic tasks are mappings from inputs to outputs (e.g. poker hands to bets), which can be inferred from examples.
+\item We represent the task-specific computations as relatively simple transformations, parameterized from a task embedding. The rest of input and output is shared across tasks.
+\item One type of flexibility is systematically altering these tasks (e.g. trying to bet on losing hands instead of winning ones).
+\item This can be seen as a \textbf{meta-mapping}, that is, a mapping which takes tasks as input and produces tasks as output (e.g. maps try-to-win-at-poker to try-to-lose-at-poker).
+\item We implement the meta-mapping function as a transformation of task embeddings.
+\item This mapping can be parsimoniously inferred and implemented using exactly the same networks as the basic tasks.
+\end{itemize}
+\end{frame}
 
 \section{Explorations}
 
-\begin{frame}{Explorations overview}
-This same approach can be used in many different settings: 
-\begin{table}
-\center
-\begin{tabular}{|c|c|c|}
-\hline
-Experiment & Type & Cognitive motivation \\
-\hline
-\color{lightgray} Polynomials & \color{lightgray} Regression & \color{lightgray} Proof of concept \\
-Card games & Regression & Adapting strategies \\
-2D worlds & RL & Adapting behaviors \\
-Categories & Classification & Adapting concepts \\
-\hline
-\end{tabular}
-\end{table}
-\end{frame}
-
+%\begin{frame}{Explorations overview}
+%This same approach can be used in many different settings: 
+%\begin{table}
+%\center
+%\begin{tabular}{|c|c|c|}
+%\hline
+%Experiment & Type & Cognitive motivation \\
+%\hline
+%\color{lightgray} Polynomials & \color{lightgray} Regression & \color{lightgray} Proof of concept \\
+%Card games & Regression & Adapting strategies \\
+%2D worlds & RL & Adapting behaviors \\
+%Categories & Classification & Adapting concepts \\
+%\hline
+%\end{tabular}
+%\end{table}
+%\end{frame}
+%
 \againframe<5>{pokermotivation}
 
 \begin{frame}{Simple card games}
