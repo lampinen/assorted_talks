@@ -918,8 +918,8 @@ Note: this analysis is biased against models because of ceiling.
 
 \begin{frame}[standout]
 On this task, MM adapts comparably to humans, and better than language alone. \\[1em]
-\only<2->{
-(I'm not saying that language isn't useful, just that transforming task representations may be useful as well.)
+\uncover<2->{
+(I'm not saying that language isn't useful, just that meta-mapping may be useful as well.)
 }
 \end{frame}
 
@@ -1306,22 +1306,21 @@ On this task, MM adapts comparably to humans, and better than language alone. \\
 \begin{frame}{Conclusions}
 
 \begin{itemize}
-\item Humans can perform novel tasks zero-shot. 
+\item Humans can perform novel tasks without retraining. 
 \item I suggest that task transformation offers a useful perspective on this ability. 
 \item I propose a computational description of task transformation: \textbf{meta-mapping}.
     \begin{itemize}
-        \item And a parsimonious implementation: \textbf{HoMM} architectures. 
+        \item And a parsimonious architectural implementation that uses the same networks for basic tasks and meta-mappings. 
     \end{itemize}
-\item HoMM performs comparably to humans in a card game task, and outperforms a language based approach.
+\item Meta-mapping performs comparably to humans in a card game task, and outperforms a language based approach.
 \item Meta-mapping also performs well across settings ranging from image classification to reinforcement learning, and allows faster, better later learning. 
 %\item Earlier paper: \url{https://arxiv.org/abs/1905.09950} and library + all code: \url{https://github.com/lampinen/HoMM}
 \end{itemize}
 \end{frame}
 
 \begin{frame}[standout]
-%Thanks to Jay, Noah, Surya, Erin, Katherine, Arianna and the rest of the lab! \\[1em]
-%And you for listening! \\[1em]
-Questions?
+Questions?\\[1em]
+{\normalsize (Please ``raise hand'' on Zoom, and we will unmute you to ask, or share your question in the chat.)}
 \end{frame}
 
 \end{document}
