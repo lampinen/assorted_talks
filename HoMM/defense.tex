@@ -154,7 +154,7 @@ I'll discuss the relationship between my work and some of these as I go along.
 (Happy to address other related work in the Q + A!)
 \end{frame}
 
-\section{Task mappings \& meta-mapping}
+\section{Meta-mapping}
 
 \begin{frame}{Tasks as functions/mappings}
 \begin{columns}
@@ -163,7 +163,7 @@ It's useful to think of tasks or behaviors as functions mapping input to output:
 \begin{itemize}
     \item Poker hand \(\rightarrow\) bet
     \item Chess position \(\rightarrow\) move
-    \item Object \(\rightarrow\) classification
+    \item Image \(\rightarrow\) classification
 \end{itemize}
 Standard deep learning tries to infer this mapping from lots of examples, meta-learning from fewer. 
 \end{column}
@@ -259,7 +259,7 @@ Meta-mappings are higher-order mappings that transform task mappings.
 
 \begin{frame}[standout]
 There is a functional analogy between basic tasks and meta-mappings. \\[1em]
-But how can we use it?
+But we need task representations to use it. 
 \end{frame}
 
 \section{An architecture for representing and transforming tasks}
@@ -440,42 +440,42 @@ This will allow the architecture to perform new tasks without data, by their rel
 \draw[boundingbox, draw=gray, fill=white] (-8.5, -2.5) rectangle (-2, 2.5);
 
 %% from language
-\node[gray] at (-7, 2.1) {Instructions};
-\node at (-7, 1.25) (language) {``Play poker.''};
-
-\node[gray, text width=2cm, align=center] at (-4.1, 2.1) {Language network};
-\node[block] at (-4.1, 1.25) (languagenet) {\(\mathcal{L}\)};
-\path[arrow] (language.east) -- ([xshift=-3]languagenet.west);
-
-\node[bpurp, text width=2cm] at (-2, 1.25) (languagetaskrep) {\(z_{poker}\)};
-\path[arrow] ([xshift=3]languagenet.east) -- (languagetaskrep.west);
+%\node[gray] at (-7, -0.4) {Instructions};
+%\node at (-7, -1.25) (language) {``Play poker.''};
+%
+%\node[gray, text width=2cm, align=center] at (-4.1, -0.4) {Language network};
+%\node[block] at (-4.1, -1.25) (languagenet) {\(\mathcal{L}\)};
+%\path[arrow] (language.east) -- ([xshift=-3]languagenet.west);
+%
+%\node[bpurp, text width=2cm] at (-2, -1.25) (languagetaskrep) {\(z_{poker}\)};
+%\path[arrow] ([xshift=3]languagenet.east) -- (languagetaskrep.west);
 
 
 %% from examples
 
-\node[gray, text width=2.5cm, align=center] at (-7, -0.2) {Task examples (encoded)};
-\node at (-7, -1.25) (examples) {
+\node[gray, text width=2.5cm, align=center] at (-7, 2) {Task examples (encoded)};
+\node at (-7, 1.1) (examples) {
 \(\left\{
 \begin{matrix}
 ({\color{bgreen}z_{hand_{1}}}, {\color{bgreen}z_{bet_{1}}})\\
 $\vdots$
 \end{matrix}\right\}\)};
 
-\node[gray, text width=2cm, align=center] at (-4.1, -0.4) {Example network};
-\node[block] at (-4.1, -1.25) (examplenet) {\(\mathcal{E}\)};
+\node[gray, text width=2cm, align=center] at (-4.1, 2) {Example network};
+\node[block] at (-4.1, 1.1) (examplenet) {\(\mathcal{E}\)};
 \path[arrow] (examples.east) -- ([xshift=-3]examplenet.west);
 
-\node[bpurp, text width=2cm] at (-2, -1.25) (examplestaskrep) {\(z_{poker}\)};
+\node[bpurp, text width=2cm] at (-2, 1.1) (examplestaskrep) {\(z_{poker}\)};
 \path[arrow] ([xshift=3]examplenet.east) -- (examplestaskrep.west);
 \end{scope}
 }
 %% b) performing
 \draw[boundingbox, draw=gray, fill=white] (-1.5, -2.5) rectangle (8, 2.5);
 \only<2->{
-\node[bpurp] at (-0.75, 1.25) (taskrep) {\(z_{poker}\)};
+\node[bpurp] at (-0.75, 1.1) (taskrep) {\(z_{poker}\)};
 
-\node[gray, text width=2cm, align=center] at (0.75, 2.1) {Hyper network};
-\node[block] at (0.75, 1.25) (hypernet) {\(\mathcal{H}\)};
+\node[gray, text width=2cm, align=center] at (0.75, 2) {Hyper network};
+\node[block] at (0.75, 1.1) (hypernet) {\(\mathcal{H}\)};
 \path[arrow] (taskrep.east) -- ([xshift=-3]hypernet.west);
 }
 
@@ -531,7 +531,8 @@ $\vdots$
 }
 
 \uncover<5->{
-\draw [red, line width=0.25em] (-0.75, 1.25) circle (0.5);
+%\draw [red, line width=0.25em] (-0.75, 1.1) circle (0.5);
+\draw [red, line width=0.25em] (-2.2, 1.1) circle (0.5);
 }
 \end{tikzpicture}}
 \end{column}
@@ -539,13 +540,13 @@ $\vdots$
 \end{frame}
 
 \begin{frame}[standout]
-We use an architecture that generates task representations, which it uses to modulate a network which performs the task. % shorten this
+Our architecture generates task representations from examples, which it uses to modulate a network which performs the task. % shorten this
 \end{frame}
 
 \againframe<5>{homm_basic}
 
 \begin{frame}<1>[label=homm_arch]
-\frametitle<1>{Meta-mapping as transforming function representations}
+\frametitle<1>{Meta-mapping as transforming task representations}
 \frametitle<2-3>{So we can use the same approach and networks!}
 \frametitle<4,7>{A reminder of the approach}
 \frametitle<5>{Language-based approach}
@@ -562,15 +563,15 @@ We use an architecture that generates task representations, which it uses to mod
 \draw[boundingbox, draw=gray, fill=white] (-8.5, -2.5) rectangle (-2, 2.5);
 
 %% from language
-\only<-3, 5-6>{
-\node[gray] at (-7, 2.1) {Instructions};
-\node at (-7, 1.25) (language) {\only<-5>{``Play poker.''}\only<6>{``Red \& square.''}};
+\only<5-6>{
+\node[gray] at (-7, -0.4) {Instructions};
+\node at (-7, -1.25) (language) {\only<-5>{``Play poker.''}\only<6>{``Red \& square.''}};
 
-\node[gray, text width=2cm, align=center] at (-4.1, 2.1) {Language network};
-\node[block] at (-4.1, 1.25) (languagenet) {\(\mathcal{L}\)}; 
+\node[gray, text width=2cm, align=center] at (-4.1, -0.4) {Language network};
+\node[block] at (-4.1, -1.25) (languagenet) {\(\mathcal{L}\)}; 
 \path[arrow] (language.east) -- ([xshift=-3]languagenet.west);
 
-\node[bpurp, text width=2cm] at (-2, 1.25) (languagetaskrep) {\only<-5>{\(z_{poker}\)}\only<7>{\(z_{task}\)}\only<6>{\(z_{r,sq}\)}}; 
+\node[bpurp, text width=2cm] at (-2, -1.25) (languagetaskrep) {\only<-5>{\(z_{poker}\)}\only<7>{\(z_{task}\)}\only<6>{\(z_{r,sq}\)}}; 
 \path[arrow] ([xshift=3]languagenet.east) -- (languagetaskrep.west);
 }
 
@@ -582,8 +583,8 @@ We use an architecture that generates task representations, which it uses to mod
 %\begin{scope}[shift={(0, 2.5)}]
 %}
 
-\node[gray, text width=2.5cm, align=center] at (-7, -0.2) {Task examples (encoded)};
-\node at (-7, -1.25) (examples) {
+\node[gray, text width=2.5cm, align=center] at (-7, 2) {Task examples (encoded)};
+\node at (-7, 1.1) (examples) {
 \(\left\{
 \begin{matrix}
 \only<1-5>{({\color{bgreen}z_{hand_{1}}}, {\color{bgreen}z_{bet_{1}}})\\}
@@ -592,12 +593,12 @@ $\vdots$
 \end{matrix}\right\}\)};
 
 %\only<-3, 5-6>{
-\node[gray, text width=2cm, align=center] at (-4.1, -0.4) {Example network};
+\node[gray, text width=2cm, align=center] at (-4.1, 2) {Example network};
 %}
-\node[block] at (-4.1, -1.25) (examplenet) {\(\mathcal{E}\)}; 
+\node[block] at (-4.1, 1.1) (examplenet) {\(\mathcal{E}\)}; 
 \path[arrow] (examples.east) -- ([xshift=-3]examplenet.west);
 
-\node[bpurp, text width=2cm] at (-2, -1.25) (examplestaskrep) {\only<-5>{\(z_{poker}\)}\only<7>{\(z_{task}\)}\only<6>{\(z_{r,sq}\)}}; 
+\node[bpurp, text width=2cm] at (-2, 1.1) (examplestaskrep) {\only<-5>{\(z_{poker}\)}\only<7>{\(z_{task}\)}\only<6>{\(z_{r,sq}\)}}; 
 \path[arrow] ([xshift=3]examplenet.east) -- (examplestaskrep.west);
 %\only<4>{
 %\end{scope}
@@ -607,10 +608,10 @@ $\vdots$
 \end{scope}
 %% b) performing 
 \draw[boundingbox, draw=gray, fill=white] (-1.5, -2.5) rectangle (8.5, 2.5);
-\node[bpurp] at (-0.75, 1.25) (taskrep) {\only<-5>{\(z_{poker}\)}\only<7>{\(z_{task}\)}\only<6>{\(z_{r,sq}\)}};
+\node[bpurp] at (-0.75, 1.1) (taskrep) {\only<-5>{\(z_{poker}\)}\only<7>{\(z_{task}\)}\only<6>{\(z_{r,sq}\)}};
 
-\node[gray, text width=2cm, align=center] at (0.75, 2.1) {Hyper network};
-\node[block] at (0.75, 1.25) (hypernet) {\(\mathcal{H}\)}; 
+\node[gray, text width=2cm, align=center] at (0.75, 2) {Hyper network};
+\node[block] at (0.75, 1.1) (hypernet) {\(\mathcal{H}\)}; 
 \path[arrow] (taskrep.east) -- ([xshift=-3]hypernet.west);
 
 \node[text width=0.5cm] at (-0.85, -1.25) (inputs) {
@@ -652,15 +653,15 @@ $\vdots$
 \draw[boundingbox, draw=gray, fill=white] (-8.5, -2.5) rectangle (-2, 2.5);
 
 %% from language
-\only<-3, 5-6>{
-\node[gray] at (-6.7, 2.1) {Instructions};
-\node at (-6.7, 1.25) (language) {\only<-5>{``Try to lose.''}\only<7>{``Switch.''}\only<6>{``Red\(\mapsto\)blue.''}};
+\only<5-6>{
+\node[gray] at (-6.7, -0.4) {Instructions};
+\node at (-6.7, -1.25) (language) {\only<-5>{``Try to lose.''}\only<7>{``Switch.''}\only<6>{``Red\(\mapsto\)blue.''}};
 
-\node[gray, text width=2cm, align=center] at (-4.1, 2.1) {Language network};
-\node[block] at (-4.1, 1.25) (languagenet) {\(\mathcal{L}\)}; 
+\node[gray, text width=2cm, align=center] at (-4.1, 0.4) {Language network};
+\node[block] at (-4.1, -1.25) (languagenet) {\(\mathcal{L}\)}; 
 \path[arrow] (language.east) -- ([xshift=-3]languagenet.west);
 
-\node[borange, text width=2cm] at (-2, 1.25) (languagetaskrep) {\only<-5>{\(z_{lose}\)}\only<7>{\(z_{switch}\)}\only<6>{\(z_{r\mapsto b}\)}}; 
+\node[borange, text width=2cm] at (-2, -1.25) (languagetaskrep) {\only<-5>{\(z_{lose}\)}\only<7>{\(z_{switch}\)}\only<6>{\(z_{r\mapsto b}\)}}; 
 \path[arrow] ([xshift=3]languagenet.east) -- (languagetaskrep.west);
 }
 
@@ -668,8 +669,8 @@ $\vdots$
 %% from examples
 
 \only<-4,7>{
-\node[gray, text width=3.5cm, align=center] at (-6.7, -0.2) {Mapping examples (input/output tasks)};
-\node at (-6.7, -1.25) (examples) {
+\node[gray, text width=3.5cm, align=center] at (-6.7, 2) {Mapping examples (task pairs)};
+\node at (-6.7, 1.1) (examples) {
 \(\left\{
 \begin{matrix}
 \only<-4>{({\color{bpurp}z_{hearts}}, {\color{bpurp}z_{lose hearts}})\\}
@@ -677,11 +678,11 @@ $\vdots$
 $\vdots$
 \end{matrix}\right\}\)};
 
-\node[gray, text width=2cm, align=center] at (-4.1, -0.4) {Example network};
-\node[block] at (-4.1, -1.25) (examplenet) {\(\mathcal{E}\)}; 
+\node[gray, text width=2cm, align=center] at (-4.1, 2) {Example network};
+\node[block] at (-4.1, 1.1) (examplenet) {\(\mathcal{E}\)}; 
 \path[arrow] ([xshift=-3]examples.east) -- ([xshift=-3]examplenet.west);
 
-\node[borange, text width=2cm] at (-2, -1.25) (examplestaskrep) {\only<-5>{\(z_{lose}\)}\only<7>{\!\(z_{switch}\)}\only<6>{\(z_{r\mapsto b}\)}}; 
+\node[borange, text width=2cm] at (-2, 1.1) (examplestaskrep) {\only<-5>{\(z_{lose}\)}\only<7>{\!\(z_{switch}\)}\only<6>{\(z_{r\mapsto b}\)}}; 
 \path[arrow] ([xshift=3]examplenet.east) -- (examplestaskrep.west);
 }
 
@@ -690,10 +691,10 @@ $\vdots$
 %% d) performing 
 \draw[boundingbox, draw=gray, fill=white] (-1.5, -2.5) rectangle (8.5, 2.5);
 \only<2->{
-\node[borange] at (-0.75, 1.25) (taskrep) {\only<-5>{\(z_{lose}\)}\only<7>{\(z_{switch}\)}\only<6>{\(z_{r\mapsto b}\)}};
+\node[borange] at (-0.75, 1.1) (taskrep) {\only<-5>{\(z_{lose}\)}\only<7>{\(z_{switch}\)}\only<6>{\(z_{r\mapsto b}\)}};
 
-\node[gray, text width=2cm, align=center] at (0.75, 2.1) {Hyper network};
-\node[block] at (0.75, 1.25) (hypernet) {\(\mathcal{H}\)}; 
+\node[gray, text width=2cm, align=center] at (0.75, 2) {Hyper network};
+\node[block] at (0.75, 1.1) (hypernet) {\(\mathcal{H}\)}; 
 \path[arrow] (taskrep.east) -- ([xshift=-3]hypernet.west);
 }
 
@@ -783,7 +784,7 @@ We can use the same approaches and networks for both basic tasks and meta-mappin
 \begin{frame}{Meta-mapping summary}
 \begin{itemize}
 \item Basic tasks are mappings from inputs to outputs (e.g. poker hands to bets), which can be inferred from examples.
-\item We represent the task-specific computations as relatively simple transformations, parameterized from a task embedding. The rest of input and output is shared across tasks.
+\item We represent the task-specific computations as relatively simple transformations, parameterized from a task representation. The rest of input and output is shared across tasks.
 \item One type of flexibility is systematically altering these tasks (e.g. trying to bet on losing hands instead of winning ones).
 \item This can be seen as a \textbf{meta-mapping}, that is, a mapping which takes tasks as input and produces tasks as output (e.g. maps try-to-win-at-poker to try-to-lose-at-poker).
 \item We implement the meta-mapping function as a transformation of task embeddings.
@@ -1063,16 +1064,6 @@ On this task, MM adapts comparably to humans, and better than language alone. \\
 %?Meta-mapping can work in RL, even with a small support set of tasks. 
 %?\end{frame}
 %?
-%?\begin{frame}{Relation to model-based adaptation}
-%?Model-based methods are often framed in part as an approach to flexibility.
-%?\begin{itemize}
-%?\item However, for this to work, these methods generally must have a new reward function handed to them.
-%?\item That is, they're offloading a substantial part of the adaptation problem to another system.
-%?\item Meta-mapping could offer a principled way to adapt a reward-predicting function, transition models, etc.
-%?\item Thus meta-mapping and model-based planning could be complementary.
-%?\end{itemize}
-%?\end{frame}
-%?
 %?%\begin{frame}{Behavioral uncertainty}
 %?%\inlineMovie{figures/recording_pickup.mp4}{../../psych/dissertation/4-extending/figures/pick_up_0.png}{width=0.48\textwidth, height=0.36\textwidth}%
 %?%\inlineMovie{figures/recording_pusher.mp4}{../../psych/dissertation/4-extending/figures/pusher_0.png}{width=0.48\textwidth, height=0.36\textwidth}
@@ -1319,8 +1310,18 @@ On this task, MM adapts comparably to humans, and better than language alone. \\
 \end{frame}
 
 \begin{frame}[standout]
-Questions?\\[1em]
+Thanks, questions?\\[1em]
 {\normalsize (Please ``raise hand'' on Zoom, and we will unmute you to ask, or share your question in the chat.)}
+\end{frame}
+
+\begin{frame}{Relation to model-based adaptation}
+Model-based methods are often framed in part as an approach to flexibility.
+\begin{itemize}
+\item However, for this to work, these methods generally must have a new reward function handed to them.
+\item That is, they're offloading a substantial part of the adaptation problem to another system.
+\item Meta-mapping could offer a principled way to adapt a reward predictor, transition models, etc.
+\item Thus meta-mapping and model-based planning could be complementary.
+\end{itemize}
 \end{frame}
 
 \end{document}
