@@ -3,6 +3,7 @@
 %\setbeameroption{show notes on second screen=left} %enable for notes
 \usepackage{graphicx}
 \usepackage{xcolor}
+\usepackage{colortbl}
 \usepackage{listings}
 \usepackage{hyperref}
 \lstset{language=python,frame=single}
@@ -15,7 +16,6 @@
 \usepackage{appendixnumberbeamer}
 \usepackage{xparse}
 \usepackage{multimedia}
-\usepackage{xcolor}
 \usepackage[normalem]{ulem}
 \usepackage{hyperref}
 \usepackage{pdfpc-commands}
@@ -93,7 +93,7 @@
 \begin{frame}<1-2>[label=pokermotivation]
 \frametitle<1-2>{Human cognition is flexible -- we can adapt on our first try}
 \frametitle<3-4>{Adaptation as task transformation}
-\frametitle<5>{Switching to opposite rewards is challenging}
+\frametitle<5>{Losing poker: switching to opposite rewards is challenging}
 \centering
 \only<1,5>{
 \includegraphics[width=\textwidth]{figures/poker.png}
@@ -182,7 +182,10 @@ Standard deep learning tries to infer this mapping from lots of examples, meta-l
 \begin{frame}[standout]
 Tasks \(\bm =\) mappings from inputs to outputs.\\[1em] 
 \uncover<2>{
-Task mappings can be inferred from examples.
+Task mappings can be inferred from examples.\\[1em]
+}
+\uncover<3>{
+But how can we infer them without examples?
 }
 \end{frame}
 
@@ -429,9 +432,10 @@ This will allow the architecture to perform new tasks without data, by their rel
 \frametitle<1>{Basic task processing}
 \frametitle<2-3>{Adapting to a task}
 \frametitle<4>{Constructing a task representation}
-\frametitle<5->{Now we can transform the task representation!}
+\frametitle<5->{Now we have a task representation!}
 \begin{columns}
 \begin{column}{\dimexpr\paperwidth-1em}
+\centering
 \resizebox{\textwidth}{!}{%
 \begin{tikzpicture}[auto, every node/.style={execute at begin node=\setlength{\baselineskip}{1.1em}}]
 %% a) constructing
@@ -506,9 +510,9 @@ $\vdots$
 \path[arrow] ([xshift=3]actionnet.east) -- (output.west);
 
 %%% d subpanel) task network
-\only<3>{
+\uncover<3>{
 \draw[boundingbox, draw=gray, fill=white] (4.25, 0) rectangle (8, 2.5);
-\node[gray] at (6.15, 2.25) {\small \(\mathcal{H}\) adapts weights in \(\mathcal{T}\)};
+\node[gray] at (6.15, 2.1) {\small \(\mathcal{H}\) adapts weights in \(\mathcal{T}\)};
 \begin{scope}[scale=0.9, shift={(0.5, 0.25)}, every node/.append style={transform shape}]
 \node at (4.45, 1.45) (pseudohyper) {};
 
@@ -530,9 +534,9 @@ $\vdots$
 \path[draw, gray, thick] (3.75, -0.95) to (8, 0);
 }
 
-\uncover<5->{
+\only<5->{
 %\draw [red, line width=0.25em] (-0.75, 1.1) circle (0.5);
-\draw [red, line width=0.25em] (-2.2, 1.1) circle (0.5);
+\draw [red, line width=0.25em] (-2.15, 1.1) circle (0.5);
 }
 \end{tikzpicture}}
 \end{column}
@@ -784,15 +788,15 @@ We can use the same approaches and networks for both basic tasks and meta-mappin
 \begin{frame}{Meta-mapping summary}
 \begin{itemize}
 \item Basic tasks are mappings from inputs to outputs (e.g. poker hands to bets), which can be inferred from examples.
-\item We represent the task-specific computations as relatively simple transformations, parameterized from a task representation. The rest of input and output is shared across tasks.
+\item We represent the task-specific computations as relatively simple transformations, parameterized from a task representation. The rest of architecture is shared across tasks.
 \item One type of flexibility is systematically altering these tasks (e.g. trying to bet on losing hands instead of winning ones).
 \item This can be seen as a \textbf{meta-mapping}, that is, a mapping which takes tasks as input and produces tasks as output (e.g. maps try-to-win-at-poker to try-to-lose-at-poker).
-\item We implement the meta-mapping function as a transformation of task embeddings.
+\item We implement the meta-mapping function as a transformation of task representation.
 \item This mapping can be parsimoniously inferred and implemented using exactly the same networks as the basic tasks.
 \end{itemize}
 \end{frame}
 
-\section{Explorations}
+\section{A case study}
 
 %\begin{frame}{Explorations overview}
 %This same approach can be used in many different settings: 
@@ -814,13 +818,33 @@ We can use the same approaches and networks for both basic tasks and meta-mappin
 \againframe<5>{pokermotivation}
 
 \begin{frame}{Simple card games}
-
+\begin{columns}
+\begin{column}{0.5\textwidth}
 \begin{itemize}
-\item Constructed 5 two-card games (analogous to poker, blackjack, etc.)
-\item With 8 variations of each, including ``try-to-lose'' variations
-\item Taught the model winning variations of poker, and winning and losing variations of other games 
-\item Can it infer losing at poker?
+\item Constructed 5 two-card games (simplified poker, blackjack, etc.)
+\item 4 winning, 4 losing variations of each.
+\item Trained winning variations of poker, and winning and losing variations of other games 
+\item Can meta-mapping trained on other games generalize to losing at poker?
 \end{itemize}
+\end{column}
+\begin{column}{0.5\textwidth}
+\begin{center}
+\begin{tabular}{|c|cc|}
+\hline
+\textbf{Game} & \textbf{Winning} & \textbf{\phantom{i}Losing\phantom{i}} \\
+\hline
+Blackjack & \cellcolor{bgreen} & \cellcolor{bgreen}\\
+High card & \cellcolor{bgreen} & \cellcolor{bgreen}\\
+Pairs & \cellcolor{bgreen} & \cellcolor{bgreen}\\
+Difference & \cellcolor{bgreen} & \cellcolor{bgreen}\\
+Poker & \cellcolor{bgreen} & \cellcolor{bred}\\
+\hline
+\end{tabular}\\[0.5em]
+{\color{bgreen}Green = trained, 36 total}\\
+{\color{bred}red = held out, 4 total}
+\end{center}
+\end{column}
+\end{columns}
 %\begin{columns}
 %\begin{column}{0.5\textwidth}
 %Five games:
@@ -1168,26 +1192,10 @@ On this task, MM adapts comparably to humans, and better than language alone. \\
 
 %\section{Why zero-shot adaptation?}
 %
-%\begin{frame}{Zero-shot adaptation is a useful starting point}
-%Because it accelerates learning and reduces cumulative mistakes.
-%{
-%\centering
-%\only<1>{
-%\includegraphics[height=0.8\textheight]{../../psych/dissertation/5-timescales/figures/polynomial_optimization_curves.png}
-%}
-%\only<2>{
-%\includegraphics[height=0.8\textheight]{../../psych/dissertation/5-timescales/figures/polynomial_optimization_cumulative_regret.png}
-%}
-%}
-%\end{frame}
-%
-%\begin{frame}[standout]
-%Starting from a zero-shot ``guess'' at the appropriate behavior results in faster learning, and reduces cumulative mistakes by an order of magnitude. 
-%\end{frame}
 
 
-%\section{Wrapping up}
-\begin{frame}{Meta-mapping can apply to much more than just card games}
+\section{The bigger picture}
+\begin{frame}{Meta-mapping can apply to more than just toy card games}
 \vspace{0.5em}
 \begin{columns}
 \begin{column}{0.5\textwidth}
@@ -1283,15 +1291,29 @@ On this task, MM adapts comparably to humans, and better than language alone. \\
 \end{tikzpicture}
 }
 \end{column}%
+\vspace{0.2\textheight}
 \begin{column}{0.5\textwidth}
 \textbf{Reinforcement learning:}
 \inlineMovie{figures/recording_pusher.mp4}{../../psych/dissertation/4-extending/figures/pusher_0.png}{width=0.9\textwidth, height=0.65\textwidth}
-\textbf{Initializing later learning:}
-\includegraphics[width=0.9\textwidth]{../../psych/dissertation/5-timescales/figures/polynomial_optimization_curves.png}
+%\textbf{Initializing later learning:}
+%\includegraphics[width=0.9\textwidth]{../../psych/dissertation/5-timescales/figures/polynomial_optimization_curves.png}
 \end{column}
 
 \end{columns}
 
+\end{frame}
+
+\begin{frame}{Zero-shot adaptation is a useful starting point}
+It accelerates learning and reduces cumulative mistakes.
+{
+\centering
+\only<1>{
+\includegraphics[height=0.8\textheight]{../../psych/dissertation/5-timescales/figures/polynomial_optimization_curves.png}
+}
+\only<2>{
+\includegraphics[height=0.8\textheight]{../../psych/dissertation/5-timescales/figures/polynomial_optimization_cumulative_regret.png}
+}
+}
 \end{frame}
 
 \begin{frame}{Conclusions}
@@ -1304,7 +1326,8 @@ On this task, MM adapts comparably to humans, and better than language alone. \\
         \item And a parsimonious architectural implementation that uses the same networks for basic tasks and meta-mappings. 
     \end{itemize}
 \item Meta-mapping performs comparably to humans in a card game task, and outperforms a language based approach.
-\item Meta-mapping also performs well across settings ranging from image classification to reinforcement learning, and allows faster, better later learning. 
+\item It also performs well across settings ranging from image classification to reinforcement learning.
+\item And allows faster, better later learning. 
 %\item Earlier paper: \url{https://arxiv.org/abs/1905.09950} and library + all code: \url{https://github.com/lampinen/HoMM}
 \end{itemize}
 \end{frame}
