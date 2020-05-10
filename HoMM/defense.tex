@@ -66,46 +66,67 @@
 %\end{frame}
 %}
 
-\begin{frame}%{Broader context}
-\begin{columns}
-\begin{column}{\dimexpr\paperwidth-1em}
-\centering
-\begin{tikzpicture}[auto]
-\node at (-4.5, 2) {\includegraphics[width=3cm]{figures/papers/paper0.png}};
-\node at (-1.5, 2) {\includegraphics[width=3cm]{figures/papers/paper1.png}};
-\node at (1.5, 2) {\includegraphics[width=3cm]{figures/papers/paper2.png}};
-\node at (4.5, 2) {\includegraphics[width=3cm]{figures/papers/paper3.png}};
+\begin{frame}{Themes of my PhD projects}
+\textbf{Curricula \& integrating new knowledge:}\\[0.5em]
+{\tiny \color<2->{fg!10!bg}
+Lampinen \& McClelland, (2018), "Different presentations of a mathematical concept [...]" Journal of Educational Psychology\\[0.25em]
+Lampinen \& McClelland, (2017), "One-shot and few-shot learning of word embeddings," arXiv\\[0.25em]
+Racaniere, Lampinen, et al. (2020), "Automated curricula through setter-solver interactions," ICLR\\[0.25em]
+McClelland, McNaughton \& Lampinen (2020), "Integration of new information in memory" Proceedings of the Royal Society B\\[0.25em]
+Hansen, Lampinen, Suri \& McClelland, (2017), "Building on prior knowledge without building it in," Commentary in Behavioral \& Brain Sciences\\[0.25em]
+}\\[1em]
+\textbf{Generalization \& transfer:}\\[0.5em]
+{\tiny
+{\color<2->{fg!10!bg}
+Hill, Lampinen, et al. (2020), "Environmental drivers of systematicity and generalisation in a situated agent," ICLR\\[0.25em]
+Lampinen \& Ganguli (2019), "An analytic theory of generalization dynamics [...]," ICLR \\[0.25em]
+Lampinen, Hsu \& McClelland, (2017), "Analogies Emerge from Learning Dynamics in Neural Networks," Proceedings of the Cognitive Science Society\\[0.25em]
+}{\color<2->{bred}
+Lampinen \& McClelland, (2019), "Zero-shot task adaptation by homoiconic meta-mapping," Learning Transferable Skills Workshop, NeurIPS\\
+}}
 
-\node at (-4.5, -2) {\includegraphics[width=3cm]{figures/papers/paper4.png}};
-\node at (-1.5, -2) {\includegraphics[width=3cm]{figures/papers/paper5.png}};
-\node at (1.5, -2) {\includegraphics[width=3cm]{figures/papers/paper6.png}};
-\node at (4.5, -2) {\includegraphics[width=3cm]{figures/papers/paper7.png}};
-
-\uncover<2->{
-\draw[bred, line width=1em] (-6, -3.5) to (6, 3.5);
-\draw[bred, line width=1em] (-6, 3.5) to (6, -3.5);
-}
-\end{tikzpicture}
-\end{column}
-\end{columns}
+%\begin{columns}
+%\begin{column}{\dimexpr\paperwidth-1em}
+%\centering
+%\begin{tikzpicture}[auto]
+%\node at (-4.5, 2) {\includegraphics[width=3cm]{figures/papers/paper0.png}};
+%\node at (-1.5, 2) {\includegraphics[width=3cm]{figures/papers/paper1.png}};
+%\node at (1.5, 2) {\includegraphics[width=3cm]{figures/papers/paper2.png}};
+%\node at (4.5, 2) {\includegraphics[width=3cm]{figures/papers/paper3.png}};
+%
+%\node at (-4.5, -2) {\includegraphics[width=3cm]{figures/papers/paper4.png}};
+%\node at (-1.5, -2) {\includegraphics[width=3cm]{figures/papers/paper5.png}};
+%\node at (1.5, -2) {\includegraphics[width=3cm]{figures/papers/paper6.png}};
+%\node at (4.5, -2) {\includegraphics[width=3cm]{figures/papers/paper7.png}};
+%
+%\uncover<2->{
+%\draw[bred, line width=1em] (-6, -3.5) to (6, 3.5);
+%\draw[bred, line width=1em] (-6, 3.5) to (6, -3.5);
+%}
+%\end{tikzpicture}
+%\end{column}
+%\end{columns}
 \end{frame}
 
 \begin{frame}<1-2>[label=pokermotivation]
 \frametitle<1-2>{Human cognition is flexible -- we can adapt on our first try}
-\frametitle<3-4>{Adaptation as task transformation}
-\frametitle<5>{Losing poker: switching to opposite rewards is challenging}
+\frametitle<3-5>{Adaptation as task transformation}
+\frametitle<6>{Losing poker: switching to opposite rewards is challenging}
 \centering
-\only<1,5>{
+\only<1,6>{
 \includegraphics[width=\textwidth]{figures/poker.png}
 }
 \only<2>{
 \includegraphics[width=\textwidth]{figures/old_people_looking_0.png}
 }
 \only<3>{
-\includegraphics[width=\textwidth]{figures/poker_adaptation_0.png}
+\includegraphics[width=\textwidth]{figures/poker_adaptation_up_0.png}
 }
 \only<4>{
-\includegraphics[width=\textwidth]{figures/poker_adaptation_1.png}
+\includegraphics[width=\textwidth]{figures/poker_adaptation_up_1.png}
+}
+\only<5>{
+\includegraphics[width=\textwidth]{figures/poker_adaptation_up_2.png}
 }
 \end{frame}
 %% Don't forget to say starting point!!!
@@ -138,7 +159,7 @@
 Could deep learning models reuse their knowledge more flexibly, without retraining?
 \end{frame}
 
-\againframe<3-4>{pokermotivation}
+\againframe<3-5>{pokermotivation}
 
 \begin{frame}[standout]
 Goal: a deep-learning framework that can transform task representations to adapt.
@@ -181,7 +202,7 @@ Standard deep learning tries to infer this mapping from lots of examples, meta-l
 
 \begin{frame}[standout]
 Tasks \(\bm =\) mappings from inputs to outputs.\\[1em] 
-\uncover<2>{
+\uncover<2->{
 Task mappings can be inferred from examples.\\[1em]
 }
 \uncover<3>{
@@ -213,7 +234,7 @@ But how can we infer them without examples?
 \includegraphics[width=\textwidth]{figures/poker_adaptation_1.png}
 }
 \only<2>{
-\includegraphics[width=\textwidth]{figures/poker_adaptation_mappings.png}
+\includegraphics[width=\textwidth]{figures/poker_adaptation_mappings_up.png}
 }
 \end{frame}
 
@@ -234,7 +255,7 @@ Transforming the task mapping \(=\) adapting. \\[1em]
 Meta-mappings are higher-order mappings that transform task mappings.
 \end{frame}
 
-\begin{frame}{Could we generalize meta-mappings from examples?}
+\begin{frame}{Generalizing meta-mappings from examples?}
 \centering
 \includegraphics[height=0.8\textheight]{figures/losing_from_examples.png}
 \end{frame}
@@ -268,13 +289,13 @@ But we need task representations to use it.
 \section{An architecture for representing and transforming tasks}
 
 \begin{frame}{Architecture preview}
-Our goal is to implement:
-\begin{itemize}
-\item A way of representing tasks as mappings.
-\item A way of representing those tasks/mappings as vectors.
-\item A way of learning to transform those task-vectors to perform meta-mappings.
+We want an architecture that:
+\begin{itemize}[<+->]
+\item Performs basic task mappings.
+\item By learning a vector representation for each task.
+\item And learns to transform those task-representation vectors to perform meta-mappings.
+\item This will allow the architecture to perform new tasks without data, by their relationship to prior tasks.
 \end{itemize}
-This will allow the architecture to perform new tasks without data, by their relationship to prior tasks.
 \end{frame}
 
 \begin{frame}<2>{Task-specific computations are low-dimensional and abstract}
@@ -786,10 +807,10 @@ We can use the same approaches and networks for both basic tasks and meta-mappin
 
 %% TODO: reinsert?
 \begin{frame}{Meta-mapping summary}
-\begin{itemize}
+\begin{itemize}[<+->]
 \item Basic tasks are mappings from inputs to outputs (e.g. poker hands to bets), which can be inferred from examples.
-\item We represent the task-specific computations as relatively simple transformations, parameterized from a task representation. The rest of architecture is shared across tasks.
-\item One type of flexibility is systematically altering these tasks (e.g. trying to bet on losing hands instead of winning ones).
+\item We perform tasks using a task representation which is inferred from examples.
+\item One type of flexibility is transforming tasks (e.g. from winning to losing).
 \item This can be seen as a \textbf{meta-mapping}, that is, a mapping which takes tasks as input and produces tasks as output (e.g. maps try-to-win-at-poker to try-to-lose-at-poker).
 \item We implement the meta-mapping function as a transformation of task representation.
 \item This mapping can be parsimoniously inferred and implemented using exactly the same networks as the basic tasks.
@@ -815,7 +836,7 @@ We can use the same approaches and networks for both basic tasks and meta-mappin
 %\end{table}
 %\end{frame}
 %
-\againframe<5>{pokermotivation}
+\againframe<6>{pokermotivation}
 
 \begin{frame}{Simple card games}
 \begin{columns}
@@ -1303,7 +1324,7 @@ On this task, MM adapts comparably to humans, and better than language alone. \\
 
 \end{frame}
 
-\begin{frame}{Zero-shot adaptation is a useful starting point}
+\begin{frame}{Meta-mapping is a useful starting point}
 It accelerates learning and reduces cumulative mistakes.
 {
 \centering
@@ -1318,8 +1339,8 @@ It accelerates learning and reduces cumulative mistakes.
 
 \begin{frame}{Conclusions}
 
-\begin{itemize}
-\item Humans can perform novel tasks without retraining. 
+\begin{itemize}[<+->]
+\item Humans can perform altered tasks without retraining. 
 \item I suggest that task transformation offers a useful perspective on this ability. 
 \item I propose a computational description of task transformation: \textbf{meta-mapping}.
     \begin{itemize}
@@ -1333,7 +1354,7 @@ It accelerates learning and reduces cumulative mistakes.
 \end{frame}
 
 \begin{frame}[standout]
-Thanks, questions?\\[1em]
+Thanks! Questions?\\[1em]
 {\normalsize (Please ``raise hand'' on Zoom, and we will unmute you to ask, or share your question in the chat.)}
 \end{frame}
 
