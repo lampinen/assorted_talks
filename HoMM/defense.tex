@@ -78,11 +78,12 @@ Hansen, Lampinen, Suri \& McClelland, (2017), "Building on prior knowledge witho
 \textbf{Generalization \& transfer:}\\[0.5em]
 {\tiny
 {\color<2->{fg!10!bg}
-Hill, Lampinen, et al. (2020), "Environmental drivers of systematicity and generalisation in a situated agent," ICLR\\[0.25em]
 Lampinen \& Ganguli (2019), "An analytic theory of generalization dynamics [...]," ICLR \\[0.25em]
+Hill, Lampinen, et al. (2020), "Environmental drivers of systematicity and generalisation in a situated agent," ICLR\\[0.25em]
 Lampinen, Hsu \& McClelland, (2017), "Analogies Emerge from Learning Dynamics in Neural Networks," Proceedings of the Cognitive Science Society\\[0.25em]
 }{\color<2->{bred}
 Lampinen \& McClelland, (2019), "Zero-shot task adaptation by homoiconic meta-mapping," Learning Transferable Skills Workshop, NeurIPS\\
+Lampinen \& McClelland, (2020), "Transforming task representations to allow deep learning models to perform novel tasks," arXiv\\
 }}
 
 %\begin{columns}
@@ -255,7 +256,7 @@ Transforming the task mapping \(=\) adapting. \\[1em]
 Meta-mappings are higher-order mappings that transform task mappings.
 \end{frame}
 
-\begin{frame}{Generalizing meta-mappings from examples?}
+\begin{frame}{Generalizing meta-mappings from examples}
 \centering
 \includegraphics[height=0.8\textheight]{figures/losing_from_examples.png}
 \end{frame}
@@ -565,7 +566,7 @@ $\vdots$
 \end{frame}
 
 \begin{frame}[standout]
-Our architecture generates task representations from examples, which it uses to modulate a network which performs the task. % shorten this
+The architecture generates task representations from examples, which modulates a network which performs the task. % shorten this
 \end{frame}
 
 \againframe<5>{homm_basic}
@@ -809,8 +810,8 @@ We can use the same approaches and networks for both basic tasks and meta-mappin
 \begin{frame}{Meta-mapping summary}
 \begin{itemize}[<+->]
 \item Basic tasks are mappings from inputs to outputs (e.g. poker hands to bets), which can be inferred from examples.
-\item We perform tasks using a task representation which is inferred from examples.
-\item One type of flexibility is transforming tasks (e.g. from winning to losing).
+\item We can perform tasks by setting the weights of a task network using a task representation.
+\item We can implement one type of flexibility by transforming tasks (e.g. from winning to losing).
 \item This can be seen as a \textbf{meta-mapping}, that is, a mapping which takes tasks as input and produces tasks as output (e.g. maps try-to-win-at-poker to try-to-lose-at-poker).
 \item We implement the meta-mapping function as a transformation of task representation.
 \item This mapping can be parsimoniously inferred and implemented using exactly the same networks as the basic tasks.
@@ -1338,7 +1339,7 @@ It accelerates learning and reduces cumulative mistakes.
 \end{frame}
 
 \begin{frame}[standout]
-Meta-mapping can apply to many domains.\\[1em]
+Meta-mapping works in many domains.\\[1em]
 And accelerates later learning.
 \end{frame}
 
@@ -1347,13 +1348,14 @@ And accelerates later learning.
 \begin{itemize}[<+->]
 \item Humans can perform altered tasks without retraining. 
 \item I suggest that task transformation offers a useful perspective on this ability. 
-\item I propose a computational description of task transformation: \textbf{meta-mapping}.
+\item Specifically, \textbf{meta-mappings}, higher-order tasks that transform basic task representations.
     \begin{itemize}
-        \item And a parsimonious architectural implementation that uses the same networks for basic tasks and meta-mappings. 
+        \item Can be parsimoniously implemented by using the same networks for basic tasks and meta-mappings. 
     \end{itemize}
 \item Meta-mapping performs comparably to humans in a card game task, and outperforms a language based approach.
-\item It also performs well across settings ranging from image classification to reinforcement learning.
-\item And allows more efficient later learning. 
+\item It also performs well across settings ranging from visual classification to reinforcement learning.
+\item And substantially accelerates later learning. 
+\item Preprint: \url{https://arxiv.org/abs/2005.04318}
 %\item Earlier paper: \url{https://arxiv.org/abs/1905.09950} and library + all code: \url{https://github.com/lampinen/HoMM}
 \end{itemize}
 \end{frame}
