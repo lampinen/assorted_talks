@@ -253,7 +253,9 @@ How do we adapt a task-mapping?
 
 \begin{frame}[standout]
 Transforming the task mapping \(=\) adapting. \\[1em]
+\uncover<2->{
 Meta-mappings are higher-order mappings that transform task mappings.
+}
 \end{frame}
 
 \begin{frame}{Generalizing meta-mappings from examples}
@@ -813,8 +815,8 @@ We can use the same approaches and networks for both basic tasks and meta-mappin
 \item We can perform tasks by setting the weights of a task network using a task representation.
 \item We can implement one type of flexibility by transforming tasks (e.g. from winning to losing).
 \item This can be seen as a \textbf{meta-mapping}, that is, a mapping which takes tasks as input and produces tasks as output (e.g. maps try-to-win-at-poker to try-to-lose-at-poker).
-\item We implement the meta-mapping function as a transformation of task representation.
-\item This mapping can be parsimoniously inferred and implemented using exactly the same networks as the basic tasks.
+\item We implement the meta-mapping as a transformation of task representations.
+\item Meta-mapping can be parsimoniously inferred and implemented using exactly the same networks as the basic tasks.
 \end{itemize}
 \end{frame}
 
